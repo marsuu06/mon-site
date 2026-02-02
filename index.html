@@ -1,373 +1,249 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rituel 22h 🌙</title>
-  <style>
-    /* RESET SIMPLE */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(160deg, #1b0f2e, #3a0d46);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1, h2 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    p.intro {
-      font-size: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-      opacity: 0.9;
-    }
-    ul.rules {
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 20px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    ul.rules li {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 10px 14px;
-      margin-bottom: 10px;
-      border-radius: 12px;
-      border-left: 4px solid #9b5de5;
-      font-size: 15px;
-    }
-    .button {
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .validate-btn {
-      background: #9b5de5;
-      color: white;
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .validate-btn:hover {
-      background: #7e48c3;
-    }
-    .mini-btn {
-      background: #f15bb5;
-      color: white;
-      padding: 6px;
-      font-size: 12px;
-      height: 36px;
-      border-radius: 8px;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 20px;
-      width: 100%;
-      max-width: 1000px;
-      padding: 0 10px;
-    }
-    @media(min-width: 600px) {
-      .container {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 16px;
-      border-radius: 14px;
-      flex: 1;
-      min-width: 250px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-    h2 {
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    textarea {
-      width: 100%;
-      min-height: 50px;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      resize: none;
-      background: rgba(255, 255, 255, 0.05);
-      color: white;
-      font-size: 14px;
-      font-family: inherit;
-    }
-    #timer {
-      text-align: center;
-      margin-bottom: 15px;
-      font-weight: bold;
-      font-size: 16px;
-      color: #fbb1c1;
-    }
-    .done-icon {
-      font-size: 24px;
-      color: #4caf50;
-      display: none;
-      margin-left: 10px;
-      vertical-align: middle;
-    }
-    .answer-section {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .flex-row {
-      display: flex;
-      gap: 6px;
-      align-items: flex-start;
-    }
-    .flex-row textarea {
-      flex: 1;
-      min-height: 40px;
-    }
-    .section-title {
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    .hidden {
-      display: none !important;
-    }
-    #message {
-      text-align: center;
-      margin-top: 20px;
-      font-style: italic;
-      opacity: 0.7;
-    }
-    .small {
-      text-align: center;
-      font-size: 12px;
-      opacity: 0.6;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rituel 22h 🌙</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  // Configuration Firebase
+  const firebaseConfig = {
+    apiKey: "TON_API_KEY",
+    authDomain: "mon-projet062.firebaseapp.com",
+    databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "mon-projet062",
+    storageBucket: "mon-projet062.appspot.com",
+    messagingSenderId: "TON_SENDER_ID",
+    appId: "TON_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script>
+
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin:0; padding:20px; background: linear-gradient(160deg,#1b0f2e,#3a0d46); color: #fff; }
+h1,h2 { text-align:center; margin-bottom:10px; }
+p,li { line-height:1.5; }
+p.intro { font-size:16px; text-align:center; margin-bottom:20px; opacity:0.9; }
+ul.rules { list-style: none; padding-left:0; margin-bottom:20px; }
+ul.rules li { background: rgba(255,255,255,0.05); padding:10px 14px; margin-bottom:10px; border-radius:12px; border-left:4px solid #9b5de5; font-size:15px; }
+.button { padding:10px; border:none; border-radius:10px; font-weight:bold; font-size:14px; cursor:pointer; }
+.validate-btn { background:#9b5de5; color:white; width:100%; margin-bottom:20px; }
+.mini-btn { background:#f15bb5; color:white; }
+.container { display:flex; flex-direction:column; gap:20px; margin-top:20px; }
+@media(min-width:600px){ .container { flex-direction:row; justify-content:space-between; } }
+.card { background: rgba(255,255,255,0.05); padding:16px; border-radius:14px; flex:1; min-width:250px; backdrop-filter: blur(8px); display:flex; flex-direction:column; gap:12px; }
+h2 { margin-bottom:10px; }
+textarea { width:100%; min-height:50px; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.3); resize:none; background: rgba(255,255,255,0.05); color:white; font-size:14px; }
+#timer { text-align:center; margin-bottom:15px; font-weight:bold; font-size:16px; color:#fbb1c1; }
+.done-icon { font-size:24px; color:#4caf50; display:none; margin-left:10px; vertical-align:middle; }
+.answer-section { display:flex; flex-direction:column; gap:6px; }
+.flex-row { display:flex; gap:6px; align-items:flex-start; }
+.flex-row textarea { flex:1; min-height:40px; }
+.section-title { margin-bottom:6px; font-weight:bold; }
+.hidden { display:none; }
+</style>
 </head>
 <body>
-  <div id="page">
-    <h1>🌙 Rituel 22h</h1>
-    <p class="intro">Prenez 10 minutes pour poser votre journée et partager vos émotions. Tout disparaît automatiquement à minuit.</p>
+<div id="page">
+<h1>🌙 Rituel 22h</h1>
+<p class="intro">Prenez 10 minutes pour poser votre journée et partager vos émotions. Tout disparaît automatiquement à minuit.</p>
+<h2>Règles du jeu</h2>
+<ul class="rules">
+<li>Chacun écrit honnêtement ses réponses.</li>
+<li>Pas de jugement, pas de correction.</li>
+<li>Mini-jeux et questions aléatoires pour rigoler ou se rapprocher.</li>
+<li>Tout disparaît automatiquement à minuit.</li>
+</ul>
+<button class="button validate-btn" onclick="validateRules()">✅ J’accepte les règles</button>
 
-    <h2>Règles du jeu</h2>
-    <ul class="rules">
-      <li>Chacun écrit honnêtement ses réponses.</li>
-      <li>Pas de jugement, pas de correction.</li>
-      <li>Mini-jeux et questions aléatoires pour rigoler ou se rapprocher.</li>
-      <li>Tout disparaît automatiquement à minuit.</li>
-    </ul>
+<div id="ritual" class="hidden">
+<div id="timer"></div>
+<div class="container">
+<!-- Rayan -->
+<div class="card">
+<h2>Rayan <span id="doneRayan" class="done-icon">✅</span></h2>
+<div class="answer-section">
+<p class="section-title">Question du jour</p>
+<div id="displayRayanQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
+<div class="flex-row">
+<textarea id="rayanQuestion" placeholder="Répond ici…"></textarea>
+<button class="button mini-btn" style="padding:6px; font-size:12px; height:36px;" onclick="newQuestion()">🎲</button>
+</div>
+</div>
+<div class="answer-section">
+<p class="section-title">Journal de la journée</p>
+<textarea id="rayan1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+<textarea id="rayan2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
+<textarea id="rayan3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
+<textarea id="rayan4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
+<textarea id="rayan5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
+<button class="button mini-btn" onclick="done('Rayan')">🖤 Terminé</button>
+</div>
+</div>
 
-    <button class="button validate-btn" onclick="validateRules()">✅ J’accepte les règles</button>
+<!-- Israh -->
+<div class="card">
+<h2>Israh <span id="doneIsrah" class="done-icon">✅</span></h2>
+<div class="answer-section">
+<p class="section-title">Question du jour</p>
+<div id="displayIsrahQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
+<div class="flex-row">
+<textarea id="israhQuestion" placeholder="Répond ici…"></textarea>
+<button class="button mini-btn" style="padding:6px; font-size:12px; height:36px;" onclick="newQuestion()">🎲</button>
+</div>
+</div>
+<div class="answer-section">
+<p class="section-title">Journal de la journée</p>
+<textarea id="israh1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+<textarea id="israh2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
+<textarea id="israh3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
+<textarea id="israh4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
+<textarea id="israh5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
+<button class="button mini-btn" onclick="done('Israh')">🖤 Terminé</button>
+</div>
+</div>
+</div>
 
-    <div id="ritual" class="hidden">
-      <div id="timer"></div>
-      <div class="container">
+<p id="message"></p>
+<p class="small">Toutes les réponses disparaîtront automatiquement à minuit 🌙</p>
+</div>
+</div>
 
-        <!-- Rayan -->
-        <div class="card">
-          <h2>Rayan <span id="doneRayan" class="done-icon">✅</span></h2>
-          <div class="answer-section">
-            <p class="section-title">Question du jour</p>
-            <div id="displayRayanQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
-            <div class="flex-row">
-              <textarea id="rayanQuestion" placeholder="Répond ici…"></textarea>
-              <button class="button mini-btn" onclick="newQuestion()">🎲</button>
-            </div>
-          </div>
-          <div class="answer-section">
-            <p class="section-title">Journal de la journée</p>
-            <textarea id="rayan1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-            <textarea id="rayan2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-            <textarea id="rayan3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-            <textarea id="rayan4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-            <textarea id="rayan5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-            <button class="button mini-btn" onclick="done('Rayan')">🖤 Terminé</button>
-          </div>
-        </div>
+<script>
+const questions = [
+"Le moment le plus drôle de ta journée ? 😂",
+"Si ta journée était un film, son titre ? 🎬",
+"Résume ta journée en 3 mots absurdes 😜",
+"Un détail nul mais marrant avec le recul 🤪",
+"Un truc que tu as aimé chez l’autre aujourd'hui 💖",
+"Si ta journée était un animal, lequel ? 🐶🐱",
+"Un moment où tu t'es senti fier(e) 💪",
+"Un petit défi ridicule que tu as réussi 😏",
+"Un moment qui t’a fait sourire pour rien 😄",
+"Si tu pouvais rejouer 1 moment, lequel ? ✨"
+];
 
-        <!-- Israh -->
-        <div class="card">
-          <h2>Israh <span id="doneIsrah" class="done-icon">✅</span></h2>
-          <div class="answer-section">
-            <p class="section-title">Question du jour</p>
-            <div id="displayIsrahQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
-            <div class="flex-row">
-              <textarea id="israhQuestion" placeholder="Répond ici…"></textarea>
-              <button class="button mini-btn" onclick="newQuestion()">🎲</button>
-            </div>
-          </div>
-          <div class="answer-section">
-            <p class="section-title">Journal de la journée</p>
-            <textarea id="israh1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-            <textarea id="israh2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-            <textarea id="israh3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-            <textarea id="israh4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-            <textarea id="israh5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-            <button class="button mini-btn" onclick="done('Israh')">🖤 Terminé</button>
-          </div>
-        </div>
+function newQuestion(){
+const q = questions[Math.floor(Math.random()*questions.length)];
+document.getElementById("displayRayanQuestion").innerText = q;
+document.getElementById("displayIsrahQuestion").innerText = q;
+}
 
-      </div>
-      <p id="message"></p>
-      <p class="small">Toutes les réponses disparaîtront automatiquement à minuit 🌙</p>
-    </div>
-  </div>
+// ✅ Sauvegarde dans Firebase
+function saveDataFirebase() {
+const data = {
+rayan: [
+document.getElementById("rayan1").value,
+document.getElementById("rayan2").value,
+document.getElementById("rayan3").value,
+document.getElementById("rayan4").value,
+document.getElementById("rayan5").value,
+document.getElementById("displayRayanQuestion").innerText,
+document.getElementById("rayanQuestion").value
+],
+israh: [
+document.getElementById("israh1").value,
+document.getElementById("israh2").value,
+document.getElementById("israh3").value,
+document.getElementById("israh4").value,
+document.getElementById("israh5").value,
+document.getElementById("displayIsrahQuestion").innerText,
+document.getElementById("israhQuestion").value
+]
+};
+database.ref('rituel22h').set(data);
+}
 
-  <script>
-    const questions = [
-      "Le moment le plus drôle de ta journée ? 😂",
-      "Si ta journée était un film, son titre ? 🎬",
-      "Résume ta journée en 3 mots absurdes 😜",
-      "Un détail nul mais marrant avec le recul 🤪",
-      "Un truc que tu as aimé chez l’autre aujourd'hui 💖",
-      "Si ta journée était un animal, lequel ? 🐶🐱",
-      "Un moment où tu t'es senti fier(e) 💪",
-      "Un petit défi ridicule que tu as réussi 😏",
-      "Un moment qui t’a fait sourire pour rien 😄",
-      "Si tu pouvais rejouer 1 moment, lequel ? ✨"
-    ];
+// ✅ Charger depuis Firebase
+function loadDataFirebase() {
+database.ref('rituel22h').once('value').then(snapshot => {
+const data = snapshot.val();
+if (data) {
+["rayan","israh"].forEach(user=>{
+for(let i=1;i<=5;i++){
+document.getElementById(user+i).value = data[user][i-1] || "";
+}
+});
+document.getElementById("displayRayanQuestion").innerText = data.rayan[5] || "...";
+document.getElementById("displayIsrahQuestion").innerText = data.israh[5] || "...";
+document.getElementById("rayanQuestion").value = data.rayan[6] || "";
+document.getElementById("israhQuestion").value = data.israh[6] || "";
+}
+});
+}
 
-    function newQuestion(){
-      const q = questions[Math.floor(Math.random() * questions.length)];
-      document.getElementById("displayRayanQuestion").innerText = q;
-      document.getElementById("displayIsrahQuestion").innerText = q;
-    }
+// ✅ Marquer terminé
+function done(prenom){
+if(prenom==="Rayan") {
+document.getElementById("doneRayan").style.display="inline";
+showNotification("Rayan a terminé ✅");
+} else {
+document.getElementById("doneIsrah").style.display="inline";
+showNotification("Israh a terminé ✅");
+}
+saveDataFirebase();
+}
 
-    function done(prenom){
-      if(prenom === "Rayan") {
-        document.getElementById("doneRayan").style.display = "inline";
-        showNotification("Rayan a terminé ✅");
-      } else {
-        document.getElementById("doneIsrah").style.display = "inline";
-        showNotification("Israh a terminé ✅");
-      }
-      saveData();
-    }
+// Notification
+function showNotification(msg){
+let notif = document.createElement("div");
+notif.innerText = msg;
+notif.style.position = "fixed";
+notif.style.top = "20px";
+notif.style.left = "50%";
+notif.style.transform = "translateX(-50%)";
+notif.style.background = "#4caf50";
+notif.style.color = "#fff";
+notif.style.padding = "10px 20px";
+notif.style.borderRadius = "12px";
+notif.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+notif.style.fontWeight = "bold";
+notif.style.zIndex = 9999;
+document.body.appendChild(notif);
+setTimeout(()=>{ notif.remove(); }, 2500);
+}
 
-    function showNotification(msg){
-      let notif = document.createElement("div");
-      notif.innerText = msg;
-      notif.style.position = "fixed";
-      notif.style.top = "20px";
-      notif.style.left = "50%";
-      notif.style.transform = "translateX(-50%)";
-      notif.style.background = "#4caf50";
-      notif.style.color = "#fff";
-      notif.style.padding = "10px 20px";
-      notif.style.borderRadius = "12px";
-      notif.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-      notif.style.fontWeight = "bold";
-      notif.style.zIndex = 9999;
-      document.body.appendChild(notif);
-      setTimeout(() => { notif.remove(); }, 2500);
-    }
+// Sauvegarde à chaque frappe
+document.querySelectorAll("textarea").forEach(el=>{
+el.addEventListener("input", saveDataFirebase);
+});
 
-    function saveData(){
-      const data = {
-        rayan: [
-          document.getElementById("rayan1").value,
-          document.getElementById("rayan2").value,
-          document.getElementById("rayan3").value,
-          document.getElementById("rayan4").value,
-          document.getElementById("rayan5").value,
-          document.getElementById("displayRayanQuestion").innerText,
-          document.getElementById("rayanQuestion").value
-        ],
-        israh: [
-          document.getElementById("israh1").value,
-          document.getElementById("israh2").value,
-          document.getElementById("israh3").value,
-          document.getElementById("israh4").value,
-          document.getElementById("israh5").value,
-          document.getElementById("displayIsrahQuestion").innerText,
-          document.getElementById("israhQuestion").value
-        ]
-      };
-      localStorage.setItem("rituel22h", JSON.stringify(data));
-    }
+// Timer
+function updateTimer(){
+const now = new Date();
+const midnight = new Date();
+midnight.setHours(24,0,0,0);
+const diff = midnight - now;
+if(diff<=0){ database.ref('rituel22h').remove(); location.reload(); return; }
+const h = Math.floor(diff/1000/60/60);
+const m = Math.floor((diff/1000/60)%60);
+const s = Math.floor((diff/1000)%60);
+document.getElementById("timer").innerText = `Temps restant pour répondre : ${h}h ${m}m ${s}s`;
+}
+setInterval(updateTimer,1000);
 
-    document.querySelectorAll("textarea").forEach(el => {
-      el.addEventListener("input", saveData);
-    });
+// Notifications 21h50 et 22h00
+function checkNotifications(){
+const now = new Date();
+if(now.getHours()===21 && now.getMinutes()===50){ showNotification("🌙 Le rituel 22h commence dans 10 minutes !"); }
+if(now.getHours()===22 && now.getMinutes()===0){ showNotification("🌙 Le rituel 22h commence !"); }
+}
+setInterval(checkNotifications,60000);
 
-    function loadData(){
-      const data = JSON.parse(localStorage.getItem("rituel22h"));
-      if(data){
-        ["rayan","israh"].forEach(user => {
-          for(let i = 1; i <= 5; i++){
-            document.getElementById(user + i).value = data[user][i - 1] || "";
-          }
-        });
-        document.getElementById("displayRayanQuestion").innerText = data.rayan[5] || "...";
-        document.getElementById("displayIsrahQuestion").innerText = data.israh[5] || "...";
-        document.getElementById("rayanQuestion").value = data.rayan[6] || "";
-        document.getElementById("israhQuestion").value = data.israh[6] || "";
-      }
-    }
+// Validation règles
+function validateRules(){
+document.querySelector(".validate-btn").style.display="none";
+document.getElementById("ritual").classList.remove("hidden");
+newQuestion();
+loadDataFirebase();
+}
 
-    function updateTimer(){
-      const now = new Date();
-      const midnight = new Date();
-      midnight.setHours(24, 0, 0, 0);
-      const diff = midnight - now;
-      if(diff <= 0){
-        localStorage.removeItem("rituel22h");
-        location.reload();
-        return;
-      }
-      const h = Math.floor(diff / 1000 / 60 / 60);
-      const m = Math.floor((diff / 1000 / 60) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-      document.getElementById("timer").innerText = `Temps restant pour répondre : ${h}h ${m}m ${s}s`;
-    }
-
-    setInterval(updateTimer, 1000);
-
-    function checkNotifications(){
-      const now = new Date();
-      if(now.getHours() === 21 && now.getMinutes() === 50){
-        showNotification("🌙 Le rituel 22h commence dans 10 minutes !");
-      }
-      if(now.getHours() === 22 && now.getMinutes() === 0){
-        showNotification("🌙 Le rituel 22h commence !");
-      }
-    }
-
-    setInterval(checkNotifications, 60000);
-
-    function validateRules(){
-      document.querySelector(".validate-btn").style.display = "none";
-      document.getElementById("ritual").classList.remove("hidden");
-      newQuestion();
-      loadData();
-    }
-  </script>
+</script>
 </body>
 </html>
