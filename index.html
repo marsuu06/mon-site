@@ -1,7 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Harmonie 🌙</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --accent: #9b5de5; --bg: #090511; --glass: rgba(255, 255, 255, 0.05); }
+        body { font-family: sans-serif; margin: 0; background: var(--bg); color: #fff; text-align: center; }
+        .card { background: var(--glass); border-radius: 20px; padding: 20px; margin: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .pixel-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; max-width: 280px; margin: 0 auto; }
+        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.1); border-radius: 2px; cursor: pointer; }
+        .mood-btn { font-size: 1.5rem; cursor: pointer; opacity: 0.4; transition: 0.3s; padding: 10px; }
+        .mood-btn.active { opacity: 1; transform: scale(1.2); }
+        #tap-btn { width: 80px; height: 80px; border-radius: 50%; background: var(--accent); border: none; font-size: 2rem; cursor: pointer; box-shadow: 0 0 15px var(--accent); }
+    </style>
+</head>
 <body>
-   <h1>Test de connexion Rayan & Israh</h1>
-   <p>Si tu vois ce message, GitHub marche à nouveau !</p>
+    <h1>L'Harmonie 🌙</h1>
+    
+    <div class="card">
+        <h3>Météo du Cœur</h3>
+        <div id="moods-container">
+            <div id="rayan-mood">Rayan: <span class="mood-btn" onclick="setM('rayan','😊')">😊</span><span class="mood-btn" onclick="setM('rayan','😴')">😴</span></div>
+            <div id="israh-mood">Israh: <span class="mood-btn" onclick="setM('israh','😊')">😊</span><span class="mood-btn" onclick="setM('israh','😴')">😴</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Le Jardin</h3>
+        <div id="garden" class="pixel-grid"></div>
+    </div>
+
+    <button id="tap-btn" onclick="sendL()">💖</button>
+
+    <script>
+        const config = {
+            apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
+            authDomain: "mon-projet062.firebaseapp.com",
+            databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "mon-projet062",
+            storageBucket: "mon-projet062.appspot.com",
+            messagingSenderId: "1054174163421",
+            appId: "1:1054174163421:web:50817b3c930a5eb55ac634"
+        };
+        firebase.initializeApp(config);
+        const db = firebase.database().ref('harmonie_final');
+
+        function setM(u, e) { db.child('moods').child(u).set(e); }
+        function sendL() { db.child('love').set(Date.now()); }
+
+        const g = document.getElementById('garden');
+        for(let i=0; i<64; i++) {
+            const p = document.createElement('div'); p.className = 'pixel';
+            p.onclick = () => { let c = p.style.background.includes('rgb') ? 'rgba(255,255,255,0.1)' : '#9b5de5'; db.child('pix').child(i).set(c); };
+            g.appendChild(p);
+        }
+
+        db.on('value', s => {
+            const d = s.val() || {};
+            if(d.moods) { 
+                ['rayan','israh'].forEach(u => {
+                    document.querySelectorAll(`#${u}-mood .mood-btn`).forEach(b => b.classList.toggle('active', b.innerText === d.moods[u]));
+                });
+            }
+            if(d.pix) { document.querySelectorAll('.pixel').forEach((p, i) => p.style.background = d.pix[i] || 'rgba(255,255,255,0.1)'); }
+            if(d.love) confetti({ particleCount: 30, origin: { y: 0.8 } });
+        });
+    </script>
 </body>
 </html>
