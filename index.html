@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>L'Harmonie - Connexion Totale 🌙</title>
+    <title>L'Harmonie - Version Ultime 🌙</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -25,10 +25,10 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-
+        
         :root {
             --accent: #9b5de5;
-            --bg: #090511;
+            --bg: #05020a;
             --glass: rgba(255, 255, 255, 0.03);
             --pink: #f178ff;
             --orange: #ff9e00;
@@ -43,7 +43,7 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- ACCUEIL --- */
+        /* --- ECRAN D'ENTRÉE --- */
         #intro-screen {
             position: fixed; inset: 0; z-index: 1000;
             background: var(--bg); display: flex; flex-direction: column;
@@ -51,90 +51,65 @@
             transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #intro-screen.hidden { opacity: 0; pointer-events: none; transform: translateY(-100%); }
-
         .pulse-btn {
             width: 100px; height: 100px; background: var(--accent);
             border-radius: 50%; cursor: pointer; border: none; font-size: 2.5rem;
-            box-shadow: 0 0 40px rgba(155, 93, 229, 0.6);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 40px rgba(155, 93, 229, 0.4); transition: 0.2s;
         }
-        @keyframes pulse { 0% { transform: scale(0.95); } 70% { transform: scale(1.05); } 100% { transform: scale(0.95); } }
-
-        /* --- HEADER --- */
-        header { padding: 30px 20px; text-align: center; }
-        .clock { font-size: 2.5rem; font-weight: 800; opacity: 0.9; margin-bottom: 5px; }
-        .xp-container { width: 250px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px auto; overflow: hidden; border: 1px solid var(--border); }
-        #xp-fill { width: 0%; height: 100%; background: linear-gradient(to right, var(--accent), var(--pink)); transition: 1s ease; }
 
         /* --- LAYOUT --- */
+        header { padding: 40px 20px; text-align: center; }
+        .clock { font-size: 2.8rem; font-weight: 800; }
+        .xp-container { width: 220px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px auto; overflow: hidden; }
+        #xp-fill { width: 0%; height: 100%; background: linear-gradient(to right, var(--accent), var(--pink)); transition: 1s ease; box-shadow: 0 0 10px var(--pink); }
+
         .container { max-width: 1200px; margin: auto; padding: 0 20px 100px; }
-        .top-section { display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .top-section { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; margin-bottom: 30px; }
         @media (max-width: 900px) { .top-section { grid-template-columns: 1fr; } }
-
-        .card {
-            background: var(--glass); border-radius: 35px; padding: 30px;
-            border: 1px solid var(--border); backdrop-filter: blur(20px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
-
-        .desc-text { font-size: 0.75rem; opacity: 0.5; margin-top: 8px; margin-bottom: 25px; display: block; line-height: 1.5; }
+        
+        .card { background: var(--glass); border-radius: 35px; padding: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); position: relative; }
+        .desc-text { font-size: 0.75rem; opacity: 0.4; margin: 10px 0 20px; line-height: 1.5; display: block; }
 
         /* --- MINI JEUX --- */
-        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
-        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 4px; cursor: pointer; }
+        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; }
+        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 5px; cursor: pointer; }
+        
+        .player-badge { font-size: 0.6rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: 1px solid currentColor; }
+        .game-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 15px; }
 
-        .mood-compact { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: rgba(0,0,0,0.3); border-radius: 20px; margin-top: 10px; }
-        .mood-btn { font-size: 1.1rem; cursor: pointer; opacity: 0.2; transition: 0.2s; }
-        .mood-btn.active { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 5px var(--pink)); }
-
-        /* NOUVEAU JEU : MOTS CROISÉS */
-        .word-game { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .word-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px dashed var(--accent); padding: 10px; border-radius: 12px; color: #fff; font-size: 0.8rem; text-align: center; }
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 150px; margin: 15px auto; }
+        .ttt-cell { aspect-ratio: 1; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; cursor: pointer; }
 
         /* --- JOURNAUX --- */
-        .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 700px) { .journals-grid { grid-template-columns: 1fr; } }
-
-        .dot { width: 12px; height: 12px; background: var(--orange); border-radius: 50%; box-shadow: 0 0 10px var(--orange); }
+        
+        .q-mini { background: rgba(155, 93, 229, 0.1); padding: 20px; border-radius: 25px; margin-bottom: 15px; border: 1px solid rgba(155, 93, 229, 0.2); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); transition: 0.5s; }
         .dot.active { background: var(--green); box-shadow: 0 0 15px var(--green); }
+        
+        textarea { width: 100%; height: 75px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 18px; color: #fff; padding: 15px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 12px; }
+        .finish-btn { width: 100%; padding: 20px; border-radius: 20px; border: none; background: linear-gradient(45deg, var(--accent), var(--pink)); color: white; font-weight: 800; cursor: pointer; }
 
-        textarea {
-            width: 100%; height: 75px; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
-            border-radius: 18px; color: #fff; padding: 15px; font-family: inherit;
-            resize: none; box-sizing: border-box; font-size: 0.9rem; margin-bottom: 12px; transition: 0.3s;
-        }
-
-        .finish-btn {
-            width: 100%; padding: 18px; border-radius: 18px; border: none;
-            background: linear-gradient(45deg, var(--accent), var(--pink));
-            color: white; font-weight: 700; cursor: pointer;
-        }
-
-        /* --- POPUP --- */
-        #modal-overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000;
-            display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px);
-        }
-        .modal-box {
-            background: #1a0b2e; border: 1px solid var(--pink); padding: 40px;
-            border-radius: 35px; text-align: center; position: relative; max-width: 320px;
-        }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
+        /* --- MODAL --- */
+        #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-box { background: #1a0b2e; border: 1px solid var(--pink); padding: 40px; border-radius: 40px; text-align: center; max-width: 300px; position: relative; }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <h1 style="font-size: 3rem; font-weight: 800;">L'Harmonie</h1>
-        <button class="pulse-btn" onclick="enterApp()">❤️</button>
+        <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 5px;">L'Harmonie</h1>
+        <p id="click-msg" style="opacity: 0.5; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px;">CLIQUEZ 5 FOIS SUR LE CŒUR</p>
+        <button id="entry-heart" class="pulse-btn" onclick="heartClick()">❤️</button>
     </div>
 
     <div id="modal-overlay">
         <div class="modal-box">
-            <span class="close-modal" onclick="closeModal()">×</span>
-            <div style="font-size: 3.5rem; margin-bottom: 15px;">✨</div>
-            <h2 id="modal-title" style="margin: 0; color: var(--pink);">Scellé !</h2>
-            <p id="modal-text" style="opacity: 0.7; font-size: 0.9rem; margin-top: 10px;"></p>
+            <span style="position:absolute; top:20px; right:25px; cursor:pointer; font-size:1.5rem;" onclick="closeModal()">×</span>
+            <div style="font-size: 3.5rem; margin-bottom: 15px;">❤️</div>
+            <h2 id="modal-title" style="color: var(--pink); margin:0;">Scellé !</h2>
+            <p id="modal-text" style="opacity: 0.7; font-size: 0.9rem; margin-top: 15px; line-height: 1.6;"></p>
         </div>
     </div>
 
@@ -142,49 +117,54 @@
         <header>
             <div id="real-clock" class="clock">00:00</div>
             <div class="xp-container"><div id="xp-fill"></div></div>
-            <div id="timer" style="font-size: 0.7rem; color: var(--pink); font-weight: 600;">CHARGEMENT...</div>
+            <div id="timer" style="font-size: 0.6rem; letter-spacing: 2px; opacity: 0.6;">CHARGEMENT...</div>
         </header>
 
         <div class="container">
             <div class="top-section">
                 <div class="card">
                     <h3 style="margin:0;">Jardin de Cristal 💎</h3>
-                    <span class="desc-text">Un espace de dessin partagé. Chaque pixel allumé reste gravé pour l'autre, créant une œuvre d'art éphémère à deux.</span>
+                    <span class="desc-text">Dessinez ensemble. Chaque carré allumé est une trace de votre passage en direct sur l'écran de l'autre.</span>
                     <div id="garden-grid"></div>
                 </div>
 
-                <div class="card" style="display: flex; flex-direction: column; gap: 10px;">
-                    <div>
-                        <h3 style="margin:0;">Météo Compacte ☁️</h3>
-                        <span class="desc-text">Indiquez votre état d'esprit pour que l'autre sache comment vous aborder aujourd'hui.</span>
-                        
-                        <div class="mood-compact">
-                            <span style="font-size: 0.6rem; font-weight: 800;">RAYAN</span>
-                            <div class="mood-btns" id="moodR">
-                                <span class="mood-btn" onclick="setM('rayan','😊')">😊</span>
-                                <span class="mood-btn" onclick="setM('rayan','🔥')">🔥</span>
-                                <span class="mood-btn" onclick="setM('rayan','🥺')">🥺</span>
-                                <span class="mood-btn" onclick="setM('rayan','😴')">😴</span>
+                <div class="card">
+                    <h3 style="margin:0;">Centre de Défis ⚡</h3>
+                    <span class="desc-text">Humeurs, Chifoumi et Morpion synchronisés pour s'amuser en un clin d'œil.</span>
+                    
+                    <div class="game-box">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <span class="player-badge" style="color:var(--accent)">RAYAN</span>
+                            <div id="moodR">
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('rayan','😊')">😊</span>
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('rayan','🔥')">🔥</span>
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('rayan','🥺')">🥺</span>
                             </div>
                         </div>
-                        <div class="mood-compact">
-                            <span style="font-size: 0.6rem; font-weight: 800;">ISRAH</span>
-                            <div class="mood-btns" id="moodI">
-                                <span class="mood-btn" onclick="setM('israh','😊')">😊</span>
-                                <span class="mood-btn" onclick="setM('israh','🔥')">🔥</span>
-                                <span class="mood-btn" onclick="setM('israh','🥺')">🥺</span>
-                                <span class="mood-btn" onclick="setM('israh','😴')">😴</span>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span class="player-badge" style="color:var(--pink)">ISRAH</span>
+                            <div id="moodI">
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('israh','😊')">😊</span>
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('israh','🔥')">🔥</span>
+                                <span class="mood-btn" style="cursor:pointer; opacity:0.3; margin:0 3px;" onclick="setM('israh','🥺')">🥺</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="word-game">
-                        <h3 style="margin:0; font-size: 0.9rem;">La Pensée Flash ⚡</h3>
-                        <span class="desc-text">Un seul mot pour résumer votre journée. Essayez de deviner celui de l'autre !</span>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                            <input type="text" id="flashR" class="word-input" placeholder="Rayan..." oninput="saveFlash()">
-                            <input type="text" id="flashI" class="word-input" placeholder="Israh..." oninput="saveFlash()">
+                    <div class="game-box" style="text-align:center;">
+                        <span style="font-size:0.7rem; font-weight:800; opacity:0.5;">CHIFOUMI DIRECT</span>
+                        <div style="display:flex; justify-content:center; gap:15px; margin:10px 0;">
+                            <button onclick="playRPS('🪨')" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">🪨</button>
+                            <button onclick="playRPS('📜')" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">📜</button>
+                            <button onclick="playRPS('✂️')" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">✂️</button>
                         </div>
+                        <div id="rps-res" style="font-size:0.8rem; font-weight:800; color:var(--pink);">Attente des deux...</div>
+                    </div>
+
+                    <div class="game-box" style="text-align:center;">
+                        <span style="font-size:0.7rem; font-weight:800; opacity:0.5;">MORPION (R:X | I:O)</span>
+                        <div class="ttt-grid" id="ttt-grid"></div>
+                        <button onclick="resetGames()" style="background:none; border:none; color:gray; font-size:0.6rem; cursor:pointer;">RÉINITIALISER LES JEUX</button>
                     </div>
                 </div>
             </div>
@@ -195,9 +175,17 @@
                         <h3 style="margin:0;">Journal de Rayan</h3>
                         <div id="dotR" class="dot"></div>
                     </div>
-                    <span class="desc-text">Votre sanctuaire privé. Écrivez vos ressentis profonds pour briser les silences et renforcer votre lien.</span>
+                    <span class="desc-text">Tes secrets et tes fiertés. Dès que tu valides, ton point passe au vert pour Israh.</span>
+                    <div class="q-mini">
+                        <button style="float:right; background:none; border:none; cursor:pointer;" onclick="newQ()">🎲</button>
+                        <p id="displayQ" style="margin:0; font-size:0.8rem; font-weight:800; color:var(--pink);">...</p>
+                        <textarea id="rQ" placeholder="Réponse à la question..." style="height:45px; margin-top:10px;"></textarea>
+                    </div>
                     <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                    <textarea id="r2" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="r2" placeholder="J’ai été fier de…"></textarea>
+                    <textarea id="r3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="r4" placeholder="Quelque chose m'a blessé…"></textarea>
+                    <textarea id="r5" placeholder="J’ai manqué de…"></textarea>
                     <button class="finish-btn" onclick="complete('Rayan')">Sceller pour Israh 🖤</button>
                 </div>
 
@@ -206,104 +194,116 @@
                         <h3 style="margin:0;">Journal d'Israh</h3>
                         <div id="dotI" class="dot"></div>
                     </div>
-                    <span class="desc-text">Votre sanctuaire privé. Écrivez vos ressentis profonds pour briser les silences et renforcer votre lien.</span>
+                    <span class="desc-text">Tes secrets et tes fiertés. Dès que tu valides, ton point passe au vert pour Rayan.</span>
+                    <div class="q-mini">
+                        <p id="displayQI" style="margin:0; font-size:0.8rem; font-weight:800; color:var(--pink);">...</p>
+                        <textarea id="iQ" placeholder="Réponse à la question..." style="height:45px; margin-top:10px;"></textarea>
+                    </div>
                     <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                    <textarea id="i2" placeholder="J’aurais aimé te dire…"></textarea>
-                    <button class="finish-btn" style="background: var(--pink)" onclick="complete('Israh')">Sceller pour Rayan 🖤</button>
+                    <textarea id="i2" placeholder="J’ai été fière de…"></textarea>
+                    <textarea id="i3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="i4" placeholder="Quelque chose m'a blessée…"></textarea>
+                    <textarea id="i5" placeholder="J’ai manqué de…"></textarea>
+                    <button class="finish-btn" style="background:var(--pink)" onclick="complete('Israh')">Sceller pour Rayan 🖤</button>
                 </div>
             </div>
         </div>
     </div>
 
 <script>
-    // Config Jardin
-    for(let i=0; i<144; i++) {
-        const p = document.createElement('div');
-        p.className = 'pixel';
-        p.onclick = () => database.ref('harmonie_final/garden/'+i).set('var(--pink)');
-        document.getElementById('garden-grid').appendChild(p);
+    const questions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi pour demain ?", "Ton humeur en un mot ?", "De quoi es-tu fier(e) ?"];
+    let clicks = 0;
+    const myName = prompt("Es-tu Rayan ou Israh ?") || "Rayan";
+
+    function heartClick() {
+        clicks++;
+        const heart = document.getElementById('entry-heart');
+        const msg = document.getElementById('click-msg');
+        heart.style.transform = `scale(${1 + clicks*0.1})`;
+        if(clicks < 5) msg.innerText = `SYNCHRONISATION : ${clicks*20}%`;
+        else { document.getElementById('intro-screen').classList.add('hidden'); document.getElementById('main-app').style.display='block'; }
     }
 
-    function enterApp() {
-        document.getElementById('intro-screen').classList.add('hidden');
-        document.getElementById('main-app').style.display = 'block';
+    // Garden & TTT
+    const garden = document.getElementById('garden-grid');
+    for(let i=0; i<144; i++) {
+        const p = document.createElement('div'); p.className = 'pixel';
+        p.onclick = () => database.ref('harmonie_final/garden/'+i).set(myName === 'Rayan' ? 'var(--accent)' : 'var(--pink)');
+        garden.appendChild(p);
+    }
+    const tttGrid = document.getElementById('ttt-grid');
+    for(let i=0; i<9; i++) {
+        const c = document.createElement('div'); c.className = 'ttt-cell';
+        c.onclick = () => database.ref('harmonie_final/ttt/'+i).set(myName === 'Rayan' ? 'X' : 'O');
+        tttGrid.appendChild(c);
     }
 
     database.ref('harmonie_final').on('value', snap => {
         const d = snap.val() || {};
-        
-        // Sync Jardin
+        // Garden Sync
         document.querySelectorAll('.pixel').forEach((p, i) => {
-            p.style.background = (d.garden && d.garden[i]) ? d.garden[i] : 'rgba(255,255,255,0.05)';
+            p.style.background = d.garden?.[i] || 'rgba(255,255,255,0.05)';
+            if(d.garden?.[i]) p.style.boxShadow = `0 0 10px ${d.garden[i]}`;
         });
-
-        // Sync Moods
-        ['rayan', 'israh'].forEach(u => {
+        // Moods Sync
+        ['rayan','israh'].forEach(u => {
             const char = u === 'rayan' ? 'R' : 'I';
-            document.querySelectorAll(`#mood${char} .mood-btn`).forEach(b => {
-                b.classList.toggle('active', b.innerText === (d.moods && d.moods[u]));
-            });
+            document.querySelectorAll(`#mood${char} .mood-btn`).forEach(b => b.style.opacity = (b.innerText === d.moods?.[u] ? "1" : "0.3"));
         });
-
-        // Sync Flash Word
-        if(document.activeElement.id !== 'flashR') document.getElementById('flashR').value = d.flash?.rayan || "";
-        if(document.activeElement.id !== 'flashI') document.getElementById('flashI').value = d.flash?.israh || "";
-
-        // Status
+        // Games Sync
+        const rps = d.rps || {};
+        const rpsText = (rps.rayan && rps.israh) ? `R: ${rps.rayan} VS I: ${rps.israh}` : (rps.rayan || rps.israh ? "Un joueur a choisi..." : "Faites votre choix");
+        document.getElementById('rps-res').innerText = rpsText;
+        document.querySelectorAll('.ttt-cell').forEach((c, i) => {
+            const v = d.ttt?.[i] || ""; c.innerText = v;
+            c.style.color = v === 'X' ? 'var(--accent)' : 'var(--pink)';
+        });
+        // Journals & XP
+        document.getElementById('displayQ').innerText = document.getElementById('displayQI').innerText = d.question || "Cliquez sur le dé...";
         document.getElementById('dotR').classList.toggle('active', d.finished?.Rayan);
         document.getElementById('dotI').classList.toggle('active', d.finished?.Israh);
-        
-        // Sync Text
-        if(document.activeElement.id !== 'r1') document.getElementById('r1').value = d.rayan_text?.[0] || "";
-        if(document.activeElement.id !== 'r2') document.getElementById('r2').value = d.rayan_text?.[1] || "";
-        if(document.activeElement.id !== 'i1') document.getElementById('i1').value = d.israh_text?.[0] || "";
-        if(document.activeElement.id !== 'i2') document.getElementById('i2').value = d.israh_text?.[1] || "";
+
+        for(let i=1; i<=5; i++) {
+            if(document.activeElement.id !== 'r'+i) document.getElementById('r'+i).value = d.rayan_text?.[i-1] || "";
+            if(document.activeElement.id !== 'i'+i) document.getElementById('i'+i).value = d.israh_text?.[i-1] || "";
+        }
+        if(document.activeElement.id !== 'rQ') document.getElementById('rQ').value = d.rayan_text?.[5] || "";
+        if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = d.israh_text?.[5] || "";
         
         updateXP();
     });
 
     function setM(u, e) { database.ref('harmonie_final/moods/'+u).set(e); }
-    function saveFlash() { database.ref('harmonie_final/flash').update({ rayan: document.getElementById('flashR').value, israh: document.getElementById('flashI').value }); }
+    function newQ() { database.ref('harmonie_final/question').set(questions[Math.floor(Math.random()*questions.length)]); }
+    function playRPS(m) { database.ref(`harmonie_final/rps/${myName.toLowerCase()}`).set(m); }
+    function resetGames() { database.ref('harmonie_final/ttt').remove(); database.ref('harmonie_final/rps').remove(); }
 
     function save() {
-        database.ref('harmonie_final').update({
-            rayan_text: [document.getElementById('r1').value, document.getElementById('r2').value],
-            israh_text: [document.getElementById('i1').value, document.getElementById('i2').value]
-        });
+        const r = [1,2,3,4,5].map(n => document.getElementById('r'+n).value); r.push(document.getElementById('rQ').value);
+        const i = [1,2,3,4,5].map(n => document.getElementById('i'+n).value); i.push(document.getElementById('iQ').value);
+        database.ref('harmonie_final').update({ rayan_text: r, israh_text: i });
     }
 
-    function complete(user) {
-        database.ref('harmonie_final/finished/'+user).set(true);
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        
-        const title = document.getElementById('modal-title');
-        const text = document.getElementById('modal-text');
-        
-        if(user === 'Rayan') {
-            title.innerText = "Pour Israh ❤️";
-            text.innerText = "Rayan, ton cœur a été envoyé dans les étoiles. Israh peut désormais le ressentir.";
-        } else {
-            title.innerText = "Pour Rayan ❤️";
-            text.innerText = "Israh, ton cœur a été envoyé dans les étoiles. Rayan peut désormais le ressentir.";
-        }
+    function complete(u) {
+        database.ref('harmonie_final/finished/'+u).set(true);
+        confetti({ particleCount: 150, spread: 70 });
+        document.getElementById('modal-title').innerText = `Pour ${u === 'Rayan' ? 'Israh' : 'Rayan'} ❤️`;
+        document.getElementById('modal-text').innerText = `${u}, ton journal est envoyé. ${u === 'Rayan' ? 'Israh' : 'Rayan'} peut maintenant voir que tu as terminé !`;
         document.getElementById('modal-overlay').style.display = 'flex';
     }
 
     function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-
     function updateXP() {
-        let filled = 0;
-        document.querySelectorAll('textarea, .word-input').forEach(f => { if(f.value.length > 2) filled++; });
-        document.getElementById('xp-fill').style.width = (filled / 6) * 100 + "%";
+        let count = 0; document.querySelectorAll('textarea').forEach(t => { if(t.value.length > 3) count++; });
+        document.getElementById('xp-fill').style.width = (count / 12) * 100 + "%";
     }
 
     document.querySelectorAll('textarea').forEach(t => t.addEventListener('input', save));
-
     setInterval(() => {
         const now = new Date();
-        document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         const diff = new Date().setHours(24,0,0,0) - now;
-        document.getElementById('timer').innerText = `L'HARMONIE VEILLE ENCORE ${Math.floor(diff/3600000)}H ${Math.floor((diff%3600000)/60000)}M`;
+        document.getElementById('timer').innerText = `L'HARMONIE VEILLE : ${Math.floor(diff/3600000)}H ${Math.floor((diff%3600000)/60000)}M`;
     }, 1000);
 </script>
 </body>
