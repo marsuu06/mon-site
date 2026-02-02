@@ -85,3 +85,108 @@
       padding: 16px;
       border-radius: 14px;
       flex: 1;
+      min-width: 250px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 50px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      resize: none;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 14px;
+    }
+
+    #timer {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #fbb1c1;
+    }
+
+    .done-icon {
+      font-size: 24px;
+      color: #4caf50;
+      display: none;
+      margin-left: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌙 Rituel 22h</h1>
+  <p class="intro">
+    Prenez 10 minutes pour poser votre journée.
+    Tout disparaît automatiquement à minuit.
+  </p>
+
+  <button class="button validate-btn" onclick="validateRules()">
+    ✅ J’accepte les règles
+  </button>
+
+  <div id="ritual" class="hidden">
+    <div id="timer"></div>
+  </div>
+
+  <script>
+    const questions = [
+      "Le moment le plus drôle de ta journée ? 😂",
+      "Si ta journée était un film, son titre ? 🎬",
+      "Résume ta journée en 3 mots absurdes 😜",
+      "Un truc que tu as aimé chez l’autre aujourd'hui 💖"
+    ];
+
+    function newQuestion() {
+      const q = questions[Math.floor(Math.random() * questions.length)];
+      document.getElementById("displayRayanQuestion").innerText = q;
+      document.getElementById("displayIsrahQuestion").innerText = q;
+    }
+
+    function validateRules() {
+      document.querySelector(".validate-btn").style.display = "none";
+      document.getElementById("ritual").classList.remove("hidden");
+      newQuestion();
+      loadData();
+    }
+
+    function saveData() {
+      const data = {
+        rayan: document.getElementById("rayanQuestion")?.value || "",
+        israh: document.getElementById("israhQuestion")?.value || ""
+      };
+      localStorage.setItem("rituel22h", JSON.stringify(data));
+    }
+
+    function loadData() {
+      const data = JSON.parse(localStorage.getItem("rituel22h"));
+      if (!data) return;
+    }
+
+    setInterval(() => {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(24,0,0,0);
+
+      const diff = midnight - now;
+      if (diff <= 0) {
+        localStorage.clear();
+        location.reload();
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
