@@ -10,112 +10,171 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  // Configuration Firebase
-  const firebaseConfig = {
-    apiKey: "TON_API_KEY",
-    authDomain: "mon-projet062.firebaseapp.com",
-    databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "mon-projet062",
-    storageBucket: "mon-projet062.appspot.com",
-    messagingSenderId: "TON_SENDER_ID",
-    appId: "TON_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
+  authDomain: "mon-projet062.firebaseapp.com",
+  databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mon-projet062",
+  storageBucket: "mon-projet062.appspot.com",
+  messagingSenderId: "1054174163421",
+  appId: "1:1054174163421:web:50817b3c930a5eb55ac634",
+  measurementId: "G-8L7E9C9ZY8"
+};
 
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 </script>
 
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin:0; padding:20px; background: linear-gradient(160deg,#1b0f2e,#3a0d46); color: #fff; }
+/* 🌙 Style global */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(160deg, #1b0f2e, #3a0d46);
+  color: #fff;
+  transition: background 0.5s;
+}
 h1,h2 { text-align:center; margin-bottom:10px; }
-p,li { line-height:1.5; }
-p.intro { font-size:16px; text-align:center; margin-bottom:20px; opacity:0.9; }
-ul.rules { list-style: none; padding-left:0; margin-bottom:20px; }
-ul.rules li { background: rgba(255,255,255,0.05); padding:10px 14px; margin-bottom:10px; border-radius:12px; border-left:4px solid #9b5de5; font-size:15px; }
-.button { padding:10px; border:none; border-radius:10px; font-weight:bold; font-size:14px; cursor:pointer; }
-.validate-btn { background:#9b5de5; color:white; width:100%; margin-bottom:20px; }
+p,intro { opacity:0.9; }
+
+/* Boutons */
+.button {
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  transition: all 0.3s ease;
+}
+.validate-btn { background: #9b5de5; color:white; width:100%; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+.validate-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4);}
 .mini-btn { background:#f15bb5; color:white; }
+.mini-btn:hover { transform: scale(1.05); }
+
+/* Containers & cartes */
 .container { display:flex; flex-direction:column; gap:20px; margin-top:20px; }
-@media(min-width:600px){ .container { flex-direction:row; justify-content:space-between; } }
-.card { background: rgba(255,255,255,0.05); padding:16px; border-radius:14px; flex:1; min-width:250px; backdrop-filter: blur(8px); display:flex; flex-direction:column; gap:12px; }
-h2 { margin-bottom:10px; }
-textarea { width:100%; min-height:50px; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.3); resize:none; background: rgba(255,255,255,0.05); color:white; font-size:14px; }
-#timer { text-align:center; margin-bottom:15px; font-weight:bold; font-size:16px; color:#fbb1c1; }
+@media(min-width:700px){ .container { flex-direction:row; justify-content:space-between; } }
+.card {
+  background: rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:16px;
+  flex:1;
+  min-width:280px;
+  backdrop-filter: blur(10px);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+
+/* Textarea et question */
+textarea { 
+  width:100%; min-height:50px; padding:12px; border-radius:12px; border:none; background: rgba(255,255,255,0.1); color:white; font-size:14px;
+  transition: background 0.3s, transform 0.2s;
+}
+textarea:focus { background: rgba(255,255,255,0.2); transform: scale(1.02); outline:none; }
+
+/* Question du jour */
+.display-question {
+  background: rgba(255,255,255,0.15); padding:10px 14px; border-radius:10px; font-style:italic; transition: background 0.3s;
+}
+.display-question:hover { background: rgba(255,255,255,0.25); }
+
+/* Timer */
+#timer {
+  text-align:center;
+  margin-bottom:20px;
+  font-weight:bold;
+  font-size:18px;
+  color:#fbb1c1;
+}
+
+/* Done icon */
 .done-icon { font-size:24px; color:#4caf50; display:none; margin-left:10px; vertical-align:middle; }
-.answer-section { display:flex; flex-direction:column; gap:6px; }
-.flex-row { display:flex; gap:6px; align-items:flex-start; }
-.flex-row textarea { flex:1; min-height:40px; }
-.section-title { margin-bottom:6px; font-weight:bold; }
-.hidden { display:none; }
+
+/* Notifications */
+.notification {
+  position: fixed;
+  top:20px;
+  left:50%;
+  transform: translateX(-50%);
+  background: #4caf50;
+  color:white;
+  padding:12px 24px;
+  border-radius:14px;
+  font-weight:bold;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+  opacity:0;
+  animation: fadein 0.5s forwards, fadeout 0.5s 2.5s forwards;
+  z-index:9999;
+}
+@keyframes fadein { from {opacity:0;} to {opacity:1;} }
+@keyframes fadeout { from {opacity:1;} to {opacity:0;} }
 </style>
 </head>
 <body>
-<div id="page">
+
 <h1>🌙 Rituel 22h</h1>
 <p class="intro">Prenez 10 minutes pour poser votre journée et partager vos émotions. Tout disparaît automatiquement à minuit.</p>
-<h2>Règles du jeu</h2>
-<ul class="rules">
-<li>Chacun écrit honnêtement ses réponses.</li>
-<li>Pas de jugement, pas de correction.</li>
-<li>Mini-jeux et questions aléatoires pour rigoler ou se rapprocher.</li>
-<li>Tout disparaît automatiquement à minuit.</li>
-</ul>
+
 <button class="button validate-btn" onclick="validateRules()">✅ J’accepte les règles</button>
 
 <div id="ritual" class="hidden">
 <div id="timer"></div>
 <div class="container">
-<!-- Rayan -->
-<div class="card">
-<h2>Rayan <span id="doneRayan" class="done-icon">✅</span></h2>
-<div class="answer-section">
-<p class="section-title">Question du jour</p>
-<div id="displayRayanQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
-<div class="flex-row">
-<textarea id="rayanQuestion" placeholder="Répond ici…"></textarea>
-<button class="button mini-btn" style="padding:6px; font-size:12px; height:36px;" onclick="newQuestion()">🎲</button>
-</div>
-</div>
-<div class="answer-section">
-<p class="section-title">Journal de la journée</p>
-<textarea id="rayan1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-<textarea id="rayan2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-<textarea id="rayan3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-<textarea id="rayan4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-<textarea id="rayan5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-<button class="button mini-btn" onclick="done('Rayan')">🖤 Terminé</button>
-</div>
-</div>
+  <!-- Rayan -->
+  <div class="card">
+    <h2>Rayan <span id="doneRayan" class="done-icon">✅</span></h2>
+    <div class="answer-section">
+      <p>Question du jour</p>
+      <div id="displayRayanQuestion" class="display-question">...</div>
+      <div style="display:flex; gap:6px;">
+        <textarea id="rayanQuestion" placeholder="Répond ici…"></textarea>
+        <button class="button mini-btn" onclick="newQuestion()">🎲</button>
+      </div>
+    </div>
+    <div class="answer-section">
+      <p>Journal de la journée</p>
+      <textarea id="rayan1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+      <textarea id="rayan2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
+      <textarea id="rayan3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
+      <textarea id="rayan4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
+      <textarea id="rayan5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
+      <button class="button mini-btn" onclick="done('Rayan')">🖤 Terminé</button>
+    </div>
+  </div>
 
-<!-- Israh -->
-<div class="card">
-<h2>Israh <span id="doneIsrah" class="done-icon">✅</span></h2>
-<div class="answer-section">
-<p class="section-title">Question du jour</p>
-<div id="displayIsrahQuestion" style="background: rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px;">...</div>
-<div class="flex-row">
-<textarea id="israhQuestion" placeholder="Répond ici…"></textarea>
-<button class="button mini-btn" style="padding:6px; font-size:12px; height:36px;" onclick="newQuestion()">🎲</button>
-</div>
-</div>
-<div class="answer-section">
-<p class="section-title">Journal de la journée</p>
-<textarea id="israh1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-<textarea id="israh2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-<textarea id="israh3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-<textarea id="israh4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-<textarea id="israh5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-<button class="button mini-btn" onclick="done('Israh')">🖤 Terminé</button>
-</div>
-</div>
-</div>
-
-<p id="message"></p>
-<p class="small">Toutes les réponses disparaîtront automatiquement à minuit 🌙</p>
+  <!-- Israh -->
+  <div class="card">
+    <h2>Israh <span id="doneIsrah" class="done-icon">✅</span></h2>
+    <div class="answer-section">
+      <p>Question du jour</p>
+      <div id="displayIsrahQuestion" class="display-question">...</div>
+      <div style="display:flex; gap:6px;">
+        <textarea id="israhQuestion" placeholder="Répond ici…"></textarea>
+        <button class="button mini-btn" onclick="newQuestion()">🎲</button>
+      </div>
+    </div>
+    <div class="answer-section">
+      <p>Journal de la journée</p>
+      <textarea id="israh1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+      <textarea id="israh2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
+      <textarea id="israh3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
+      <textarea id="israh4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
+      <textarea id="israh5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
+      <button class="button mini-btn" onclick="done('Israh')">🖤 Terminé</button>
+    </div>
+  </div>
 </div>
 </div>
 
 <script>
+// 🔹 Questions
 const questions = [
 "Le moment le plus drôle de ta journée ? 😂",
 "Si ta journée était un film, son titre ? 🎬",
@@ -135,7 +194,7 @@ document.getElementById("displayRayanQuestion").innerText = q;
 document.getElementById("displayIsrahQuestion").innerText = q;
 }
 
-// ✅ Sauvegarde dans Firebase
+// 🔹 Firebase
 function saveDataFirebase() {
 const data = {
 rayan: [
@@ -160,7 +219,6 @@ document.getElementById("israhQuestion").value
 database.ref('rituel22h').set(data);
 }
 
-// ✅ Charger depuis Firebase
 function loadDataFirebase() {
 database.ref('rituel22h').once('value').then(snapshot => {
 const data = snapshot.val();
@@ -178,7 +236,7 @@ document.getElementById("israhQuestion").value = data.israh[6] || "";
 });
 }
 
-// ✅ Marquer terminé
+// 🔹 Terminé
 function done(prenom){
 if(prenom==="Rayan") {
 document.getElementById("doneRayan").style.display="inline";
@@ -190,37 +248,31 @@ showNotification("Israh a terminé ✅");
 saveDataFirebase();
 }
 
-// Notification
+// 🔹 Notification
 function showNotification(msg){
 let notif = document.createElement("div");
+notif.classList.add("notification");
 notif.innerText = msg;
-notif.style.position = "fixed";
-notif.style.top = "20px";
-notif.style.left = "50%";
-notif.style.transform = "translateX(-50%)";
-notif.style.background = "#4caf50";
-notif.style.color = "#fff";
-notif.style.padding = "10px 20px";
-notif.style.borderRadius = "12px";
-notif.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-notif.style.fontWeight = "bold";
-notif.style.zIndex = 9999;
 document.body.appendChild(notif);
-setTimeout(()=>{ notif.remove(); }, 2500);
+setTimeout(()=> notif.remove(),3000);
 }
 
-// Sauvegarde à chaque frappe
+// 🔹 Sauvegarde à chaque frappe
 document.querySelectorAll("textarea").forEach(el=>{
 el.addEventListener("input", saveDataFirebase);
 });
 
-// Timer
+// 🔹 Timer et suppression à minuit
 function updateTimer(){
 const now = new Date();
 const midnight = new Date();
 midnight.setHours(24,0,0,0);
 const diff = midnight - now;
-if(diff<=0){ database.ref('rituel22h').remove(); location.reload(); return; }
+if(diff<=0){ 
+  database.ref('rituel22h').remove();
+  location.reload();
+  return;
+}
 const h = Math.floor(diff/1000/60/60);
 const m = Math.floor((diff/1000/60)%60);
 const s = Math.floor((diff/1000)%60);
@@ -228,7 +280,7 @@ document.getElementById("timer").innerText = `Temps restant pour répondre : ${h
 }
 setInterval(updateTimer,1000);
 
-// Notifications 21h50 et 22h00
+// 🔹 Notifications 21h50 et 22h00
 function checkNotifications(){
 const now = new Date();
 if(now.getHours()===21 && now.getMinutes()===50){ showNotification("🌙 Le rituel 22h commence dans 10 minutes !"); }
@@ -236,14 +288,13 @@ if(now.getHours()===22 && now.getMinutes()===0){ showNotification("🌙 Le ritue
 }
 setInterval(checkNotifications,60000);
 
-// Validation règles
+// 🔹 Validation règles
 function validateRules(){
 document.querySelector(".validate-btn").style.display="none";
 document.getElementById("ritual").classList.remove("hidden");
 newQuestion();
 loadDataFirebase();
 }
-
 </script>
 </body>
 </html>
