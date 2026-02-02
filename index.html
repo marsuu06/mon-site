@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
-        // Tes configurations réelles conservées
         const firebaseConfig = {
             apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
             authDomain: "mon-projet062.firebaseapp.com",
@@ -26,265 +25,144 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
-
-        :root {
-            --accent: #9b5de5;
-            --purple-dark: #1a0b2e;
-            --bg: #090511;
-            --glass: rgba(255, 255, 255, 0.05);
-            --pink: #f178ff;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0; background: var(--bg); color: #fff;
-            background: radial-gradient(circle at top, var(--purple-dark), var(--bg));
-            min-height: 100vh; overflow-x: hidden;
-        }
-
-        /* --- Intro --- */
-        #intro-screen {
-            position: fixed; inset: 0; z-index: 1000;
-            background: var(--bg); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-            padding: 20px; transition: 0.8s ease;
-        }
+        :root { --accent: #9b5de5; --bg: #090511; --glass: rgba(255, 255, 255, 0.05); --pink: #f178ff; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: #fff; background: radial-gradient(circle at top, #1a0b2e, var(--bg)); min-height: 100vh; overflow-x: hidden; }
+        
+        #intro-screen { position: fixed; inset: 0; z-index: 1000; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; transition: 0.8s; }
         #intro-screen.hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
-
-        /* --- Game Zone --- */
-        #game-zone { margin-top: 20px; width: 100%; max-width: 300px; }
-        .pulse-btn {
-            width: 100px; height: 100px; background: var(--accent);
-            border-radius: 50%; margin: 30px auto; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; border: none; outline: none;
-            box-shadow: 0 0 20px rgba(155, 93, 229, 0.4);
-            animation: pulse-anim 1.5s infinite; transition: 0.2s;
-        }
-        @keyframes pulse-anim {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(155, 93, 229, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0); }
-        }
-        .score-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 20px; overflow: hidden; }
-        #score-fill { width: 0%; height: 100%; background: #00ff88; transition: 0.3s; }
-
-        /* --- Main App --- */
+        
+        .pulse-btn { width: 100px; height: 100px; background: var(--accent); border-radius: 50%; margin: 30px auto; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: none; box-shadow: 0 0 20px rgba(155, 93, 229, 0.4); animation: pulse-anim 1.5s infinite; }
+        @keyframes pulse-anim { 0% { transform: scale(0.95); } 70% { transform: scale(1.05); } 100% { transform: scale(0.95); } }
+        
         #main-app { display: none; opacity: 0; transition: 1s; padding: 15px; max-width: 900px; margin: auto; }
         #main-app.visible { display: block; opacity: 1; }
-
-        .section-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin: 30px 0 15px; text-align: center; font-weight: 700; opacity: 0.8; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-
-        .card {
-            background: var(--glass); border-radius: 30px; padding: 25px;
-            border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);
-        }
-
-        /* --- Mood & Jardin --- */
+        
+        .card { background: var(--glass); border-radius: 30px; padding: 25px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px); margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
         .mood-row { display: flex; justify-content: space-around; margin: 15px 0; }
-        .mood-emoji { font-size: 1.6rem; cursor: pointer; opacity: 0.2; filter: grayscale(1); transition: 0.3s; }
-        .mood-emoji.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
-
+        .mood-emoji { font-size: 1.6rem; cursor: pointer; opacity: 0.3; transition: 0.3s; }
+        .mood-emoji.active { opacity: 1; transform: scale(1.2); }
+        
         #pixel-canvas { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; max-width: 280px; margin: 0 auto; }
         .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 4px; cursor: pointer; }
-
-        /* --- Code --- */
-        .code-group { display: flex; justify-content: center; gap: 8px; }
-        .code-input { width: 45px; height: 55px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass); border-radius: 10px; text-align: center; color: #fff; font-size: 1.2rem; font-weight: 700; }
-
-        /* --- Journal --- */
-        h2 { font-size: 1.4rem; margin-top: 0; display: flex; align-items: center; justify-content: space-between; }
-        .dot { width: 12px; height: 12px; background: #333; border-radius: 50%; }
-        .dot.active { background: #00ff88; box-shadow: 0 0 15px #00ff88; }
-        textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; padding: 12px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .code-input { width: 45px; height: 55px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; text-align: center; color: #fff; font-size: 1.2rem; }
+        textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; padding: 12px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 8px; }
         .finish-btn { width: 100%; padding: 16px; border-radius: 18px; border: none; background: linear-gradient(45deg, var(--accent), var(--pink)); color: white; font-weight: 700; cursor: pointer; }
-
-        #secret-tap { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 0 15px var(--accent); z-index: 100; }
+        
+        #secret-tap { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; box-shadow: 0 0 15px var(--accent); z-index: 100; cursor: pointer; }
+        .dot { width: 12px; height: 12px; background: #333; border-radius: 50%; display: inline-block; margin-left: 10px; }
+        .dot.active { background: #00ff88; box-shadow: 0 0 15px #00ff88; }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">L'Harmonie</h1>
-        <p id="game-status">Synchronisez vos cœurs...</p>
-        <div id="game-zone">
-            <button class="pulse-btn" id="heart-btn" onclick="tapHeart()">❤️</button>
-            <div class="score-bar"><div id="score-fill"></div></div>
-            <button id="final-entry-btn" style="display:none; margin-top: 20px; padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer; font-weight: 700;" onclick="enterApp()">Entrer 🌙</button>
+        <h1 style="font-size: 2.5rem; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">L'Harmonie</h1>
+        <p>Synchronisez vos cœurs...</p>
+        <button class="pulse-btn" id="heart-btn" onclick="tapHeart()">❤️</button>
+        <div style="width: 200px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+            <div id="score-fill" style="width: 0%; height: 100%; background: #00ff88; transition: 0.3s;"></div>
         </div>
+        <button id="entry-btn" style="display:none; margin-top: 20px; padding: 12px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: 700;" onclick="enterApp()">Entrer 🌙</button>
     </div>
 
     <div id="main-app">
         <header style="text-align: center; margin-bottom: 20px;">
-            <div id="timer" style="font-size: 0.8rem; color: var(--accent);">Chargement...</div>
+            <div id="timer" style="font-size: 0.8rem; color: var(--accent);">--:--:--</div>
         </header>
 
-        <div class="section-title">Connexion & Jeux</div>
-        <div class="grid-container">
+        <div class="grid">
             <div class="card">
-                <h3 style="margin-top:0">Météo du Cœur</h3>
-                <span style="font-size: 0.7rem; opacity: 0.5;">RAYAN</span>
+                <h3>Météo du Cœur</h3>
                 <div class="mood-row" id="mood-rayan">
                     <span class="mood-emoji" onclick="setMood('rayan', '😊')">😊</span>
                     <span class="mood-emoji" onclick="setMood('rayan', '😴')">😴</span>
                     <span class="mood-emoji" onclick="setMood('rayan', '🔥')">🔥</span>
-                    <span class="mood-emoji" onclick="setMood('rayan', '🥺')">🥺</span>
                 </div>
-                <span style="font-size: 0.7rem; opacity: 0.5;">ISRAH</span>
                 <div class="mood-row" id="mood-israh">
                     <span class="mood-emoji" onclick="setMood('israh', '😊')">😊</span>
                     <span class="mood-emoji" onclick="setMood('israh', '😴')">😴</span>
                     <span class="mood-emoji" onclick="setMood('israh', '🔥')">🔥</span>
-                    <span class="mood-emoji" onclick="setMood('israh', '🥺')">🥺</span>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="margin-top:0">Code Coop</h3>
-                <p style="font-size: 0.75rem; opacity: 0.6;">Tapez le code secret ensemble</p>
-                <div class="code-group">
+                <h3>Code de l'Unité</h3>
+                <div style="display: flex; gap: 8px; justify-content: center;">
                     <input type="text" maxlength="1" id="c1" class="code-input">
                     <input type="text" maxlength="1" id="c2" class="code-input">
                     <input type="text" maxlength="1" id="c3" class="code-input">
                     <input type="text" maxlength="1" id="c4" class="code-input">
                 </div>
-                <p id="code-msg" style="text-align:center; color: var(--pink); font-weight:700; margin-top:15px"></p>
+                <p id="code-msg" style="text-align: center; color: var(--pink); margin-top: 10px; font-weight: bold;"></p>
             </div>
         </div>
 
-        <div class="section-title">Le Journal Partagé</div>
-        <div class="grid-container">
+        <div class="grid">
             <div class="card">
-                <h2>Rayan <div id="dotRayan" class="dot"></div></h2>
+                <h3>Rayan <div id="dotRayan" class="dot"></div></h3>
                 <textarea id="rQ" placeholder="Question de l'âme..."></textarea>
-                <textarea id="r1" placeholder="Aujourd'hui j'ai gardé pour moi..."></textarea>
-                <textarea id="r2" placeholder="Fier de..."></textarea>
-                <button class="finish-btn" onclick="complete('Rayan')">Terminer 🖤</button>
+                <textarea id="r1" placeholder="Journal..."></textarea>
+                <button class="finish-btn" onclick="complete('Rayan')">Sceller 🖤</button>
             </div>
             <div class="card">
-                <h2>Israh <div id="dotIsrah" class="dot"></div></h2>
+                <h3>Israh <div id="dotIsrah" class="dot"></div></h3>
                 <textarea id="iQ" placeholder="Question de l'âme..."></textarea>
-                <textarea id="i1" placeholder="Aujourd'hui j'ai gardé pour moi..."></textarea>
-                <textarea id="i2" placeholder="Fière de..."></textarea>
-                <button class="finish-btn" style="background: var(--pink)" onclick="complete('Israh')">Terminer 🖤</button>
+                <textarea id="i1" placeholder="Journal..."></textarea>
+                <button class="finish-btn" style="background: var(--pink)" onclick="complete('Israh')">Sceller 🖤</button>
             </div>
         </div>
 
-        <div class="section-title">Le Jardin des Pixels</div>
-        <div class="card" style="max-width: 400px; margin: 0 auto 50px auto; text-align: center;">
+        <div class="card" style="text-align: center;">
+            <h3>Le Jardin</h3>
             <div id="pixel-canvas"></div>
-            <button onclick="clearJardin()" style="background:none; border:none; color:gray; cursor:pointer; margin-top:10px; font-size:0.7rem;">Effacer le dessin</button>
+            <button onclick="database.ref('harmonie_final/pixels').remove()" style="background:none; border:none; color:gray; cursor:pointer; font-size:0.7rem; margin-top:10px;">Effacer</button>
         </div>
     </div>
 
-    <button id="secret-tap" onclick="sendLove()">💖</button>
+    <button id="secret-tap" onclick="database.ref('harmonie_final/love_tap').set(Date.now())">💖</button>
 
-<script>
-    let score = 0;
-    function tapHeart() {
-        score += 25;
-        document.getElementById('score-fill').style.width = score + "%";
-        if(score >= 100) {
-            document.getElementById('heart-btn').style.display = 'none';
-            document.getElementById('final-entry-btn').style.display = 'block';
-            document.getElementById('game-status').innerText = "Connexion établie.";
+    <script>
+        let score = 0;
+        function tapHeart() {
+            score += 25; document.getElementById('score-fill').style.width = score + "%";
+            if(score >= 100) { document.getElementById('heart-btn').style.display = 'none'; document.getElementById('entry-btn').style.display = 'block'; }
         }
-    }
+        function enterApp() { document.getElementById('intro-screen').classList.add('hidden'); document.getElementById('main-app').style.display = 'block'; setTimeout(() => document.getElementById('main-app').classList.add('visible'), 50); }
 
-    function enterApp() {
-        document.getElementById('intro-screen').classList.add('hidden');
-        document.getElementById('main-app').style.display = 'block';
-        setTimeout(() => document.getElementById('main-app').classList.add('visible'), 50);
-    }
+        const db = database.ref('harmonie_final');
+        function setMood(u, e) { db.child('moods').child(u).set(e); }
+        function complete(u) { db.child('finished').child(u).set(true); confetti({ particleCount: 100 }); }
 
-    // --- Firebase & Sync ---
-    const dbRef = database.ref('harmonie_final');
+        // Code
+        const ins = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3'), document.getElementById('c4')];
+        ins.forEach((input, i) => input.addEventListener('input', () => { db.child('code').child(i).set(input.value); if(input.value && i<3) ins[i+1].focus(); }));
 
-    function setMood(user, emoji) { dbRef.child('moods').child(user).set(emoji); }
-    function sendLove() { dbRef.child('love_tap').set(Date.now()); }
-    function clearJardin() { dbRef.child('pixels').remove(); }
-
-    // Enigme
-    const inputs = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3'), document.getElementById('c4')];
-    inputs.forEach((input, i) => {
-        input.addEventListener('input', () => {
-            dbRef.child('code').child(i).set(input.value);
-            if(input.value && i < 3) inputs[i+1].focus();
-        });
-    });
-
-    // Jardin
-    const canvas = document.getElementById('pixel-canvas');
-    for (let i = 0; i < 64; i++) {
-        const p = document.createElement('div');
-        p.className = 'pixel';
-        p.onclick = () => {
-            const color = p.style.background === 'rgb(155, 93, 229)' ? 'rgba(255,255,255,0.05)' : 'rgb(155, 93, 229)';
-            dbRef.child('pixels').child(i).set(color);
-        };
-        canvas.appendChild(p);
-    }
-
-    // Sync Temps Réel
-    dbRef.on('value', (snap) => {
-        const data = snap.val() || {};
-        
-        // Journal
-        if(document.activeElement.id !== 'rQ') document.getElementById('rQ').value = data.rayan_data ? data.rayan_data.q : "";
-        if(document.activeElement.id !== 'r1') document.getElementById('r1').value = data.rayan_data ? data.rayan_data.r1 : "";
-        if(document.activeElement.id !== 'r2') document.getElementById('r2').value = data.rayan_data ? data.rayan_data.r2 : "";
-        if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = data.israh_data ? data.israh_data.q : "";
-        if(document.activeElement.id !== 'i1') document.getElementById('i1').value = data.israh_data ? data.israh_data.r1 : "";
-        if(document.activeElement.id !== 'i2') document.getElementById('i2').value = data.israh_data ? data.israh_data.r2 : "";
-
-        // Status
-        document.getElementById('dotRayan').classList.toggle('active', data.finished?.Rayan);
-        document.getElementById('dotIsrah').classList.toggle('active', data.finished?.Israh);
-
-        // Moods
-        ['rayan', 'israh'].forEach(user => {
-            document.querySelectorAll(`#mood-${user} .mood-emoji`).forEach(el => {
-                el.classList.toggle('active', el.innerText === (data.moods ? data.moods[user] : ""));
-            });
-        });
-
-        // Code (0602 par exemple)
-        if(data.code) {
-            data.code.forEach((val, i) => { if(document.activeElement !== inputs[i]) inputs[i].value = val || ""; });
-            if(data.code.join('') === "0602") document.getElementById('code-msg').innerText = "❤️ Code Correct : Je t'aime ❤️";
+        // Jardin
+        const canvas = document.getElementById('pixel-canvas');
+        for (let i=0; i<64; i++) {
+            const p = document.createElement('div'); p.className = 'pixel';
+            p.onclick = () => { let c = p.style.background.includes('rgb(155, 93, 229)') ? 'rgba(255,255,255,0.05)' : 'rgb(155, 93, 229)'; db.child('pixels').child(i).set(c); };
+            canvas.appendChild(p);
         }
 
-        // Pixels
-        document.querySelectorAll('.pixel').forEach((p, i) => {
-            p.style.background = (data.pixels && data.pixels[i]) ? data.pixels[i] : 'rgba(255,255,255,0.05)';
+        db.on('value', snap => {
+            const d = snap.val() || {};
+            if(d.moods) { ['rayan', 'israh'].forEach(u => { document.querySelectorAll(`#mood-${u} .mood-emoji`).forEach(e => e.classList.toggle('active', e.innerText === d.moods[u])); }); }
+            if(d.code) { d.code.forEach((v, i) => { if(document.activeElement !== ins[i]) ins[i].value = v || ""; }); if(d.code.join('') === "0602") document.getElementById('code-msg').innerText = "❤️ Je t'aime ❤️"; }
+            if(d.pixels) { document.querySelectorAll('.pixel').forEach((p, i) => p.style.background = d.pixels[i] || 'rgba(255,255,255,0.05)'); }
+            if(d.love_tap) confetti({ particleCount: 40, colors: ['#9b5de5', '#f178ff'] });
+            document.getElementById('dotRayan').classList.toggle('active', d.finished?.Rayan);
+            document.getElementById('dotIsrah').classList.toggle('active', d.finished?.Israh);
         });
 
-        // Confetti Love Tap
-        if(data.love_tap) confetti({ particleCount: 30, spread: 60, origin: { y: 0.7 }, colors: ['#9b5de5', '#f178ff'] });
-    });
-
-    function save() {
-        dbRef.update({
-            rayan_data: { q: document.getElementById('rQ').value, r1: document.getElementById('r1').value, r2: document.getElementById('r2').value },
-            israh_data: { q: document.getElementById('iQ').value, r1: document.getElementById('i1').value, r2: document.getElementById('i2').value }
-        });
-    }
-
-    document.querySelectorAll('textarea').forEach(t => t.addEventListener('input', save));
-
-    function complete(user) {
-        dbRef.child('finished').child(user).set(true);
-        confetti({ particleCount: 150, spread: 70 });
-    }
-
-    setInterval(() => {
-        const now = new Date();
-        const diff = new Date().setHours(24,0,0,0) - now;
-        const h = Math.floor(diff/3600000);
-        const m = Math.floor((diff%3600000)/60000);
-        document.getElementById('timer').innerText = `🌙 Fermeture dans ${h}h ${m}m`;
-    }, 1000);
-</script>
+        setInterval(() => {
+            const diff = new Date().setHours(24,0,0,0) - new Date();
+            const h = Math.floor(diff/3600000); const m = Math.floor((diff%3600000)/60000);
+            document.getElementById('timer').innerText = `🌙 Fermeture dans ${h}h ${m}m`;
+        }, 1000);
+    </script>
 </body>
 </html>
