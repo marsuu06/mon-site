@@ -31,6 +31,7 @@
             --purple-dark: #1a0b2e;
             --bg: #090511;
             --glass: rgba(255, 255, 255, 0.05);
+            --pink: #f178ff;
         }
 
         body {
@@ -40,7 +41,7 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- Ecran d'accueil avec JEU --- */
+        /* --- Accueil --- */
         #intro-screen {
             position: fixed; inset: 0; z-index: 1000;
             background: var(--bg); display: flex; flex-direction: column;
@@ -50,220 +51,217 @@
         #intro-screen.hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
 
         .welcome-title {
-            font-size: 2.8rem; font-weight: 800; margin-bottom: 10px;
+            font-size: 3rem; font-weight: 800; margin-bottom: 10px;
             background: linear-gradient(to right, #fff, var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        #game-zone {
-            margin-top: 20px; width: 100%; max-width: 300px;
-        }
-
-        .pulse-btn {
-            width: 100px; height: 100px; background: var(--accent);
-            border-radius: 50%; margin: 30px auto; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; border: none; outline: none;
-            box-shadow: 0 0 20px rgba(155, 93, 229, 0.4);
-            animation: pulse-anim 1.5s infinite;
-            transition: 0.2s;
-        }
-        @keyframes pulse-anim {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(155, 93, 229, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0); }
-        }
-        .pulse-btn:active { transform: scale(0.9); }
-
-        .score-bar {
-            width: 100%; height: 6px; background: rgba(255,255,255,0.1);
-            border-radius: 10px; margin-top: 20px; overflow: hidden;
-        }
-        #score-fill { width: 0%; height: 100%; background: #00ff88; transition: 0.3s; }
-
-        /* Centralisation du bouton final */
-        #final-entry-btn {
-            display: none; margin: 20px auto 0 auto;
-            background: #fff; color: #000; border: none;
-            padding: 15px 35px; border-radius: 50px; font-weight: 700;
-            cursor: pointer; animation: fadeIn 0.5s;
-        }
-
-        /* --- Contenu Principal --- */
-        #main-app { display: none; opacity: 0; transition: 1s; }
+        /* --- Layout --- */
+        #main-app { display: none; opacity: 0; transition: 1s; padding: 20px; max-width: 1000px; margin: auto; }
         #main-app.visible { display: block; opacity: 1; }
 
-        header { padding: 20px; text-align: center; }
-        .xp-bar { width: 200px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 10px auto; overflow: hidden; }
-        #xp-fill { width: 0%; height: 100%; background: var(--accent); transition: 0.8s; }
+        .section-title { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin: 40px 0 20px; text-align: center; font-weight: 700; }
 
-        .main-container { padding: 15px; max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 
         .card {
-            background: var(--glass); border-radius: 30px; padding: 25px;
-            border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);
+            background: var(--glass); border-radius: 25px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        h2 { font-size: 1.5rem; margin-top: 0; display: flex; align-items: center; justify-content: space-between; }
-        .dot { width: 12px; height: 12px; background: #333; border-radius: 50%; }
-        .dot.active { background: #00ff88; box-shadow: 0 0 15px #00ff88; }
+        /* --- Mood Matcher --- */
+        .mood-row { display: flex; justify-content: space-around; margin-top: 10px; }
+        .mood-emoji { font-size: 1.8rem; cursor: pointer; transition: 0.3s; opacity: 0.3; filter: grayscale(1); }
+        .mood-emoji.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
 
-        .label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; margin: 15px 0 8px; display: block; }
-        
-        textarea {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px; color: #fff; padding: 15px; font-family: inherit;
-            resize: none; box-sizing: border-box; font-size: 1rem; margin-bottom: 10px;
-        }
-        textarea:focus { border-color: var(--accent); outline: none; background: rgba(0,0,0,0.4); }
+        /* --- Jardin (Pixel Art) --- */
+        #pixel-canvas { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; max-width: 280px; margin: 0 auto; }
+        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; }
 
-        .q-box { background: rgba(155, 93, 229, 0.15); padding: 18px; border-radius: 20px; margin-bottom: 20px; border: 1px solid rgba(155, 93, 229, 0.2); }
+        /* --- Enigme Coopération --- */
+        .code-group { display: flex; justify-content: center; gap: 10px; }
+        .code-input { width: 50px; height: 60px; background: rgba(0,0,0,0.3); border: 2px solid var(--glass); border-radius: 12px; text-align: center; color: #fff; font-size: 1.5rem; font-weight: 700; }
+        .code-input:focus { border-color: var(--accent); outline: none; }
 
-        .finish-btn {
-            width: 100%; padding: 18px; border-radius: 18px; border: none;
-            background: linear-gradient(45deg, var(--accent), #7b2cbf);
-            color: white; font-weight: 700; font-size: 1.1rem; cursor: pointer;
-        }
+        /* --- Journal & UI --- */
+        textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass); border-radius: 15px; color: #fff; padding: 12px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 8px; }
+        .finish-btn { width: 100%; padding: 15px; border-radius: 15px; border: none; background: linear-gradient(45deg, var(--accent), var(--pink)); color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .dot { width: 10px; height: 10px; background: #333; border-radius: 50%; display: inline-block; margin-left: 10px; }
+        .dot.active { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
 
-        #timer { font-size: 0.85rem; font-weight: 600; color: var(--accent); }
+        /* --- Secret Tap Button --- */
+        #secret-tap { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: none; box-shadow: 0 0 20px var(--accent); z-index: 100; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .welcome-title { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
         <h1 class="welcome-title">L'Harmonie</h1>
-        <p id="game-status" style="opacity: 0.7;">Synchronisez vos cœurs pour entrer...</p>
-        
-        <div id="game-zone">
-            <button class="pulse-btn" id="heart-btn" onclick="tapHeart()">❤️</button>
-            <div class="score-bar"><div id="score-fill"></div></div>
-            <button id="final-entry-btn" onclick="enterApp()">Valider et Entrer 🌙</button>
-        </div>
+        <p style="opacity: 0.6;">Appuyez pour synchroniser vos âmes...</p>
+        <button class="finish-btn" style="width: 200px;" onclick="enterApp()">Entrer 🌙</button>
     </div>
 
     <div id="main-app">
-        <header>
-            <div id="timer">--:--:--</div>
-            <div class="xp-bar"><div id="xp-fill"></div></div>
+        <header style="text-align: center; margin-bottom: 30px;">
+            <div id="timer" style="font-weight: 600; color: var(--accent);">Chargement de l'univers...</div>
         </header>
 
-        <div class="main-container">
+        <div class="section-title">Connexion Instantanée</div>
+        <div class="grid-container">
             <div class="card">
-                <h2>Rayan <div id="dotRayan" class="dot"></div></h2>
-                <div class="q-box">
-                    <span class="label">Question de l'âme <button onclick="newQuestion()" style="background:none; border:none; float:right; cursor:pointer; font-size:1.2rem;">🎲</button></span>
-                    <p id="displayQ" style="margin: 12px 0; font-weight: 700; color: #f178ff; font-size: 1.1rem;">...</p>
-                    <textarea id="rQ" placeholder="Ta réponse..."></textarea>
+                <h3 style="margin: 0 0 15px 0;">Météo du Cœur</h3>
+                <p class="label" style="font-size: 0.7rem; opacity: 0.5;">RAYAN</p>
+                <div class="mood-row" id="mood-rayan">
+                    <span class="mood-emoji" onclick="setMood('rayan', '😊')">😊</span>
+                    <span class="mood-emoji" onclick="setMood('rayan', '😴')">😴</span>
+                    <span class="mood-emoji" onclick="setMood('rayan', '🔥')">🔥</span>
+                    <span class="mood-emoji" onclick="setMood('rayan', '🥺')">🥺</span>
                 </div>
-                <span class="label">Journal</span>
-                <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                <textarea id="r2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-                <textarea id="r3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-                <textarea id="r4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-                <textarea id="r5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-                <button class="finish-btn" onclick="complete('Rayan')">Terminer 🖤</button>
+                <p class="label" style="font-size: 0.7rem; opacity: 0.5; margin-top: 15px;">ISRAH</p>
+                <div class="mood-row" id="mood-israh">
+                    <span class="mood-emoji" onclick="setMood('israh', '😊')">😊</span>
+                    <span class="mood-emoji" onclick="setMood('israh', '😴')">😴</span>
+                    <span class="mood-emoji" onclick="setMood('israh', '🔥')">🔥</span>
+                    <span class="mood-emoji" onclick="setMood('israh', '🥺')">🥺</span>
+                </div>
             </div>
 
             <div class="card">
-                <h2>Israh <div id="dotIsrah" class="dot"></div></h2>
-                <div class="q-box">
-                    <span class="label">Question de l'âme</span>
-                    <p id="displayQIsrah" style="margin: 12px 0; font-weight: 700; color: #f178ff; font-size: 1.1rem;">...</p>
-                    <textarea id="iQ" placeholder="Ta réponse..."></textarea>
+                <h3 style="margin: 0 0 10px 0;">Le Code de l'Unité</h3>
+                <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 15px;">Rayan (Chiffres 1&2) | Israh (3&4)</p>
+                <div class="code-group">
+                    <input type="text" maxlength="1" id="c1" class="code-input" placeholder="?">
+                    <input type="text" maxlength="1" id="c2" class="code-input" placeholder="?">
+                    <input type="text" maxlength="1" id="c3" class="code-input" placeholder="?">
+                    <input type="text" maxlength="1" id="c4" class="code-input" placeholder="?">
                 </div>
-                <span class="label">Journal</span>
-                <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                <textarea id="i2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
-                <textarea id="i3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
-                <textarea id="i4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
-                <textarea id="i5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-                <button class="finish-btn" style="background: #f178ff" onclick="complete('Israh')">Terminer 🖤</button>
+                <p id="code-msg" style="text-align: center; margin-top: 15px; font-weight: 700; color: var(--pink); min-height: 20px;"></p>
             </div>
+        </div>
+
+        <div class="section-title">Les Murmures du Soir</div>
+        <div class="grid-container">
+            <div class="card">
+                <h3>Rayan <div id="dotRayan" class="dot"></div></h3>
+                <textarea id="rQ" placeholder="Question de l'âme..." style="border-left: 3px solid var(--accent);"></textarea>
+                <textarea id="r1" placeholder="Ce que j'ai gardé pour moi..."></textarea>
+                <textarea id="r2" placeholder="Fier de..."></textarea>
+                <button class="finish-btn" onclick="complete('Rayan')">Sceller mon journal</button>
+            </div>
+            <div class="card">
+                <h3>Israh <div id="dotIsrah" class="dot"></div></h3>
+                <textarea id="iQ" placeholder="Question de l'âme..." style="border-left: 3px solid var(--pink);"></textarea>
+                <textarea id="i1" placeholder="Ce que j'ai gardé pour moi..."></textarea>
+                <textarea id="i2" placeholder="Fière de..."></textarea>
+                <button class="finish-btn" style="background: var(--pink);" onclick="complete('Israh')">Sceller mon journal</button>
+            </div>
+        </div>
+
+        <div class="section-title">Le Jardin des Pixels</div>
+        <div class="card" style="max-width: 400px; margin: 0 auto 50px auto;">
+            <div id="pixel-canvas"></div>
+            <button onclick="clearJardin()" style="background: none; border: none; color: gray; width: 100%; margin-top: 15px; cursor: pointer; font-size: 0.8rem;">Réinitialiser le jardin</button>
         </div>
     </div>
 
+    <button id="secret-tap" onclick="sendLove()">💖</button>
+
 <script>
-    let score = 0;
-    const questions = ["Ton moment préféré aujourd'hui ?", "Une chose que tu aimes chez moi ?", "Un petit défi pour demain ?", "Ton humeur en un seul mot ?", "Qu'est-ce qui t'a fait sourire ?", "De quoi es-tu le plus fier ce soir ?"];
-
-    // Logique du Jeu
-    function tapHeart() {
-        score += 20;
-        document.getElementById('score-fill').style.width = score + "%";
-        if(score >= 100) {
-            document.getElementById('heart-btn').style.display = 'none';
-            document.getElementById('game-status').innerText = "Connexion établie.";
-            document.getElementById('final-entry-btn').style.display = 'block';
-        }
-    }
-
+    // --- Logique Application ---
     function enterApp() {
         document.getElementById('intro-screen').classList.add('hidden');
         document.getElementById('main-app').style.display = 'block';
         setTimeout(() => document.getElementById('main-app').classList.add('visible'), 50);
     }
 
-    // Firebase Sync
-    window.onload = () => {
-        database.ref('harmonie_final').on('value', (snap) => {
-            const data = snap.val();
-            if(data) {
-                for(let i=1; i<=5; i++) {
-                    if(document.activeElement.id !== 'r'+i) document.getElementById('r'+i).value = data.rayan ? data.rayan[i-1] : "";
-                    if(document.activeElement.id !== 'i'+i) document.getElementById('i'+i).value = data.israh ? data.israh[i-1] : "";
-                }
-                if(document.activeElement.id !== 'rQ') document.getElementById('rQ').value = data.rayan ? data.rayan[5] : "";
-                if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = data.israh ? data.israh[5] : "";
-                
-                document.getElementById('displayQ').innerText = data.question || "...";
-                document.getElementById('displayQIsrah').innerText = data.question || "...";
-                
-                if(data.finished?.Rayan) document.getElementById('dotRayan').classList.add('active');
-                if(data.finished?.Israh) document.getElementById('dotIsrah').classList.add('active');
-                updateXP();
+    // --- Mood Matcher ---
+    function setMood(user, emoji) {
+        database.ref('harmonie/moods/' + user).set(emoji);
+    }
+
+    // --- Secret Tap ---
+    function sendLove() {
+        database.ref('harmonie/love_tap').set(Date.now());
+    }
+
+    // --- Enigme Coop ---
+    const inputs = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3'), document.getElementById('c4')];
+    inputs.forEach((input, i) => {
+        input.addEventListener('input', () => {
+            database.ref('harmonie/code/' + i).set(input.value);
+            if (input.value && i < 3) inputs[i+1].focus();
+        });
+    });
+
+    // --- Le Jardin (Pixel Art) ---
+    const canvas = document.getElementById('pixel-canvas');
+    for (let i = 0; i < 64; i++) {
+        const p = document.createElement('div');
+        p.className = 'pixel';
+        p.onclick = () => {
+            const currentColor = p.style.background;
+            const newColor = (currentColor.includes('rgba(255, 255, 255, 0.1)') || currentColor === "") ? '#9b5de5' : 'rgba(255, 255, 255, 0.1)';
+            database.ref('harmonie/pixels/' + i).set(newColor);
+        };
+        canvas.appendChild(p);
+    }
+
+    function clearJardin() { database.ref('harmonie/pixels').remove(); }
+
+    // --- Firebase Sync ---
+    database.ref('harmonie').on('value', (snap) => {
+        const data = snap.val() || {};
+        
+        // Moods
+        if (data.moods) {
+            ['rayan', 'israh'].forEach(user => {
+                document.querySelectorAll(`#mood-${user} .mood-emoji`).forEach(el => {
+                    el.classList.toggle('active', el.innerText === data.moods[user]);
+                });
+            });
+        }
+
+        // Code Enigme (Le code secret est 0602 par exemple)
+        if (data.code) {
+            data.code.forEach((val, i) => { if(document.activeElement !== inputs[i]) inputs[i].value = val || ""; });
+            if (data.code.join('') === "0602") { // <--- CHANGE LE CODE ICI
+                document.getElementById('code-msg').innerText = "✨ Porte ouverte : Je t'aime ✨";
             }
+        }
+
+        // Love Tap
+        if (data.love_tap) {
+            confetti({ particleCount: 40, spread: 70, origin: { y: 0.8 }, colors: ['#9b5de5', '#f178ff'] });
+        }
+
+        // Pixels
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach((p, i) => {
+            p.style.background = (data.pixels && data.pixels[i]) ? data.pixels[i] : 'rgba(255, 255, 255, 0.1)';
         });
-    };
 
-    function save() {
-        database.ref('harmonie_final').update({
-            rayan: [document.getElementById('r1').value, document.getElementById('r2').value, document.getElementById('r3').value, document.getElementById('r4').value, document.getElementById('r5').value, document.getElementById('rQ').value],
-            israh: [document.getElementById('i1').value, document.getElementById('i2').value, document.getElementById('i3').value, document.getElementById('i4').value, document.getElementById('i5').value, document.getElementById('iQ').value],
-            question: document.getElementById('displayQ').innerText,
-            finished: { Rayan: document.getElementById('dotRayan').classList.contains('active'), Israh: document.getElementById('dotIsrah').classList.contains('active') }
-        });
-    }
+        // Journal status
+        if(data.finished?.Rayan) document.getElementById('dotRayan').classList.add('active');
+        if(data.finished?.Israh) document.getElementById('dotIsrah').classList.add('active');
+    });
 
-    function newQuestion() {
-        const q = questions[Math.floor(Math.random()*questions.length)];
-        database.ref('harmonie_final/question').set(q);
-    }
-
+    // Journal Logic
     function complete(user) {
-        document.getElementById('dot' + user).classList.add('active');
-        save();
-        const rayanDone = document.getElementById('dotRayan').classList.contains('active');
-        const israhDone = document.getElementById('dotIsrah').classList.contains('active');
-        if(rayanDone && israhDone) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        database.ref('harmonie/finished/' + user).set(true);
+        confetti({ particleCount: 100, spread: 70 });
     }
 
-    function updateXP() {
-        const textareas = document.querySelectorAll('#main-app textarea');
-        let count = 0;
-        textareas.forEach(t => { if(t.value.length > 2) count++ });
-        document.getElementById('xp-fill').style.width = (count / textareas.length) * 100 + "%";
-    }
-
-    document.querySelectorAll('#main-app textarea').forEach(t => t.addEventListener('input', save));
-
+    // Timer
     setInterval(() => {
         const now = new Date();
         const diff = new Date().setHours(24,0,0,0) - now;
         const h = Math.floor(diff/3600000);
         const m = Math.floor((diff%3600000)/60000);
-        document.getElementById('timer').innerText = `🌙 L'Harmonie veille encore ${h}h ${m}m`;
+        document.getElementById('timer').innerText = `L'espace se referme dans ${h}h ${m}m`;
     }, 1000);
 </script>
 </body>
