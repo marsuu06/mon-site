@@ -25,27 +25,29 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
 
         :root {
             --accent: #9b5de5;
             --accent-light: #f178ff;
             --bg: #0d0617;
             --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #e0e0e0;
         }
 
         body, html {
             margin: 0; padding: 0; min-height: 100vh;
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg);
-            color: #fff; overflow-x: hidden;
+            color: var(--text-color); overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* --- FOND ANIME --- */
+        /* --- FOND ANIME NEBULA --- */
         .nebula {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #2d1b4e 0%, #0d0617 100%);
-            z-index: -1;
+            z-index: -2;
         }
         .nebula::after {
             content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -72,16 +74,15 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin-bottom: 10px; animation: pulseGlow 3s infinite;
         }
-
         @keyframes pulseGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(155, 93, 229, 0)); }
-            50% { filter: drop-shadow(0 0 20px rgba(155, 93, 229, 0.5)); }
+            0%, 100% { text-shadow: 0 0 10px rgba(155, 93, 229, 0.2); }
+            50% { text-shadow: 0 0 20px rgba(155, 93, 229, 0.6); }
         }
 
         .rules-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
             padding: 25px; border-radius: 20px; max-width: 400px; margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); color: var(--text-color);
         }
 
         .neon-btn {
@@ -92,7 +93,32 @@
         }
         .neon-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--accent); }
 
-        /* --- HEADER & RITUEL --- */
+        /* --- GAME D'INTRODUCTION (PULSATION) --- */
+        #pulsation-game {
+            display: none; /* Initialement caché */
+            margin-top: 30px;
+            background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px;
+            border: 1px solid var(--accent); max-width: 450px; width: 100%;
+            box-shadow: 0 0 20px rgba(155, 93, 229, 0.3);
+        }
+        .pulse-circle {
+            width: 80px; height: 80px; background: var(--accent-light); border-radius: 50%;
+            margin: 20px auto; animation: pulseBeat 1s infinite alternate;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 0 25px var(--accent-light);
+        }
+        .pulse-circle.active { animation: none; transform: scale(0.9); box-shadow: 0 0 10px var(--accent); }
+        .pulse-circle.correct { background: #4caf50; box-shadow: 0 0 25px #4caf50; }
+        .pulse-circle.wrong { background: #f44336; box-shadow: 0 0 25px #f44336; }
+
+        @keyframes pulseBeat {
+            from { transform: scale(0.9); opacity: 0.8; }
+            to { transform: scale(1.1); opacity: 1; }
+        }
+        #pulse-text { font-size: 1.1rem; margin-bottom: 15px; color: var(--accent-light); }
+        #pulse-score { font-size: 0.9rem; opacity: 0.7; }
+
+        /* --- CONTENU PRINCIPAL (L'Harmonie) --- */
         #main-content { opacity: 0; transition: 1.5s; }
         #main-content.visible { opacity: 1; }
 
@@ -117,23 +143,34 @@
         }
         .card:hover { transform: translateY(-10px); border-color: var(--accent); }
 
+        .section-separator {
+            font-size: 0.75rem; text-transform: uppercase; opacity: 0.4; letter-spacing: 1.5px;
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin: 30px 0 15px;
+            color: var(--accent-light);
+        }
+        .section-separator::before, .section-separator::after {
+            content: ''; flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);
+        }
+
         textarea {
             width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px; color: #fff; padding: 15px; margin-bottom: 12px;
+            border-radius: 18px; color: var(--text-color); padding: 15px; margin-bottom: 12px;
             font-family: inherit; resize: none; box-sizing: border-box; transition: 0.3s;
         }
         textarea:focus { border-color: var(--accent-light); background: rgba(0,0,0,0.5); outline: none; }
 
         .status-dot { width: 12px; height: 12px; background: #333; border-radius: 50%; display: inline-block; margin-left: 10px; }
         .status-dot.active { background: #00ff88; box-shadow: 0 0 15px #00ff88; animation: pulse 2s infinite; }
-
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         .finish-btn {
             width: 100%; padding: 18px; border-radius: 20px; border: none;
             background: linear-gradient(45deg, var(--accent), #7037b3);
             color: white; font-weight: 700; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(155, 93, 229, 0.3);
         }
+        .finish-btn:active { transform: scale(0.98); box-shadow: 0 2px 10px rgba(155, 93, 229, 0.5); }
+        .finish-btn.completed { background: linear-gradient(45deg, #4CAF50, #2E7D32); }
 
         #timer { font-weight: 600; font-size: 0.9rem; opacity: 0.8; letter-spacing: 1px; }
 
@@ -148,13 +185,20 @@
             <h1 class="welcome-title">L'Harmonie</h1>
             <div class="rules-card">
                 <p style="margin: 0; line-height: 1.6;">
-                    ✨ <b>Bienveillance</b> avant tout.<br>
-                    ✨ <b>Honnêteté</b> sur vos émotions.<br>
-                    ✨ <b>Écoute</b> du cœur de l'autre.<br>
-                    <small style="display:block; margin-top:15px; opacity:0.6;">Les secrets s'évaporent à minuit.</small>
+                    ✨ <b>Bienveillance</b>, fondement de notre lien.<br>
+                    ✨ <b>Honnêteté</b>, reflet de nos âmes.<br>
+                    ✨ <b>Écoute</b>, pour un cœur à cœur sincère.<br>
+                    <small style="display:block; margin-top:15px; opacity:0.6;">Vos confidences s'évanouissent à minuit.</small>
                 </p>
             </div>
-            <button class="neon-btn" onclick="acceptRules()">Entrer dans le Rituel 🌙</button>
+            <button id="startGameBtn" class="neon-btn" onclick="showPulsationGame()">Commencer l'Harmonie 💖</button>
+
+            <div id="pulsation-game" style="display: none;" class="animate__animated animate__zoomIn">
+                <p id="pulse-text">Synchronisez vos cœurs : cliquez en rythme sur le cercle qui pulse !</p>
+                <div id="pulseCircle" class="pulse-circle" onclick="clickPulse()">❤️</div>
+                <p id="pulse-score">Score : 0 / 5</p>
+                <button id="validateGameBtn" class="neon-btn" style="margin-top:20px; display:none;" onclick="validatePulsationGame()">Valider et Entrer</button>
+            </div>
         </div>
     </div>
 
@@ -167,112 +211,206 @@
         <div class="main-container">
             <div class="card animate__animated animate__fadeInLeft">
                 <h2 style="margin:0">Rayan <div id="dotRayan" class="status-dot"></div></h2>
+                
+                <div class="section-separator">Question du Jour</div>
                 <div style="background:rgba(155, 93, 229, 0.1); padding:15px; border-radius:20px; margin:20px 0;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">Question du jour</span>
+                        <span style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">Votre pensée</span>
                         <button onclick="newQuestion()" style="background:none; border:none; cursor:pointer;">🎲</button>
                     </div>
                     <p id="displayQ" style="margin:10px 0; color:var(--accent-light); font-weight:600;">...</p>
-                    <textarea id="rQ" placeholder="Ta réponse..."></textarea>
+                    <textarea id="rQ" placeholder="Exprime ta réponse à la question ici..."></textarea>
                 </div>
+
+                <div class="section-separator">Journal Intime</div>
                 <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
                 <textarea id="r2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
                 <textarea id="r3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
                 <textarea id="r4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
                 <textarea id="r5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-                <button class="finish-btn" onclick="complete('Rayan')">J'ai terminé 🖤</button>
+                
+                <button id="btnRayan" class="finish-btn" onclick="complete('Rayan')">J'ai terminé 🖤</button>
             </div>
 
             <div class="card animate__animated animate__fadeInRight">
                 <h2 style="margin:0">Israh <div id="dotIsrah" class="status-dot"></div></h2>
+                
+                <div class="section-separator">Question du Jour</div>
                 <div style="background:rgba(155, 93, 229, 0.1); padding:15px; border-radius:20px; margin:20px 0;">
-                    <span style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">Question du jour</span>
+                    <span style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">Votre pensée</span>
                     <p id="displayQIsrah" style="margin:10px 0; color:var(--accent-light); font-weight:600;">...</p>
-                    <textarea id="iQ" placeholder="Ta réponse..."></textarea>
+                    <textarea id="iQ" placeholder="Exprime ta réponse à la question ici..."></textarea>
                 </div>
+
+                <div class="section-separator">Journal Intime</div>
                 <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
                 <textarea id="i2" placeholder="Aujourd’hui j’ai été fier(e) de…"></textarea>
                 <textarea id="i3" placeholder="Aujourd’hui j’aurais aimé te dire…"></textarea>
                 <textarea id="i4" placeholder="Un truc qui m’a saoulé / blessé…"></textarea>
                 <textarea id="i5" placeholder="Aujourd’hui j’ai manqué de…"></textarea>
-                <button class="finish-btn" style="background:linear-gradient(45deg, #f178ff, #9b5de5);" onclick="complete('Israh')">J'ai terminé 🖤</button>
+                
+                <button id="btnIsrah" class="finish-btn" style="background:linear-gradient(45deg, #f178ff, #9b5de5);" onclick="complete('Israh')">J'ai terminé 🖤</button>
             </div>
         </div>
     </div>
 
 <script>
-    const questions = ["Le moment le plus drôle ? 😂", "Si ta journée était un film ? 🎬", "3 mots absurdes ? 😜", "Un détail nul mais marrant ? 🤪", "Un truc aimé chez l’autre ? 💖", "Si ta journée était un animal ? 🐶", "Un moment de fierté ? 💪", "Un défi ridicule réussi ? 😏", "Un sourire pour rien ? 😄", "1 moment à rejouer ? ✨"];
+    const questions = ["Le moment le plus drôle de ta journée ? 😂", "Si ta journée était un film, son titre ? 🎬", "Résume ta journée en 3 mots absurdes 😜", "Un détail nul mais marrant avec le recul 🤪", "Un truc que tu as aimé chez l’autre aujourd'hui 💖", "Si ta journée était un animal, lequel ? 🐶", "Un moment où tu t'es senti fier(e) 💪", "Un petit défi ridicule que tu as réussi 😏", "Un moment qui t’a fait sourire pour rien 😄", "Si tu pouvais rejouer 1 moment, lequel ? ✨"];
 
     let finishedStatus = { Rayan: false, Israh: false };
+    const textareasRayan = ['r1', 'r2', 'r3', 'r4', 'r5', 'rQ'];
+    const textareasIsrah = ['i1', 'i2', 'i3', 'i4', 'i5', 'iQ'];
 
-    function acceptRules() {
+    // --- JEU D'INTRODUCTION PULSATION ---
+    let pulseGameScore = 0;
+    let lastClickTime = 0;
+    let expectedClickTime = 0;
+    let gameActive = false;
+    let pulseInterval;
+
+    function showPulsationGame() {
+        document.getElementById('startGameBtn').style.display = 'none';
+        document.getElementById('pulsation-game').style.display = 'block';
+        gameActive = true;
+        pulseGameScore = 0;
+        document.getElementById('pulse-score').innerText = `Score : ${pulseGameScore} / 5`;
+        startPulsation();
+    }
+
+    function startPulsation() {
+        if (!gameActive) return;
+        document.getElementById('pulseCircle').classList.remove('correct', 'wrong');
+        expectedClickTime = Date.now();
+        document.getElementById('pulseCircle').style.animationPlayState = 'running';
+        pulseInterval = setTimeout(() => {
+            if (gameActive) { // If user didn't click
+                document.getElementById('pulseCircle').classList.add('wrong');
+                pulseGameScore = Math.max(0, pulseGameScore - 1); // Penalize
+                document.getElementById('pulse-score').innerText = `Score : ${pulseGameScore} / 5`;
+                if (pulseGameScore < 5) startPulsation();
+            }
+        }, 800); // Give user 0.8s to click
+    }
+
+    function clickPulse() {
+        if (!gameActive) return;
+        clearTimeout(pulseInterval);
+        const clickTime = Date.now();
+        const diff = Math.abs(clickTime - expectedClickTime);
+        document.getElementById('pulseCircle').classList.add('active'); // Visually indicate click
+
+        if (diff < 300) { // If click is within 300ms of expected beat
+            document.getElementById('pulseCircle').classList.add('correct');
+            pulseGameScore++;
+        } else {
+            document.getElementById('pulseCircle').classList.add('wrong');
+            pulseGameScore = Math.max(0, pulseGameScore - 1); // Penalize
+        }
+        document.getElementById('pulse-score').innerText = `Score : ${pulseGameScore} / 5`;
+
+        if (pulseGameScore >= 5) {
+            gameActive = false;
+            document.getElementById('pulse-text').innerText = "Cœurs synchronisés ! ✨";
+            document.getElementById('validateGameBtn').style.display = 'block';
+            document.getElementById('pulseCircle').style.animationPlayState = 'paused';
+            document.getElementById('pulseCircle').classList.remove('correct', 'wrong', 'active');
+            document.getElementById('pulseCircle').classList.add('correct'); // Final visual cue
+        } else {
+            setTimeout(() => { // Next pulse after a short delay
+                document.getElementById('pulseCircle').classList.remove('active', 'correct', 'wrong');
+                startPulsation();
+            }, 500);
+        }
+    }
+
+    function validatePulsationGame() {
         document.getElementById('intro-screen').classList.add('fade-out');
         document.getElementById('main-content').classList.add('visible');
         setTimeout(() => document.getElementById('intro-screen').style.display = 'none', 1000);
+        newQuestion(); // Generate first question after game
     }
+    // --- FIN JEU PULSATION ---
 
     window.onload = () => {
-        database.ref('rituel_final').on('value', (snapshot) => {
+        database.ref('harmonie_v2').on('value', (snapshot) => {
             const data = snapshot.val();
             if(data) {
                 if(data.rayan) {
-                    for(let i=1;i<=5;i++) if(document.activeElement !== document.getElementById('r'+i)) document.getElementById('r'+i).value = data.rayan[i-1] || "";
-                    if(document.activeElement !== document.getElementById('rQ')) document.getElementById('rQ').value = data.rayan[5] || "";
+                    textareasRayan.forEach((id, index) => {
+                        const el = document.getElementById(id);
+                        if(el && document.activeElement !== el) el.value = data.rayan[index] || "";
+                    });
                 }
                 if(data.israh) {
-                    for(let i=1;i<=5;i++) if(document.activeElement !== document.getElementById('i'+i)) document.getElementById('i'+i).value = data.israh[i-1] || "";
-                    if(document.activeElement !== document.getElementById('iQ')) document.getElementById('iQ').value = data.israh[5] || "";
+                    textareasIsrah.forEach((id, index) => {
+                        const el = document.getElementById(id);
+                        if(el && document.activeElement !== el) el.value = data.israh[index] || "";
+                    });
                 }
-                document.getElementById('displayQ').innerText = data.question || "...";
-                document.getElementById('displayQIsrah').innerText = data.question || "...";
+                document.getElementById('displayQ').innerText = data.question || "Cliquez sur le dé pour une question...";
+                document.getElementById('displayQIsrah').innerText = data.question || "Cliquez sur le dé pour une question...";
+                
                 finishedStatus = data.finished || {Rayan:false, Israh:false};
                 if(finishedStatus.Rayan) document.getElementById('dotRayan').classList.add('active');
                 if(finishedStatus.Israh) document.getElementById('dotIsrah').classList.add('active');
+
+                // Update finish button style
+                if (finishedStatus.Rayan) document.getElementById('btnRayan').classList.add('completed');
+                if (finishedStatus.Israh) document.getElementById('btnIsrah').classList.add('completed');
+
                 updateXP();
+            } else {
+                // If no data, set a default question
+                 newQuestion(); // Call newQuestion to set an initial question
             }
         });
     };
 
     function newQuestion() {
         const q = questions[Math.floor(Math.random()*questions.length)];
-        database.ref('rituel_final/question').set(q);
+        database.ref('harmonie_v2/question').set(q);
     }
 
     function save() {
         const data = {
-            rayan: [document.getElementById('r1').value, document.getElementById('r2').value, document.getElementById('r3').value, document.getElementById('r4').value, document.getElementById('r5').value, document.getElementById('rQ').value],
-            israh: [document.getElementById('i1').value, document.getElementById('i2').value, document.getElementById('i3').value, document.getElementById('i4').value, document.getElementById('i5').value, document.getElementById('iQ').value],
+            rayan: textareasRayan.map(id => document.getElementById(id).value),
+            israh: textareasIsrah.map(id => document.getElementById(id).value),
             question: document.getElementById('displayQ').innerText,
             finished: finishedStatus
         };
-        database.ref('rituel_final').update(data);
+        database.ref('harmonie_v2').update(data);
         updateXP();
     }
 
     function complete(user) {
         finishedStatus[user] = true;
-        save();
+        save(); // Save the new finished status
+        document.getElementById('dot' + user).classList.add('active');
+        document.getElementById('btn' + user).classList.add('completed');
+        
         if(finishedStatus.Rayan && finishedStatus.Israh) {
             confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#9b5de5', '#f178ff'] });
         }
     }
 
     function updateXP() {
-        const t = document.querySelectorAll('textarea');
-        let filled = 0;
-        t.forEach(el => { if(el.value.length > 2) filled++ });
-        document.getElementById('xp-fill').style.width = (filled / t.length) * 100 + "%";
+        const totalInputs = [...document.querySelectorAll('#main-content textarea')]; // All textareas in main content
+        let filledInputs = 0;
+        totalInputs.forEach(el => { if(el.value.length > 2) filledInputs++ });
+        document.getElementById('xp-fill').style.width = (filledInputs / totalInputs.length) * 100 + "%";
     }
 
-    document.querySelectorAll('textarea').forEach(t => t.addEventListener('input', save));
+    document.querySelectorAll('#main-content textarea').forEach(t => t.addEventListener('input', save));
 
+    // Timer Minuit
     setInterval(() => {
         const now = new Date();
         const diff = new Date().setHours(24,0,0,0) - now;
         const h = Math.floor(diff/3600000);
         const m = Math.floor((diff%3600000)/60000);
         const s = Math.floor((diff%60000)/1000);
-        document.getElementById('timer').innerText = `🌙 Fermeture dans ${h}h ${m}m ${s}s`;
+        document.getElementById('timer').innerText = `🌙 L'Harmonie s'estompe dans ${h}h ${m}m ${s}s`;
+        if(diff <= 0) database.ref('harmonie_v2').remove();
     }, 1000);
 </script>
 </body>
