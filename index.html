@@ -221,13 +221,16 @@
                     </div>
 
                     <div class="game-box" style="text-align:center;">
-                        <span style="font-size:0.6rem; font-weight:800; opacity:0.5; letter-spacing:2px;">CHIFOUMI LIVE</span>
+                        <div style="font-size: 0.6rem; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 10px;">CHIFOUMI LIVE</div>
                         <div style="display:flex; justify-content:center; gap:25px; margin:15px 0;">
                             <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('🪨')">🪨</span>
                             <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('📜')">📜</span>
                             <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('✂️')">✂️</span>
                         </div>
-                        <div id="rps-res" style="font-size:0.75rem; color:var(--pink); font-weight:800; font-family: 'Space Grotesk';">---</div>
+                        <div id="rps-res" style="font-size:0.75rem; color:var(--pink); font-weight:800; margin-bottom: 10px;">Choix en cours...</div>
+                        <button onclick="resetRPS()" style="background:none; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:var(--text-dim); font-size:0.55rem; padding: 5px 10px; cursor:pointer; transition: 0.3s;">
+                            🔄 RESET CHIFOUMI
+                        </button>
                     </div>
 
                     <div class="game-box" style="text-align:center; margin-bottom:0;">
@@ -311,7 +314,6 @@
                     <button class="tool-btn" style="grid-column: span 2; border-color: rgba(255,255,255,0.1);" onclick="resetInterro()">RÉINITIALISER L'INTERROGATOIRE</button>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -329,6 +331,8 @@
     let clicks = 0;
     let tool = "draw";
     const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi ?", "Quelle émotion ?", "Ta fierté ?", "Un souvenir ?"];
+    
+    // LISTE DES QUESTIONS CIA MISE À JOUR (20 QUESTIONS)
     const ciaQuestions = [
         "AGENT : Quel est le premier détail physique que tu as remarqué chez moi ?",
         "AGENT : Si tu devais me cacher un secret pendant 1 an pour 1 million d'euros, tu y arriverais ?",
@@ -337,7 +341,19 @@
         "AGENT : Quelle est la chose la plus folle que tu ferais par amour pour moi là ?",
         "AGENT : Si on changeait un seul trait de mon caractère, ce serait quoi ?",
         "AGENT : Quel est le dernier rêve où j'apparaissais ?",
-        "AGENT : Quelle chanson te fait penser à un moment gênant entre nous ?"
+        "AGENT : Quelle chanson te fait penser à un moment gênant entre nous ?",
+        "AGENT : Si je devais commettre un crime, tu serais mon complice ou celui qui me dénonce ?",
+        "AGENT : Quel est le vêtement dans mon armoire que tu ne peux absolument plus voir en peinture ?",
+        "AGENT : Quelle est la première chose que tu as racontée sur moi à tes potes/ta famille ?",
+        "AGENT : Si on était dans un film d'horreur, lequel de nous deux mourrait en premier ?",
+        "AGENT : Quelle est la question que tu redoutes le plus que je te pose un jour ?",
+        "AGENT : Si tu pouvais lire dans mes pensées pendant seulement 30 secondes, tu choisirais quel moment ?",
+        "AGENT : Quelle est la plus grande différence entre l'idée que tu te faisais de moi et la réalité ?",
+        "AGENT : Si on devait tout recommencer à zéro, qu'est-ce que tu changerais dans notre premier rendez-vous ?",
+        "AGENT : Est-ce que tu as déjà fait semblant d'aimer un cadeau ou un plat que je t'ai préparé ?",
+        "AGENT : Quel est le dernier truc que tu as supprimé dans ton historique ou tes messages ?",
+        "AGENT : Avoue une fois où tu as été jaloux(se) d'une personne totalement insignifiante.",
+        "AGENT : Quelle est la chose la plus 'cliché' que tu trouves mignonne chez moi mais que tu n'avoueras jamais ?"
     ];
 
     function identify(u) {
@@ -405,6 +421,11 @@
         });
     }
     function resetInterro() { database.ref('harmonie_v3/interro').set({ display: "SYSTÈME RÉINITIALISÉ. PRÊT.", stress: 0 }); }
+
+    // RESET CHIFOUMI
+    function resetRPS() {
+        database.ref('harmonie_v3/rps').remove();
+    }
 
     database.ref('harmonie_v3').on('value', snap => {
         const d = snap.val() || {};
