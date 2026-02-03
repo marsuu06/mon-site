@@ -631,6 +631,111 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Styles pour le jeu Flux d'Harmonie */
+        .harmony-cell {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .harmony-cell::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .harmony-cell:hover {
+            transform: scale(1.05);
+            border-color: rgba(100, 200, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(100, 200, 255, 0.2);
+        }
+
+        .harmony-cell:hover::before {
+            opacity: 1;
+        }
+
+        .harmony-cell.connected {
+            background: linear-gradient(145deg, rgba(100, 200, 255, 0.2), rgba(100, 200, 255, 0.1));
+            border-color: rgba(100, 200, 255, 0.6);
+            box-shadow: 0 0 25px rgba(100, 200, 255, 0.4);
+            animation: pulse-connected 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-connected {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(100, 200, 255, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 35px rgba(100, 200, 255, 0.6);
+            }
+        }
+
+        .harmony-cell.start {
+            background: linear-gradient(145deg, rgba(100, 200, 255, 0.3), rgba(100, 200, 255, 0.15));
+            border-color: rgba(100, 200, 255, 0.8);
+            box-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+        }
+
+        .harmony-cell.end {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.15));
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .harmony-cell svg {
+            width: 70%;
+            height: 70%;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .harmony-path {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 3;
+            stroke-linecap: round;
+            transition: stroke 0.4s;
+        }
+
+        .harmony-cell.connected .harmony-path {
+            stroke: rgba(100, 200, 255, 0.9);
+            filter: drop-shadow(0 0 5px rgba(100, 200, 255, 0.8));
+        }
+
+        .harmony-cell.start .harmony-path {
+            stroke: rgba(100, 200, 255, 1);
+        }
+
+        .harmony-cell.end .harmony-path {
+            stroke: rgba(255, 215, 0, 1);
+        }
+
+        @keyframes flow-pulse {
+            0% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: -50;
+            }
+        }
+
+        .harmony-cell.completed .harmony-path {
+            stroke: rgba(255, 215, 0, 1);
+            stroke-dasharray: 10 5;
+            animation: flow-pulse 1s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+
         #modal { 
             position: fixed; 
             inset: 0; 
@@ -937,6 +1042,29 @@
                     <button class="tool-btn" style="grid-column: span 2; border-color: rgba(255,255,255,0.15); background: rgba(255, 255, 255, 0.02); padding: 12px; transition: 0.3s;" onclick="resetInterro()" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255, 255, 255, 0.05)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.background='rgba(255, 255, 255, 0.02)'">RÉINITIALISER L'INTERROGATOIRE</button>
                 </div>
             </div>
+
+            <!-- JEU FLUX D'HARMONIE -->
+            <div class="card" style="background: linear-gradient(145deg, rgba(245, 245, 240, 0.03), rgba(230, 230, 220, 0.02)); border: 2px solid rgba(155, 93, 229, 0.2); position: relative; overflow: hidden;">
+                <!-- Effet de fond zen -->
+                <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(100, 200, 255, 0.03) 0%, transparent 50%); pointer-events: none; animation: rotate-bg 30s linear infinite;"></div>
+                
+                <div style="text-align: center; margin-bottom: 30px; position: relative; z-index: 1;">
+                    <div style="display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; margin-bottom: 15px; background: linear-gradient(135deg, rgba(100, 200, 255, 0.15), rgba(255, 215, 0, 0.15)); border: 1px solid rgba(100, 200, 255, 0.3); text-transform: uppercase; color: rgba(100, 200, 255, 0.9);">🧘 Espace de Méditation</div>
+                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 3px; font-size: 1.3rem; color: #fff; text-transform: uppercase;">Le Flux d'Harmonie 🌊</h3>
+                    <p style="font-size: 0.75rem; opacity: 0.6; margin: 10px 0 0; letter-spacing: 1px;">Rétablissez la circulation de l'énergie</p>
+                </div>
+
+                <div id="harmony-container" style="position: relative; z-index: 1;">
+                    <div id="harmony-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 400px; margin: 0 auto 25px; padding: 20px; background: rgba(0, 0, 0, 0.2); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.05);"></div>
+                    
+                    <div id="harmony-message" style="text-align: center; font-size: 1.1rem; color: rgba(100, 200, 255, 0.9); font-weight: 600; letter-spacing: 2px; opacity: 0; transition: 0.5s; margin-bottom: 20px; font-style: italic; line-height: 1.6;"></div>
+
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="tool-btn" style="border-color: rgba(100, 200, 255, 0.3); color: rgba(100, 200, 255, 0.8); background: rgba(100, 200, 255, 0.05); transition: 0.3s;" onclick="newHarmonyPuzzle()" onmouseover="this.style.borderColor='rgba(100, 200, 255, 0.6)'; this.style.background='rgba(100, 200, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(100, 200, 255, 0.3)'; this.style.background='rgba(100, 200, 255, 0.05)'">🔄 Nouveau Flux</button>
+                        <button class="tool-btn" style="border-color: rgba(255, 215, 0, 0.3); color: rgba(255, 215, 0, 0.8); background: rgba(255, 215, 0, 0.05); transition: 0.3s;" onclick="toggleHarmonyHint()" onmouseover="this.style.borderColor='rgba(255, 215, 0, 0.6)'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.borderColor='rgba(255, 215, 0, 0.3)'; this.style.background='rgba(255, 215, 0, 0.05)'">💡 Indice</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1120,6 +1248,235 @@
         document.getElementById('countdown').innerText = `Reset dans ${Math.floor(diff / 3600000)}h ${Math.floor((diff % 3600000) / 60000)}m`;
     }
     setInterval(updatePortal, 1000);
+
+    // ===== JEU FLUX D'HARMONIE =====
+    let harmonyGrid = [];
+    let harmonySize = 6;
+    let harmonyStart = { x: 0, y: 0 };
+    let harmonyEnd = { x: 5, y: 5 };
+
+    const harmonyQuotes = [
+        "Le chemin est aussi important que la destination 🌸",
+        "L'harmonie naît de la patience et de l'équilibre ⚖️",
+        "Chaque rotation rapproche de la sérénité 🧘",
+        "La connexion vient de l'intérieur 💫",
+        "Le flux d'énergie circule librement maintenant ✨",
+        "Vous avez rétabli l'harmonie universelle 🌊",
+        "L'équilibre intérieur est restauré 🕉️"
+    ];
+
+    // Définition des types de pièces
+    const pipeShapes = {
+        straight: [
+            { connects: ['N', 'S'], svg: '<path class="harmony-path" d="M 20 0 L 20 40"/>' },
+            { connects: ['E', 'W'], svg: '<path class="harmony-path" d="M 0 20 L 40 20"/>' }
+        ],
+        corner: [
+            { connects: ['N', 'E'], svg: '<path class="harmony-path" d="M 20 0 Q 20 20 40 20"/>' },
+            { connects: ['E', 'S'], svg: '<path class="harmony-path" d="M 40 20 Q 20 20 20 40"/>' },
+            { connects: ['S', 'W'], svg: '<path class="harmony-path" d="M 20 40 Q 20 20 0 20"/>' },
+            { connects: ['W', 'N'], svg: '<path class="harmony-path" d="M 0 20 Q 20 20 20 0"/>' }
+        ],
+        tee: [
+            { connects: ['N', 'E', 'S'], svg: '<path class="harmony-path" d="M 20 0 L 20 40 M 20 20 L 40 20"/>' },
+            { connects: ['E', 'S', 'W'], svg: '<path class="harmony-path" d="M 0 20 L 40 20 M 20 20 L 20 40"/>' },
+            { connects: ['S', 'W', 'N'], svg: '<path class="harmony-path" d="M 20 0 L 20 40 M 20 20 L 0 20"/>' },
+            { connects: ['W', 'N', 'E'], svg: '<path class="harmony-path" d="M 0 20 L 40 20 M 20 20 L 20 0"/>' }
+        ]
+    };
+
+    function initHarmonyGame() {
+        harmonyGrid = [];
+        const types = ['straight', 'corner', 'tee'];
+        
+        for(let y = 0; y < harmonySize; y++) {
+            harmonyGrid[y] = [];
+            for(let x = 0; x < harmonySize; x++) {
+                const type = types[Math.floor(Math.random() * types.length)];
+                const rotation = Math.floor(Math.random() * pipeShapes[type].length);
+                harmonyGrid[y][x] = { type, rotation };
+            }
+        }
+        
+        // Point de départ en haut à gauche - toujours vers la droite ou le bas
+        harmonyGrid[0][0] = { type: 'corner', rotation: 1 };
+        
+        // Point d'arrivée en bas à droite - toujours depuis la gauche ou le haut
+        harmonyGrid[5][5] = { type: 'corner', rotation: 3 };
+        
+        renderHarmonyGrid();
+    }
+
+    function renderHarmonyGrid() {
+        const container = document.getElementById('harmony-grid');
+        if(!container) return;
+        
+        container.innerHTML = '';
+        
+        for(let y = 0; y < harmonySize; y++) {
+            for(let x = 0; x < harmonySize; x++) {
+                const cell = harmonyGrid[y][x];
+                const div = document.createElement('div');
+                div.className = 'harmony-cell';
+                div.dataset.x = x;
+                div.dataset.y = y;
+                
+                if(x === harmonyStart.x && y === harmonyStart.y) div.classList.add('start');
+                if(x === harmonyEnd.x && y === harmonyEnd.y) div.classList.add('end');
+                
+                const shape = pipeShapes[cell.type][cell.rotation];
+                div.innerHTML = `<svg viewBox="0 0 40 40">${shape.svg}</svg>`;
+                
+                div.onclick = () => rotateHarmonyCell(x, y);
+                
+                container.appendChild(div);
+            }
+        }
+        
+        checkHarmonyConnections();
+    }
+
+    function rotateHarmonyCell(x, y) {
+        const cell = harmonyGrid[y][x];
+        const maxRotations = pipeShapes[cell.type].length;
+        cell.rotation = (cell.rotation + 1) % maxRotations;
+        
+        renderHarmonyGrid();
+        playRotateSound();
+    }
+
+    function checkHarmonyConnections() {
+        const visited = Array(harmonySize).fill(null).map(() => Array(harmonySize).fill(false));
+        const connected = [];
+        
+        function hasConnection(x, y, direction) {
+            if(x < 0 || x >= harmonySize || y < 0 || y >= harmonySize) return false;
+            const cell = harmonyGrid[y][x];
+            const shape = pipeShapes[cell.type][cell.rotation];
+            return shape.connects.includes(direction);
+        }
+        
+        function dfs(x, y) {
+            if(x < 0 || x >= harmonySize || y < 0 || y >= harmonySize || visited[y][x]) return;
+            
+            visited[y][x] = true;
+            connected.push({x, y});
+            
+            // Vérifier les 4 directions
+            if(hasConnection(x, y, 'N') && hasConnection(x, y-1, 'S')) dfs(x, y-1);
+            if(hasConnection(x, y, 'S') && hasConnection(x, y+1, 'N')) dfs(x, y+1);
+            if(hasConnection(x, y, 'W') && hasConnection(x-1, y, 'E')) dfs(x-1, y);
+            if(hasConnection(x, y, 'E') && hasConnection(x+1, y, 'W')) dfs(x+1, y);
+        }
+        
+        dfs(harmonyStart.x, harmonyStart.y);
+        
+        // Mettre à jour l'affichage
+        const cells = document.querySelectorAll('.harmony-cell');
+        cells.forEach((cell) => {
+            const x = parseInt(cell.dataset.x);
+            const y = parseInt(cell.dataset.y);
+            cell.classList.remove('connected', 'completed');
+            
+            if(connected.some(c => c.x === x && c.y === y)) {
+                cell.classList.add('connected');
+            }
+        });
+        
+        // Vérifier si on a atteint la fin
+        if(visited[harmonyEnd.y][harmonyEnd.x]) {
+            setTimeout(() => harmonyCompleted(), 500);
+        }
+    }
+
+    function harmonyCompleted() {
+        const cells = document.querySelectorAll('.harmony-cell.connected');
+        cells.forEach(cell => cell.classList.add('completed'));
+        
+        const msg = document.getElementById('harmony-message');
+        if(msg) {
+            msg.innerText = harmonyQuotes[Math.floor(Math.random() * harmonyQuotes.length)];
+            msg.style.opacity = 1;
+            
+            playCompletionSound();
+            
+            setTimeout(() => {
+                msg.style.opacity = 0;
+            }, 5000);
+        }
+    }
+
+    function newHarmonyPuzzle() {
+        const msg = document.getElementById('harmony-message');
+        if(msg) msg.style.opacity = 0;
+        initHarmonyGame();
+    }
+
+    function toggleHarmonyHint() {
+        const msg = document.getElementById('harmony-message');
+        if(msg) {
+            msg.innerText = "💡 Astuce : Commencez par connecter les pièces proches du départ (coin haut-gauche) !";
+            msg.style.opacity = 1;
+            setTimeout(() => {
+                msg.style.opacity = 0;
+            }, 3000);
+        }
+    }
+
+    function playRotateSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 440;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } catch(e) {}
+    }
+
+    function playCompletionSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const frequencies = [523.25, 659.25, 783.99];
+            
+            frequencies.forEach((freq, i) => {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = freq;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.8);
+                }, i * 150);
+            });
+        } catch(e) {}
+    }
+
+    // Initialiser le jeu au chargement
+    if(document.getElementById('main-app')) {
+        setTimeout(() => {
+            if(document.getElementById('harmony-grid')) {
+                initHarmonyGame();
+            }
+        }, 1500);
+    }
 </script>
 </body>
 </html> 
