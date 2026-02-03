@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>L'Harmonie - Version Intégrale 🌙</title>
+    <title>L'Harmonie - Version Intégrale Premium 🌙</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -24,124 +24,179 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap');
         
         :root {
             --accent: #9b5de5;
             --bg: #05020a;
-            --glass: rgba(255, 255, 255, 0.03);
+            --glass: rgba(255, 255, 255, 0.05);
             --pink: #f178ff;
             --orange: #ff9e00;
             --green: #00ff88;
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0; background: var(--bg); color: #fff;
-            background: radial-gradient(circle at top right, #1a0b2e, var(--bg));
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- NOUVEAU PORTAIL D'ENTRÉE STYLE --- */
+        /* --- NOUVEAU PORTAIL D'ENTRÉE HAUTE QUALITÉ --- */
         #who-screen {
             position: fixed; inset: 0; z-index: 3000;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #05020a 100%);
+            background: 
+                linear-gradient(rgba(5, 2, 10, 0.7), rgba(5, 2, 10, 0.9)),
+                url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
 
         .portal-container {
-            display: flex; gap: 30px; margin-top: 40px; flex-wrap: wrap; justify-content: center;
+            display: flex; gap: 40px; margin-top: 50px; flex-wrap: wrap; justify-content: center;
         }
 
         .portal {
-            width: 150px; height: 150px; border-radius: 50%;
+            width: 170px; height: 170px; border-radius: 50%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; position: relative; transition: 0.5s;
-            border: 2px solid transparent;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
+            cursor: pointer; position: relative; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
         }
 
-        .portal.rayan { border-color: var(--accent); box-shadow: 0 0 30px rgba(155, 93, 229, 0.3); }
-        .portal.israh { border-color: var(--pink); box-shadow: 0 0 30px rgba(241, 120, 255, 0.3); }
+        .portal.rayan { box-shadow: 0 0 20px rgba(155, 93, 229, 0.2); }
+        .portal.israh { box-shadow: 0 0 20px rgba(241, 120, 255, 0.2); }
 
-        .portal:hover { transform: scale(1.1); background: rgba(255,255,255,0.08); }
-        .portal span { font-weight: 800; letter-spacing: 2px; font-size: 0.9rem; }
-        .portal small { font-size: 0.5rem; opacity: 0.6; margin-top: 5px; letter-spacing: 1px; }
+        .portal:hover { transform: scale(1.1) translateY(-10px); background: rgba(255,255,255,0.1); }
+        .portal.rayan:hover { border-color: var(--accent); box-shadow: 0 0 50px rgba(155, 93, 229, 0.6); }
+        .portal.israh:hover { border-color: var(--pink); box-shadow: 0 0 50px rgba(241, 120, 255, 0.6); }
+
+        .portal span { font-weight: 800; letter-spacing: 3px; font-size: 1rem; }
+        .portal small { font-size: 0.55rem; opacity: 0.5; margin-top: 8px; letter-spacing: 2px; }
 
         .heart-icon {
-            font-size: 2.5rem; color: var(--pink);
-            animation: beat 1.5s infinite; margin: 20px 0;
-            filter: drop-shadow(0 0 10px var(--pink));
+            font-size: 3rem; color: var(--pink);
+            animation: beat 1.5s infinite; margin: 25px 0;
+            filter: drop-shadow(0 0 15px var(--pink));
         }
 
         @keyframes beat {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px var(--pink)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 30px var(--pink)); }
         }
 
-        .hidden { opacity: 0; pointer-events: none; transform: translateY(-50px); }
+        .hidden { opacity: 0; pointer-events: none; transform: scale(1.2); }
 
-        /* --- RESTE DU LAYOUT (TA STRUCTURE) --- */
+        /* --- LAYOUT PRINCIPAL STYLE "SPACE" --- */
+        #main-app {
+            background: radial-gradient(circle at top right, #1a0b2e, var(--bg));
+            min-height: 100vh;
+        }
+
         header { padding: 40px 20px; text-align: center; }
-        .clock { font-size: 3rem; font-weight: 800; margin-bottom: 5px; }
-        .countdown { font-size: 0.65rem; letter-spacing: 2px; color: var(--pink); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; }
-        .xp-container { width: 220px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 0 auto 15px; overflow: hidden; }
-        #xp-fill { width: 0%; height: 100%; background: var(--pink); transition: 0.5s; }
+        .clock { 
+            font-size: 3.5rem; font-weight: 800; 
+            background: linear-gradient(to bottom, #fff, #999);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 5px; 
+        }
+        .countdown { font-size: 0.7rem; letter-spacing: 2px; color: var(--pink); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; }
+        
+        .xp-container { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 0 auto 15px; overflow: hidden; }
+        #xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); transition: 0.8s ease; }
 
         .container { max-width: 1200px; margin: auto; padding: 0 20px 100px; }
         .main-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; margin-bottom: 30px; }
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
         
-        .card { background: var(--glass); border-radius: 35px; padding: 30px; border: 1px solid var(--border); backdrop-filter: blur(20px); position: relative; }
+        .card { 
+            background: var(--glass); border-radius: 35px; padding: 30px; 
+            border: 1px solid var(--border); backdrop-filter: blur(25px); 
+            transition: 0.3s;
+        }
 
         /* JARDIN */
-        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; margin-bottom: 15px; }
-        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        .tool-bar { display: flex; gap: 10px; }
-        .tool-btn { background: none; border: 1px solid var(--border); color: rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 12px; cursor: pointer; font-size: 0.7rem; font-weight: 600; }
-        .tool-btn.active { border-color: var(--pink); color: var(--pink); background: rgba(241, 120, 255, 0.1); }
+        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin-bottom: 15px; }
+        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        
+        .tool-bar { display: flex; gap: 12px; }
+        .tool-btn { 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            color: rgba(255,255,255,0.5); padding: 10px 20px; border-radius: 14px; 
+            cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.3s;
+        }
+        .tool-btn.active { border-color: var(--pink); color: #fff; background: rgba(241, 120, 255, 0.2); box-shadow: 0 0 15px rgba(241, 120, 255, 0.2); }
 
         /* JEUX */
-        .game-box { background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; margin-bottom: 15px; }
-        .player-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .badge { font-size: 0.6rem; font-weight: 800; padding: 4px 10px; border-radius: 10px; border: 1px solid currentColor; }
-        .mood-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.3; transition: 0.2s; filter: grayscale(1); }
-        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
-        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 150px; margin: 15px auto; }
-        .ttt-cell { aspect-ratio: 1; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; cursor: pointer; }
+        .game-box { background: rgba(0,0,0,0.3); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .player-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .badge { font-size: 0.65rem; font-weight: 800; padding: 5px 12px; border-radius: 12px; border: 1px solid currentColor; letter-spacing: 1px; }
+        .mood-btn { font-size: 1.4rem; cursor: pointer; opacity: 0.3; transition: 0.3s; filter: grayscale(1); }
+        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.3); }
+        
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 160px; margin: 20px auto; }
+        .ttt-cell { 
+            aspect-ratio: 1; background: rgba(0,0,0,0.4); border-radius: 15px; 
+            border: 1px solid var(--border); display: flex; align-items: center; 
+            justify-content: center; font-size: 1.5rem; font-weight: 800; cursor: pointer;
+            transition: 0.3s;
+        }
+        .ttt-cell:hover { background: rgba(255,255,255,0.05); }
 
         /* JOURNAUX */
         .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 700px) { .journals-grid { grid-template-columns: 1fr; } }
-        .q-box { background: rgba(155, 93, 229, 0.05); padding: 20px; border-radius: 25px; margin-bottom: 15px; border: 1px solid rgba(155, 93, 229, 0.1); }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); }
-        .status-dot.active { background: var(--green); box-shadow: 0 0 15px var(--green); }
-        textarea { width: 100%; height: 70px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 18px; color: #fff; padding: 15px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 12px; transition: 0.3s; }
-        .finish-btn { width: 100%; padding: 20px; border-radius: 20px; border: none; background: linear-gradient(45deg, var(--accent), var(--pink)); color: white; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        
+        .q-box { 
+            background: rgba(155, 93, 229, 0.08); padding: 25px; border-radius: 28px; 
+            margin-bottom: 20px; border: 1px solid rgba(155, 93, 229, 0.2); 
+        }
+        .status-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); transition: 0.5s; }
+        .status-dot.active { background: var(--green); box-shadow: 0 0 20px var(--green); }
+        
+        textarea { 
+            width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); 
+            border-radius: 22px; color: #fff; padding: 18px; font-family: inherit; resize: none; 
+            box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; 
+        }
+        textarea:focus { border-color: var(--pink); background: rgba(0,0,0,0.4); outline: none; }
+
+        .finish-btn { 
+            width: 100%; padding: 22px; border-radius: 24px; border: none; 
+            background: linear-gradient(45deg, var(--accent), var(--pink)); 
+            color: white; font-weight: 800; cursor: pointer; transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(155, 93, 229, 0.2);
+            letter-spacing: 1px;
+        }
+        .finish-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.4); }
 
         /* MODAL */
-        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: #1a0b2e; border: 1px solid var(--pink); padding: 40px; border-radius: 40px; text-align: center; max-width: 320px; }
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
+        .modal-content { 
+            background: #0a0510; border: 1px solid var(--pink); padding: 45px; 
+            border-radius: 45px; text-align: center; max-width: 350px; 
+            box-shadow: 0 0 50px rgba(241, 120, 255, 0.2);
+        }
     </style>
 </head>
 <body>
 
     <div id="who-screen">
-        <h1 style="font-weight: 200; letter-spacing: 12px; margin-bottom: 0;">L'HARMONIE</h1>
+        <h1 style="font-weight: 200; letter-spacing: 15px; margin-bottom: 0; opacity: 0.9;">L'HARMONIE</h1>
         <div class="heart-icon">❤</div>
-        <p style="font-size: 0.6rem; opacity: 0.4; letter-spacing: 4px; text-transform: uppercase;">Portail Synaptique Ouvert</p>
+        <p style="font-size: 0.65rem; opacity: 0.5; letter-spacing: 5px; text-transform: uppercase;">Portail vers la Synapse</p>
         
         <div class="portal-container">
             <div class="portal rayan" onclick="identify('Rayan')">
-                <span style="color:var(--accent)">RAYAN</span>
+                <span style="color:var(--accent); text-shadow: 0 0 10px var(--accent);">RAYAN</span>
                 <small>PROTECTEUR</small>
             </div>
             <div class="portal israh" onclick="identify('Israh')">
-                <span style="color:var(--pink)">ISRAH</span>
+                <span style="color:var(--pink); text-shadow: 0 0 10px var(--pink);">ISRAH</span>
                 <small>LUMIÈRE</small>
             </div>
         </div>
@@ -152,24 +207,24 @@
             <div id="real-clock" class="clock">00:00</div>
             <div id="countdown" class="countdown">Reset dans --h --m</div>
             <div class="xp-container"><div id="xp-fill"></div></div>
-            <div id="status-bar" style="font-size: 0.6rem; letter-spacing: 2px; color: var(--accent);">CONNECTION ÉTABLIE</div>
+            <div id="status-bar" style="font-size: 0.65rem; letter-spacing: 3px; color: var(--accent); font-weight: 800;">CONNEXION ÉTABLIE</div>
         </header>
 
         <div class="container">
             <div class="main-grid">
                 <div class="card">
-                    <h3 style="margin:0 0 5px;">Jardin de Cristal 💎</h3>
-                    <p style="font-size: 0.7rem; opacity: 0.4; margin-bottom: 20px;">Tracez votre chemin ensemble.</p>
+                    <h3 style="margin:0 0 8px;">Jardin de Cristal 💎</h3>
+                    <p style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 25px;">Tracez votre chemin sur la voûte étoilée.</p>
                     <div id="garden-grid"></div>
                     <div class="tool-bar">
                         <button id="btn-draw" class="tool-btn active" onclick="setTool('draw')">PINCEAU</button>
                         <button id="btn-erase" class="tool-btn" onclick="setTool('erase')">GOMME</button>
-                        <button class="tool-btn" style="margin-left:auto; border-color: rgba(255,0,0,0.2);" onclick="clearAll()">TOUT EFFACER</button>
+                        <button class="tool-btn" style="margin-left:auto; border-color: rgba(255,0,0,0.2); color: #ff4444;" onclick="clearAll()">RESET</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="margin:0 0 15px;">Défis & Humeurs ⚡</h3>
+                    <h3 style="margin:0 0 20px;">Défis & Humeurs ⚡</h3>
                     <div class="game-box">
                         <div class="player-row">
                             <span class="badge" style="color:var(--accent)">RAYAN</span>
@@ -194,63 +249,63 @@
                     </div>
 
                     <div class="game-box" style="text-align:center;">
-                        <span style="font-size:0.6rem; font-weight:800; opacity:0.5;">CHIFOUMI DIRECT</span>
-                        <div style="display:flex; justify-content:center; gap:20px; margin:15px 0;">
-                            <span style="cursor:pointer; font-size:1.8rem;" onclick="playRPS('🪨')">🪨</span>
-                            <span style="cursor:pointer; font-size:1.8rem;" onclick="playRPS('📜')">📜</span>
-                            <span style="cursor:pointer; font-size:1.8rem;" onclick="playRPS('✂️')">✂️</span>
+                        <span style="font-size:0.65rem; font-weight:800; opacity:0.5; letter-spacing: 2px;">CHIFOUMI DIRECT</span>
+                        <div style="display:flex; justify-content:center; gap:25px; margin:20px 0;">
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('🪨')">🪨</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('📜')">📜</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('✂️')">✂️</span>
                         </div>
-                        <div id="rps-res" style="font-size:0.7rem; color:var(--pink); font-weight:800;">Faites votre choix...</div>
+                        <div id="rps-res" style="font-size:0.75rem; color:var(--pink); font-weight:800; letter-spacing: 1px;">En attente...</div>
                     </div>
 
                     <div class="game-box" style="text-align:center;">
-                        <span style="font-size:0.6rem; font-weight:800; opacity:0.5;">MORPION</span>
+                        <span style="font-size:0.65rem; font-weight:800; opacity:0.5; letter-spacing: 2px;">MORPION SYNAPTIQUE</span>
                         <div class="ttt-grid" id="ttt-grid"></div>
-                        <button onclick="resetGames()" style="background:none; border:none; color:gray; font-size:0.6rem; cursor:pointer; text-decoration:underline;">RESET JEUX</button>
+                        <button onclick="resetGames()" style="background:none; border:none; color:gray; font-size:0.65rem; cursor:pointer; text-decoration:underline;">RESET TOUS LES JEUX</button>
                     </div>
                 </div>
             </div>
 
             <div class="journals-grid">
                 <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                         <h3 style="margin:0;">Journal de Rayan</h3>
                         <div id="dotR" class="status-dot"></div>
                     </div>
                     <div class="q-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <span style="font-size:0.6rem; font-weight:800; color:var(--accent);">QUESTION DE L'ÂME</span>
-                            <button onclick="rollQ()" style="background:none; border:none; cursor:pointer;">🎲</button>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span style="font-size:0.65rem; font-weight:800; color:var(--accent); letter-spacing: 1px;">QUESTION DE L'ÂME</span>
+                            <button onclick="rollQ()" style="background:none; border:none; cursor:pointer; font-size: 1.2rem;">🎲</button>
                         </div>
-                        <p id="q-txt-R" style="margin:0; font-size:0.85rem; font-weight:600; color:var(--pink);">...</p>
-                        <textarea id="rQ" placeholder="Ta réponse ici..." style="height:50px; margin-top:10px;"></textarea>
+                        <p id="q-txt-R" style="margin:0; font-size:0.9rem; font-weight:600; color:var(--pink); line-height: 1.4;">...</p>
+                        <textarea id="rQ" placeholder="Ta réponse ici..." style="height:60px; margin-top:15px;"></textarea>
                     </div>
                     <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
                     <textarea id="r2" placeholder="J’ai été fier de…"></textarea>
                     <textarea id="r3" placeholder="J’aurais aimé te dire…"></textarea>
                     <textarea id="r4" placeholder="Quelque chose m'a blessé…"></textarea>
                     <textarea id="r5" placeholder="J’ai manqué de…"></textarea>
-                    <button class="finish-btn" onclick="seal('Rayan')">Sceller pour Israh 🖤</button>
+                    <button class="finish-btn" onclick="seal('Rayan')">SCELLER POUR ISRAH 🖤</button>
                 </div>
 
                 <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                         <h3 style="margin:0;">Journal d'Israh</h3>
                         <div id="dotI" class="status-dot"></div>
                     </div>
                     <div class="q-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <span style="font-size:0.6rem; font-weight:800; color:var(--accent);">QUESTION DE L'ÂME</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span style="font-size:0.65rem; font-weight:800; color:var(--accent); letter-spacing: 1px;">QUESTION DE L'ÂME</span>
                         </div>
-                        <p id="q-txt-I" style="margin:0; font-size:0.85rem; font-weight:600; color:var(--pink);">...</p>
-                        <textarea id="iQ" placeholder="Ta réponse ici..." style="height:50px; margin-top:10px;"></textarea>
+                        <p id="q-txt-I" style="margin:0; font-size:0.9rem; font-weight:600; color:var(--pink); line-height: 1.4;">...</p>
+                        <textarea id="iQ" placeholder="Ta réponse ici..." style="height:60px; margin-top:15px;"></textarea>
                     </div>
-                    <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+                    <textarea id="i1" placeholder="Aujourd’hui j’ai gardée pour moi…"></textarea>
                     <textarea id="i2" placeholder="J’ai été fière de…"></textarea>
                     <textarea id="i3" placeholder="J’aurais aimé te dire…"></textarea>
                     <textarea id="i4" placeholder="Quelque chose m'a blessée…"></textarea>
                     <textarea id="i5" placeholder="J’ai manqué de…"></textarea>
-                    <button class="finish-btn" style="background:var(--pink)" onclick="seal('Israh')">Sceller pour Rayan 🖤</button>
+                    <button class="finish-btn" style="background:linear-gradient(45deg, var(--pink), #ff00c8)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
                 </div>
             </div>
         </div>
@@ -258,9 +313,9 @@
 
     <div id="modal">
         <div class="modal-content">
-            <h2 id="modal-title" style="color:var(--pink)">Scellé !</h2>
-            <p id="modal-msg" style="font-size:0.8rem; opacity:0.7; line-height:1.6;"></p>
-            <button class="finish-btn" onclick="document.getElementById('modal').style.display='none'">FERMER</button>
+            <h2 id="modal-title" style="color:var(--pink)">Journal Scellé ! ✨</h2>
+            <p id="modal-msg" style="font-size:0.85rem; opacity:0.7; line-height:1.6;"></p>
+            <button class="finish-btn" style="padding:15px;" onclick="document.getElementById('modal').style.display='none'">FERMER</button>
         </div>
     </div>
 
@@ -269,20 +324,17 @@
     let tool = "draw";
     const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi pour demain ?", "Ton humeur en un mot ?", "De quoi es-tu fier(e) ?", "Un souvenir qui t'a fait sourire ?"];
 
-    // 1. Identification stylée
     function identify(u) {
         myUser = u;
         document.getElementById('who-screen').classList.add('hidden');
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        
-        // On affiche l'app directement après l'animation
+        confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
         setTimeout(() => {
             document.getElementById('who-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
-        }, 800);
+        }, 1000);
     }
 
-    // 2. Jardin (Grille 12x12)
+    // Jardin
     const gGrid = document.getElementById('garden-grid');
     for(let i=0; i<144; i++) {
         const p = document.createElement('div'); p.className = 'pixel';
@@ -292,6 +344,7 @@
         };
         gGrid.appendChild(p);
     }
+
     function setTool(t) {
         tool = t;
         document.getElementById('btn-draw').classList.toggle('active', t==='draw');
@@ -299,7 +352,7 @@
     }
     function clearAll() { database.ref('harmonie_v3/garden').remove(); }
 
-    // 3. Morpion
+    // Morpion
     const tGrid = document.getElementById('ttt-grid');
     for(let i=0; i<9; i++) {
         const c = document.createElement('div'); c.className = 'ttt-cell';
@@ -307,7 +360,7 @@
         tGrid.appendChild(c);
     }
 
-    // 4. Firebase Sync
+    // Firebase Sync
     database.ref('harmonie_v3').on('value', snap => {
         const d = snap.val() || {};
         
@@ -315,7 +368,7 @@
         document.querySelectorAll('.pixel').forEach((p, i) => {
             const color = d.garden?.[i] || 'rgba(255,255,255,0.05)';
             p.style.background = color;
-            p.style.boxShadow = (color.includes('var')) ? `0 0 10px ${color}` : 'none';
+            p.style.boxShadow = (color.includes('var')) ? `0 0 15px ${color}` : 'none';
         });
 
         // Sync Moods
@@ -328,17 +381,18 @@
 
         // Sync RPS
         const rps = d.rps || {};
-        document.getElementById('rps-res').innerText = (rps.rayan && rps.israh) ? `R: ${rps.rayan} VS I: ${rps.israh}` : (rps.rayan || rps.israh ? "Un joueur a choisi..." : "Faites votre choix");
+        document.getElementById('rps-res').innerText = (rps.rayan && rps.israh) ? `Résultat : R: ${rps.rayan} | I: ${rps.israh}` : (rps.rayan || rps.israh ? "Un esprit a choisi..." : "Faites votre choix");
 
         // Sync Morpion
         document.querySelectorAll('.ttt-cell').forEach((c, i) => {
             const v = d.ttt?.[i] || "";
             c.innerText = v;
             c.style.color = v === 'X' ? 'var(--accent)' : 'var(--pink)';
+            c.style.textShadow = v !== "" ? `0 0 10px ${v === 'X' ? 'var(--accent)' : 'var(--pink)'}` : 'none';
         });
 
-        // Sync Journaux & Question
-        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé...";
+        // Sync Journaux
+        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé pour une question...";
         document.getElementById('dotR').classList.toggle('active', d.done?.Rayan);
         document.getElementById('dotI').classList.toggle('active', d.done?.Israh);
 
@@ -350,11 +404,10 @@
         if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = d.valI?.[5] || "";
 
         // XP Update
-        let fills = 0; document.querySelectorAll('textarea').forEach(t => { if(t.value.length > 3) fills++; });
+        let fills = 0; document.querySelectorAll('textarea').forEach(t => { if(t.value.length > 5) fills++; });
         document.getElementById('xp-fill').style.width = (fills / 12 * 100) + "%";
     });
 
-    // Fonctions Actions
     function pushMood(u, m) { database.ref('harmonie_v3/moods/'+u).set(m); }
     function playRPS(m) { database.ref(`harmonie_v3/rps/${myUser.toLowerCase()}`).set(m); }
     function resetGames() { database.ref('harmonie_v3/ttt').remove(); database.ref('harmonie_v3/rps').remove(); }
@@ -370,12 +423,10 @@
     function seal(u) {
         database.ref('harmonie_v3/done/'+u).set(true);
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        document.getElementById('modal-title').innerText = "Journal Scellé ! ✨";
-        document.getElementById('modal-msg').innerText = `Ton cœur a parlé, ${u}. Les pensées sont envoyées.`;
+        document.getElementById('modal-msg').innerText = `Ton cœur a parlé, ${u}. Tes pensées sont désormais scellées et envoyées vers l'autre rive.`;
         document.getElementById('modal').style.display = 'flex';
     }
 
-    // Horloge & Reset Auto
     function updatePortal() {
         const now = new Date();
         document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
@@ -383,7 +434,7 @@
         const diff = midnight - now;
         const hours = Math.floor(diff / 3600000);
         const minutes = Math.floor((diff % 3600000) / 60000);
-        document.getElementById('countdown').innerText = `Reset dans ${hours}h ${minutes}m`;
+        document.getElementById('countdown').innerText = `Nouvelle ère dans ${hours}h ${minutes}m`;
 
         if (hours === 0 && minutes === 0 && now.getSeconds() === 0) {
             database.ref('harmonie_v3').remove();
