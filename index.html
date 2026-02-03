@@ -7,7 +7,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -46,7 +45,7 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- NOUVEAU MENU D'ENTRÉE --- */
+        /* --- MENU D'ENTRÉE STYLISÉ --- */
         #who-screen {
             position: fixed; inset: 0; z-index: 2000;
             background: var(--bg); display: flex; flex-direction: column;
@@ -94,7 +93,6 @@
             text-transform: uppercase;
         }
 
-        /* --- RESTES DES STYLES ORIGINAUX --- */
         #intro-screen {
             position: fixed; inset: 0; z-index: 2000;
             background: var(--bg); display: flex; flex-direction: column;
@@ -364,7 +362,7 @@
             <div style="font-size: 3rem; margin-bottom: 20px;">✨</div>
             <h2 id="modal-title" style="color:var(--pink); margin:0 0 15px;">Cœur Scellé ! ✨</h2>
             <p id="modal-msg" style="font-size:0.9rem; opacity:0.7; line-height:1.7; margin-bottom: 30px;"></p>
-            <button class="who-btn" style="margin:0; width:100%; padding: 15px;" onclick="document.getElementById('modal').style.display='none'">RETOUR AU PORTAIL</button>
+            <button class="finish-btn" style="margin:0; width:100%; padding: 15px; background: var(--bg); border: 1px solid var(--glass-border);" onclick="document.getElementById('modal').style.display='none'">RETOUR AU PORTAIL</button>
         </div>
     </div>
 
@@ -481,7 +479,6 @@
         if (s >= 100) {
             displayEl.innerText = "CRAQUAGE ! L'AGENT GAGNE UN GAGE.";
             displayEl.style.color = "#00ff88";
-            confetti({ particleCount: 100, colors: ['#ff4444', '#00ff88'] });
         } else { displayEl.style.color = "#ff4444"; }
 
         ['rayan','israh'].forEach(u => {
@@ -529,7 +526,6 @@
 
     function seal(u) {
         database.ref('harmonie_v3/done/'+u).set(true);
-        confetti({ particleCount: 150, colors: ['#9b5de5', '#f178ff'] });
         document.getElementById('modal').style.display = 'flex';
     }
 
