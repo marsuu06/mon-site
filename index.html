@@ -1279,52 +1279,6 @@
                 </div>
             </div>
 
-            <!-- LE FRAGMENTARIUM -->
-            <div class="card" style="margin-top:30px;">
-                <div style="text-align:center;margin-bottom:30px;">
-                    <div class="status-badge">Souvenir Recomposé</div>
-                    <h3>Le Fragmentarium 🧩</h3>
-                    <p style="font-size:0.7rem;opacity:0.6;margin-top:12px;letter-spacing:2px;color:rgba(241,120,255,0.8);line-height:1.5;">
-                        Choisissez une photo qui vous est chère et reconstituez-la pièce par pièce.<br>
-                        Chaque fragment replacé renforce votre connexion.
-                    </p>
-                </div>
-                
-                <!-- Zone de téléchargement -->
-                <div id="puzzle-upload-zone" style="background:linear-gradient(135deg,rgba(45,20,70,0.3),rgba(30,15,50,0.4));border:2px dashed rgba(155,93,229,0.3);border-radius:30px;padding:50px 20px;text-align:center;transition:all 0.4s;cursor:pointer;position:relative;overflow:hidden;" onclick="document.getElementById('puzzle-input').click()">
-                    <!-- Effet de brillance au survol -->
-                    <div style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(155,93,229,0.1),transparent 70%);opacity:0;transition:0.4s;pointer-events:none;" id="upload-glow"></div>
-                    
-                    <span style="font-size:3.5rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 20px rgba(155,93,229,0.4));">📸</span>
-                    <p style="font-weight:800;color:var(--pink);letter-spacing:2px;font-size:0.95rem;margin-bottom:8px;text-transform:uppercase;">Importe un Souvenir</p>
-                    <p style="font-size:0.65rem;opacity:0.5;margin-top:8px;letter-spacing:1px;">Il sera fragmenté en 16 pièces d'énergie</p>
-                    <input type="file" id="puzzle-input" hidden accept="image/*" onchange="handlePuzzleUpload(event)">
-                </div>
-                
-                <!-- Zone de jeu -->
-                <div id="puzzle-game-area" style="display:none;margin-top:20px;">
-                    <div style="text-align:center;margin-bottom:20px;padding:15px;background:rgba(155,93,229,0.08);border-radius:20px;border:1px solid rgba(155,93,229,0.2);">
-                        <p style="font-size:0.7rem;font-weight:700;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">PROGRESSION</p>
-                        <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
-                            <span id="puzzle-progress" style="font-size:1.8rem;font-weight:800;color:var(--pink);font-family:'Space Grotesk';">0/16</span>
-                            <div style="flex:1;max-width:200px;height:8px;background:rgba(0,0,0,0.4);border-radius:10px;overflow:hidden;border:1px solid rgba(155,93,229,0.3);">
-                                <div id="puzzle-progress-bar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--accent),var(--pink));transition:0.6s;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="puzzle-board" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:linear-gradient(135deg,rgba(20,10,40,0.6),rgba(30,15,50,0.4));padding:15px;border-radius:30px;margin-bottom:25px;border:2px solid rgba(155,93,229,0.2);box-shadow:inset 0 4px 20px rgba(0,0,0,0.4);max-width:500px;margin-left:auto;margin-right:auto;">
-                    </div>
-                    
-                    <div id="puzzle-success-msg" style="display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,204,106,0.1));border-radius:30px;border:2px solid rgba(0,255,136,0.3);animation:fadeIn 0.8s ease-out;box-shadow:0 0 40px rgba(0,255,136,0.2);">
-                        <span style="font-size:3rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 15px var(--green));">✨</span>
-                        <p style="color:var(--green);font-weight:800;letter-spacing:3px;margin-bottom:15px;font-size:1.2rem;text-transform:uppercase;text-shadow:0 0 20px rgba(0,255,136,0.5);">Harmonie Restaurée</p>
-                        <p style="opacity:0.7;font-size:0.8rem;margin-bottom:25px;line-height:1.6;">Votre souvenir a été recomposé avec succès.<br>L'énergie circule à nouveau librement.</p>
-                        <button class="finish-btn" style="background:linear-gradient(135deg,var(--accent),var(--pink));max-width:300px;margin:0 auto;" onclick="resetFragmentarium()">NOUVEAU SOUVENIR</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- LE FRAGMENTARIUM V2 (VERSION ALTERNATIVE) -->
             <div class="card" style="margin-top:30px;">
                 <div style="text-align:center;margin-bottom:30px;">
