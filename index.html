@@ -2,1163 +2,462 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Harmonie Premium | Espace Connecté</title>
-    
-    <!-- Firebase & Confetti -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L'Harmonie - Espace Privé 🌙</title>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // Ta configuration Firebase (conservée)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
+            authDomain: "mon-projet062.firebaseapp.com",
+            databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "mon-projet062",
+            storageBucket: "mon-projet062.appspot.com",
+            messagingSenderId: "1054174163421",
+            appId: "1:1054174163421:web:50817b3c930a5eb55ac634"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap');
+        
         :root {
-            /* Couleurs Premium */
-            --primary: #8B5CF6;
-            --primary-light: #A78BFA;
-            --primary-dark: #7C3AED;
-            
-            --secondary: #EC4899;
-            --secondary-light: #F472B6;
-            --secondary-dark: #DB2777;
-            
-            --accent: #10B981;
-            --accent-light: #34D399;
-            --accent-dark: #059669;
-            
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --success: #10B981;
-            
-            /* Background */
-            --bg-primary: #0F0F23;
-            --bg-secondary: #1A1A3A;
-            --bg-tertiary: #252545;
-            
-            /* Text */
-            --text-primary: #FFFFFF;
-            --text-secondary: #D1D5DB;
-            --text-tertiary: #9CA3AF;
-            
-            /* Glass Effects */
-            --glass-bg: rgba(255, 255, 255, 0.03);
+            --accent: #9b5de5;
+            --bg: #05020a;
+            --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: rgba(0, 0, 0, 0.2);
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            --gradient-secondary: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
-            --gradient-rayan: linear-gradient(135deg, var(--primary) 0%, #6366F1 100%);
-            --gradient-israh: linear-gradient(135deg, var(--secondary) 0%, #F472B6 100%);
-            
-            /* Shadows */
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.3);
-            --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.2);
-            
-            /* Spacing */
-            --spacing-xs: 0.25rem;
-            --spacing-sm: 0.5rem;
-            --spacing-md: 1rem;
-            --spacing-lg: 1.5rem;
-            --spacing-xl: 2rem;
-            --spacing-2xl: 3rem;
-            
-            /* Border Radius */
-            --radius-sm: 0.5rem;
-            --radius-md: 1rem;
-            --radius-lg: 1.5rem;
-            --radius-xl: 2rem;
-            --radius-full: 9999px;
-            
-            /* Transitions */
-            --transition-fast: 150ms ease-out;
-            --transition-normal: 300ms ease-out;
-            --transition-slow: 500ms ease-out;
+            --pink: #f178ff;
+            --orange: #ff9e00;
+            --green: #00ff88;
+            --text-dim: rgba(255, 255, 255, 0.5);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-            background-attachment: fixed;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.5); }
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* ===== UTILITY CLASSES ===== */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-        }
-
-        .glass-strong {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .animate-fadeIn {
-            animation: fadeIn var(--transition-normal);
-        }
-
-        .animate-slideIn {
-            animation: slideIn var(--transition-normal);
-        }
-
-        .animate-pulse {
-            animation: pulse 2s infinite;
-        }
-
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .animate-glow {
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        .text-gradient {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .gradient-bg {
-            background: var(--gradient-primary);
-            background-size: 200% 200%;
-            animation: gradient 3s ease infinite;
-        }
-
-        /* ===== AUTHENTICATION SCREENS ===== */
-        #auth-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            padding: var(--spacing-xl);
-        }
-
-        .auth-container {
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            padding: var(--spacing-2xl);
-            border-radius: var(--radius-xl);
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .logo-container {
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        .logo {
-            font-size: 5rem;
-            margin-bottom: var(--spacing-md);
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
-        }
-
-        .brand-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: var(--spacing-xs);
-            letter-spacing: -0.02em;
-        }
-
-        .brand-subtitle {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-
-        .auth-description {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-2xl);
-            line-height: 1.8;
-        }
-
-        .user-selection {
-            display: flex;
-            gap: var(--spacing-xl);
-            justify-content: center;
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        @media (max-width: 640px) {
-            .user-selection {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        .user-card {
-            width: 160px;
-            height: 160px;
-            border-radius: var(--radius-lg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            background: rgba(255, 255, 255, 0.02);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .user-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gradient-primary);
-            opacity: 0;
-            transition: opacity var(--transition-normal);
-            z-index: 0;
-        }
-
-        .user-card:hover::before {
-            opacity: 0.1;
-        }
-
-        .user-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--glass-border);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .user-card.rayan:hover {
-            border-color: var(--primary);
-            box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.2);
-        }
-
-        .user-card.israh:hover {
-            border-color: var(--secondary);
-            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.2);
-        }
-
-        .user-icon {
-            font-size: 3rem;
-            margin-bottom: var(--spacing-md);
-            position: relative;
-            z-index: 1;
-        }
-
-        .user-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .user-card.rayan .user-icon,
-        .user-card.rayan .user-name {
-            color: var(--primary);
-        }
-
-        .user-card.israh .user-icon,
-        .user-card.israh .user-name {
-            color: var(--secondary);
-        }
-
-        .auth-footer {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            margin-top: var(--spacing-xl);
-        }
-
-        /* ===== SYNC SCREEN ===== */
-        #sync-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: var(--spacing-xl);
-        }
-
-        .sync-container {
-            text-align: center;
-            max-width: 500px;
-            padding: var(--spacing-2xl);
-        }
-
-        .welcome-text {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sync-instruction {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            margin-bottom: var(--spacing-2xl);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .sync-heart {
-            width: 120px;
-            height: 120px;
-            border-radius: var(--radius-full);
-            border: none;
-            background: var(--gradient-primary);
-            color: var(--text-primary);
-            font-size: 3rem;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            box-shadow: var(--shadow-glow);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .sync-heart:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 60px rgba(139, 92, 246, 0.6);
-        }
-
-        .progress-bar {
-            width: 300px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-full);
-            margin: var(--spacing-xl) auto;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--gradient-primary);
-            border-radius: var(--radius-full);
-            transition: width var(--transition-normal);
-        }
-
-        .progress-text {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .progress-number {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* ===== MAIN APPLICATION ===== */
-        #main-app {
-            display: none;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .app-header {
-            padding: var(--spacing-xl) var(--spacing-2xl);
-            background: rgba(15, 15, 35, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: var(--spacing-xl);
-        }
-
-        @media (max-width: 1024px) {
-            .header-grid {
-                grid-template-columns: 1fr;
-                gap: var(--spacing-lg);
-                text-align: center;
-            }
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-        }
-
-        .user-badge {
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .user-badge.rayan {
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .user-badge.israh {
-            background: rgba(236, 72, 153, 0.15);
-            color: var(--secondary);
-            border: 1px solid rgba(236, 72, 153, 0.3);
-        }
-
-        .logout-btn {
-            padding: var(--spacing-sm) var(--spacing-lg);
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-tertiary);
-            border-radius: var(--radius-full);
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: all var(--transition-normal);
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border-color: var(--glass-border);
-        }
-
-        .clock-display {
-            text-align: center;
-        }
-
-        .main-clock {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .countdown {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-
-        .progress-section {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        @media (max-width: 1024px) {
-            .progress-section {
-                align-items: center;
-            }
-        }
-
-        .harmony-progress {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .progress-label {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            font-weight: 600;
-        }
-
-        .progress-container {
-            width: 200px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-full);
-            overflow: hidden;
-        }
-
-        .progress-value {
-            height: 100%;
-            background: var(--gradient-primary);
-            border-radius: var(--radius-full);
-            width: 0%;
-            transition: width var(--transition-slow);
-        }
-
-        .progress-percent {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            min-width: 40px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm) var(--spacing-lg);
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: var(--radius-full);
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: var(--radius-full);
-            background: var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: var(--spacing-2xl);
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: var(--spacing-xl);
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        @media (max-width: 1024px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .feature-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-            transition: all var(--transition-normal);
-        }
-
-        .feature-card:hover {
-            border-color: var(--glass-border);
-            background: var(--glass-bg);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--glass-border);
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .card-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            margin-top: var(--spacing-xs);
-        }
-
-        /* ===== CRYSTAL GARDEN ===== */
-        .garden-container {
-            margin: var(--spacing-xl) 0;
-        }
-
-        .garden-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 4px;
-            margin-bottom: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--glass-border);
-        }
-
-        .garden-pixel {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            border: 1px solid transparent;
-        }
-
-        .garden-pixel:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--glass-border);
-        }
-
-        .tools-bar {
-            display: flex;
-            gap: var(--spacing-md);
-            flex-wrap: wrap;
-        }
-
-        .tool-btn {
-            padding: var(--spacing-md) var(--spacing-lg);
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .tool-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--glass-border);
-        }
-
-        .tool-btn.active {
-            background: rgba(139, 92, 246, 0.15);
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .tool-btn.danger {
-            border-color: rgba(239, 68, 68, 0.3);
-            color: #FCA5A5;
-        }
-
-        .tool-btn.danger:hover {
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        /* ===== CHALLENGE CENTER ===== */
-        .game-section {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .game-box {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            border: 1px solid var(--glass-border);
-        }
-
-        .player-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .player-badge {
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: var(--radius-full);
-            font-size: 0.875rem;
-            font-weight: 700;
-            border: 2px solid;
-        }
-
-        .player-rayan {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .player-israh {
-            border-color: var(--secondary);
-            color: var(--secondary);
-            background: rgba(236, 72, 153, 0.1);
-        }
-
-        .mood-selector {
-            display: flex;
-            gap: var(--spacing-md);
-        }
-
-        .mood-btn {
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: all var(--transition-normal);
-            filter: grayscale(1);
-        }
-
-        .mood-btn:hover {
-            opacity: 0.8;
-            transform: scale(1.2);
-            filter: grayscale(0);
-        }
-
-        .mood-btn.active {
-            opacity: 1;
-            filter: grayscale(0);
-            transform: scale(1.3);
-        }
-
-        .rps-game {
-            text-align: center;
-        }
-
-        .game-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .rps-choices {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing-xl);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .rps-choice {
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .rps-choice:hover {
-            transform: scale(1.2);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .rps-result {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--secondary);
-            min-height: 24px;
-        }
-
-        .tic-tac-toe {
-            text-align: center;
-        }
-
-        .ttt-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-md);
-            max-width: 200px;
-            margin: var(--spacing-xl) auto;
-        }
-
-        .ttt-cell {
-            aspect-ratio: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--radius-md);
-            border: 2px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-        }
-
-        .ttt-cell:hover {
-            border-color: var(--primary);
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .reset-btn {
-            background: none;
-            border: none;
-            color: var(--text-tertiary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: var(--spacing-lg);
-            transition: color var(--transition-normal);
-        }
-
-        .reset-btn:hover {
-            color: var(--secondary);
-        }
-
-        /* ===== JOURNALS ===== */
-        .journals-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--spacing-xl);
-        }
-
-        @media (max-width: 1024px) {
-            .journals-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .journal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .journal-status {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: var(--radius-full);
-            background: var(--warning);
-            transition: all var(--transition-normal);
-        }
-
-        .status-indicator.active {
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent);
-        }
-
-        .status-text {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
-
-        .question-card {
-            background: rgba(139, 92, 246, 0.08);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--spacing-xl);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .question-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            color: var(--primary);
-            text-transform: uppercase;
-        }
-
-        .dice-btn {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            transition: all var(--transition-normal);
-        }
-
-        .dice-btn:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-
-        .soul-question {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin: var(--spacing-md) 0;
-        }
-
-        .journal-textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            color: var(--text-primary);
-            padding: var(--spacing-lg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.875rem;
-            resize: vertical;
-            margin-bottom: var(--spacing-lg);
-            transition: all var(--transition-normal);
-            min-height: 100px;
-        }
-
-        .journal-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(0, 0, 0, 0.35);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
-
-        .journal-textarea::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .seal-btn {
-            width: 100%;
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            border: none;
-            background: var(--gradient-primary);
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            margin-top: var(--spacing-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-sm);
-        }
-
-        .seal-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
-        }
-
-        .seal-btn.israh {
-            background: var(--gradient-israh);
-        }
-
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-        }
-
-        .modal-content {
-            background: rgba(15, 15, 35, 0.95);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-lg);
-            animation: fadeIn var(--transition-normal);
-        }
-
-        .modal-icon {
-            font-size: 4rem;
-            margin-bottom: var(--spacing-xl);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: var(--spacing-md);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .modal-message {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .modal-close {
-            padding: var(--spacing-md) var(--spacing-xl);
-            border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-        }
-
-        /* ===== FOOTER ===== */
-        .app-footer {
-            text-align: center;
-            padding: var(--spacing-2xl);
-            color: var(--text-tertiary);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--glass-border);
-            margin-top: var(--spacing-2xl);
-        }
-
-        /* ===== RESPONSIVE DESIGN ===== */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: var(--spacing-lg);
-            }
-
-            .app-header {
-                padding: var(--spacing-lg);
-            }
-
-            .header-grid {
-                gap: var(--spacing-md);
-            }
-
-            .main-clock {
-                font-size: 2.5rem;
-            }
-
-            .feature-card {
-                padding: var(--spacing-lg);
-            }
-
-            .user-selection {
-                flex-direction: column;
-            }
-
-            .user-card {
-                width: 140px;
-                height: 140px;
-            }
-
-            .garden-grid {
-                grid-template-columns: repeat(8, 1fr);
-            }
-
-            .tools-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-container {
-                padding: var(--spacing-lg);
-            }
-
-            .brand-title {
-                font-size: 2.5rem;
-            }
-
-            .logo {
-                font-size: 4rem;
-            }
-
-            .main-clock {
-                font-size: 2rem;
-            }
-        }
+            margin: 0; background: var(--bg); color: #fff;
+            background: radial-gradient(circle at top right, #1a0b2e, var(--bg));
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        /* --- SCREENS --- */
+        #who-screen, #intro-screen {
+            position: fixed; inset: 0; z-index: 2000;
+            background: var(--bg); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .who-btn {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 22px 50px; border-radius: 24px; color: white;
+            font-weight: 800; cursor: pointer; margin: 12px; transition: 0.4s;
+            font-size: 1.1rem; letter-spacing: 2px;
+        }
+
+        .who-btn:hover { background: var(--accent); transform: translateY(-8px); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.3); }
+
+        .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); filter: blur(20px); }
+
+        .pulse-btn {
+            width: 120px; height: 120px; background: var(--accent);
+            border-radius: 50%; cursor: pointer; border: none; font-size: 3rem;
+            box-shadow: 0 0 50px rgba(155, 93, 229, 0.4); 
+            animation: pulse 2s infinite; transition: 0.3s;
+        }
+
+        @keyframes pulse { 
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(155, 93, 229, 0); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        header { padding: 50px 20px 30px; text-align: center; }
+        .clock { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; letter-spacing: -2px; }
+        .countdown { font-size: 0.7rem; letter-spacing: 3px; color: var(--pink); font-weight: 700; text-transform: uppercase; margin-top: 10px; }
+        
+        .xp-container { width: 280px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; margin: 25px auto; overflow: hidden; }
+        #xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); transition: 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+
+        /* --- GRID SYSTEM --- */
+        .container { max-width: 1100px; margin: auto; padding: 0 25px 100px; }
+        .main-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; margin-bottom: 30px; }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+        
+        .card { 
+            background: var(--glass); border-radius: 40px; padding: 35px; 
+            border: 1px solid var(--glass-border); backdrop-filter: blur(30px); 
+            transition: 0.3s; position: relative;
+        }
+        .card:hover { border-color: rgba(255,255,255,0.15); }
+
+        /* --- JARDIN --- */
+        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin-bottom: 25px; }
+        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.04); border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .pixel:hover { transform: scale(1.1); z-index: 2; }
+        
+        .tool-bar { display: flex; gap: 12px; align-items: center; }
+        .tool-btn { 
+            background: var(--glass); border: 1px solid var(--glass-border); 
+            color: var(--text-dim); padding: 10px 20px; border-radius: 15px; 
+            cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s;
+        }
+        .tool-btn.active { border-color: var(--pink); color: var(--pink); background: rgba(241, 120, 255, 0.1); }
+
+        /* --- JEUX & MOODS --- */
+        .game-box { background: rgba(0,0,0,0.25); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--glass-border); }
+        .player-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .badge { font-size: 0.65rem; font-weight: 800; padding: 6px 12px; border-radius: 12px; border: 1px solid currentColor; letter-spacing: 1px; }
+        
+        .mood-btn { font-size: 1.4rem; cursor: pointer; opacity: 0.2; transition: 0.3s; filter: grayscale(1); margin-left: 5px; }
+        .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.3); text-shadow: 0 0 15px rgba(255,255,255,0.5); }
+
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 180px; margin: 20px auto; }
+        .ttt-cell { 
+            aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 15px; 
+            border: 1px solid var(--glass-border); display: flex; align-items: center; 
+            justify-content: center; font-size: 1.5rem; font-weight: 800; cursor: pointer; transition: 0.2s;
+        }
+        .ttt-cell:hover { background: rgba(255,255,255,0.08); }
+
+        /* --- JOURNAUX --- */
+        .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 750px) { .journals-grid { grid-template-columns: 1fr; } }
+        
+        .q-box { background: linear-gradient(135deg, rgba(155, 93, 229, 0.1), rgba(241, 120, 255, 0.05)); padding: 25px; border-radius: 30px; margin-bottom: 20px; border: 1px solid rgba(155, 93, 229, 0.2); }
+        .status-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); position: relative; }
+        .status-dot.active { background: var(--green); box-shadow: 0 0 20px var(--green); }
+        .status-dot.active::after { content: 'SCELLÉ'; position: absolute; right: 25px; top: -2px; font-size: 0.6rem; color: var(--green); font-weight: 800; }
+        
+        textarea { 
+            width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); 
+            border-radius: 20px; color: #fff; padding: 18px; font-family: inherit; resize: none; 
+            box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; font-size: 0.9rem;
+        }
+        textarea:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); outline: none; transform: translateY(-2px); }
+        
+        .finish-btn { 
+            width: 100%; padding: 22px; border-radius: 25px; border: none; 
+            background: linear-gradient(45deg, var(--accent), var(--pink)); 
+            color: white; font-weight: 800; cursor: pointer; transition: 0.4s; 
+            font-size: 0.9rem; letter-spacing: 1px;
+        }
+        .finish-btn:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.4); }
+
+        /* --- MODAL --- */
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
+        .modal-content { background: #1a0b2e; border: 1px solid var(--glass-border); padding: 50px; border-radius: 50px; text-align: center; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
-    <!-- Modal de Notification -->
-    <div id="modal-notification" class="modal-overlay">
+
+    <div id="who-screen">
+        <div style="margin-bottom: 40px;">
+            <div style="font-size: 0.7rem; letter-spacing: 10px; opacity: 0.5; margin-bottom: 10px;">PROJET</div>
+            <h2 style="letter-spacing: 8px; font-weight: 800; font-size: 2rem; margin: 0;">L'HARMONIE</h2>
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <button class="who-btn" onclick="identify('Rayan')" style="border-color: var(--accent); color: var(--accent);">RAYAN</button>
+            <button class="who-btn" onclick="identify('Israh')" style="border-color: var(--pink); color: var(--pink);">ISRAH</button>
+        </div>
+    </div>
+
+    <div id="intro-screen" class="hidden">
+        <h1 id="welcome-txt" style="font-weight: 800; font-size: 2.5rem; margin-bottom: 10px;">...</h1>
+        <p id="step-txt" style="opacity: 0.5; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 40px;">SYNCHRONISATION DU CŒUR (5/5)</p>
+        <button id="entry-heart" class="pulse-btn" onclick="heartStep()">❤️</button>
+    </div>
+
+    <div id="main-app" style="display:none">
+        <header>
+            <div id="real-clock" class="clock">00:00</div>
+            <div id="countdown" class="countdown">INITIALISATION...</div>
+            <div class="xp-container"><div id="xp-fill"></div></div>
+            <div style="font-size: 0.6rem; letter-spacing: 4px; color: var(--accent); font-weight: 800;">PORTAIL BIOMÉTRIQUE ACTIF</div>
+        </header>
+
+        <div class="container">
+            <div class="main-grid">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:25px;">
+                        <div>
+                            <h3 style="margin:0; font-size: 1.4rem;">Jardin de Cristal 💎</h3>
+                            <p style="font-size: 0.75rem; opacity: 0.5; margin: 5px 0 0;">Une œuvre éphémère à deux.</p>
+                        </div>
+                        <button class="tool-btn" style="border-color: rgba(255,0,0,0.2); font-size: 0.6rem;" onclick="clearAll()">RESET</button>
+                    </div>
+                    <div id="garden-grid"></div>
+                    <div class="tool-bar">
+                        <button id="btn-draw" class="tool-btn active" onclick="setTool('draw')">PINCEAU</button>
+                        <button id="btn-erase" class="tool-btn" onclick="setTool('erase')">GOMME</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin:0 0 20px; font-size: 1.2rem;">État du Portail ⚡</h3>
+                    
+                    <div class="game-box">
+                        <div class="player-row">
+                            <span class="badge" style="color:var(--accent)">RAYAN</span>
+                            <div id="moods-R">
+                                <span class="mood-btn" onclick="pushMood('rayan','😊')">😊</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🔥')">🔥</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🥺')">🥺</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🥰')">🥰</span>
+                            </div>
+                        </div>
+                        <div class="player-row" style="margin:0">
+                            <span class="badge" style="color:var(--pink)">ISRAH</span>
+                            <div id="moods-I">
+                                <span class="mood-btn" onclick="pushMood('israh','😊')">😊</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🔥')">🔥</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🥺')">🥺</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🥰')">🥰</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-box" style="text-align:center;">
+                        <span style="font-size:0.6rem; font-weight:800; opacity:0.5; letter-spacing:2px;">CHIFOUMI LIVE</span>
+                        <div style="display:flex; justify-content:center; gap:25px; margin:15px 0;">
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('🪨')">🪨</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('📜')">📜</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('✂️')">✂️</span>
+                        </div>
+                        <div id="rps-res" style="font-size:0.75rem; color:var(--pink); font-weight:800; font-family: 'Space Grotesk';">---</div>
+                    </div>
+
+                    <div class="game-box" style="text-align:center; margin-bottom:0;">
+                        <span style="font-size:0.6rem; font-weight:800; opacity:0.5; letter-spacing:2px;">MORPION (X/O)</span>
+                        <div class="ttt-grid" id="ttt-grid"></div>
+                        <button onclick="resetGames()" style="background:none; border:none; color:var(--text-dim); font-size:0.6rem; cursor:pointer; letter-spacing:1px;">RÉINITIALISER LES JEUX</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="journals-grid">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                        <h3 style="margin:0;">Journal de Rayan</h3>
+                        <div id="dotR" class="status-dot"></div>
+                    </div>
+                    <div class="q-box">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.6rem; font-weight:800; color:var(--accent); letter-spacing:1px;">L'ÂME RÉPOND</span>
+                            <button onclick="rollQ()" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">🎲</button>
+                        </div>
+                        <p id="q-txt-R" style="margin:0; font-size:0.95rem; font-weight:600; color:var(--pink); line-height:1.4;">...</p>
+                        <textarea id="rQ" placeholder="Ta réponse profonde..." style="height:60px; margin-top:15px;"></textarea>
+                    </div>
+                    <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+                    <textarea id="r2" placeholder="J’ai été fier de…"></textarea>
+                    <textarea id="r3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="r4" placeholder="Quelque chose m'a blessé…"></textarea>
+                    <textarea id="r5" placeholder="J’ai manqué de…"></textarea>
+                    <button class="finish-btn" onclick="seal('Rayan')">SCELLER POUR ISRAH 🖤</button>
+                </div>
+
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                        <h3 style="margin:0;">Journal d'Israh</h3>
+                        <div id="dotI" class="status-dot"></div>
+                    </div>
+                    <div class="q-box">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.6rem; font-weight:800; color:var(--accent); letter-spacing:1px;">L'ÂME RÉPOND</span>
+                        </div>
+                        <p id="q-txt-I" style="margin:0; font-size:0.95rem; font-weight:600; color:var(--pink); line-height:1.4;">...</p>
+                        <textarea id="iQ" placeholder="Ta réponse profonde..." style="height:60px; margin-top:15px;"></textarea>
+                    </div>
+                    <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+                    <textarea id="i2" placeholder="J’ai été fière de…"></textarea>
+                    <textarea id="i3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="i4" placeholder="Quelque chose m'a blessée…"></textarea>
+                    <textarea id="i5" placeholder="J’ai manqué de…"></textarea>
+                    <button class="finish-btn" style="background:var(--pink)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
         <div class="modal-content">
-            <div id="modal-icon" class="modal-icon">✨</div>
-            <h2 id="modal-title" class="modal-title">Message</h2>
-            <p id="modal-message" class="modal-message">Contenu du message...</p>
-            <button id="modal-close" class="modal-close" onclick="closeModal()">
-                <i class="fas fa-check"></i> Compris !
-            </ 
+            <div style="font-size: 3rem; margin-bottom: 20px;">✨</div>
+            <h2 id="modal-title" style="color:var(--pink); margin:0 0 15px;">Message Scellé</h2>
+            <p id="modal-msg" style="font-size:0.9rem; opacity:0.7; line-height:1.7; margin-bottom: 30px;"></p>
+            <button class="who-btn" style="margin:0; width:100%;" onclick="document.getElementById('modal').style.display='none'">RETOUR AU PORTAIL</button>
+        </div>
+    </div>
+
+<script>
+    let myUser = "";
+    let clicks = 0;
+    let tool = "draw";
+    const soulQuestions = [
+        "Ton moment préféré de la journée ?", 
+        "Une chose que tu aimes chez moi aujourd'hui ?", 
+        "Un défi que tu te lances pour demain ?", 
+        "Quelle émotion domine ton cœur ce soir ?", 
+        "De quoi es-tu le plus fier(e) en ce moment ?", 
+        "Un petit souvenir de nous qui t'a fait sourire ?"
+    ];
+
+    // 1. Identification
+    function identify(u) {
+        myUser = u;
+        document.getElementById('who-screen').classList.add('hidden');
+        document.getElementById('intro-screen').classList.remove('hidden');
+        document.getElementById('welcome-txt').innerText = "Bonjour " + u;
+    }
+
+    // 2. Synchronisation Entrée
+    function heartStep() {
+        clicks++;
+        const h = document.getElementById('entry-heart');
+        h.style.transform = `scale(${1 + clicks*0.15})`;
+        document.getElementById('step-txt').innerText = `SYNCHRONISATION (${5-clicks}/5)`;
+        if(clicks >= 5) {
+            document.getElementById('intro-screen').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('main-app').style.display = 'block';
+                window.scrollTo(0,0);
+            }, 600);
+        }
+    }
+
+    // 3. Jardin Initialisation
+    const gGrid = document.getElementById('garden-grid');
+    for(let i=0; i<144; i++) {
+        const p = document.createElement('div'); 
+        p.className = 'pixel';
+        p.onclick = () => {
+            const color = tool === 'draw' ? (myUser === 'Rayan' ? 'var(--accent)' : 'var(--pink)') : 'rgba(255,255,255,0.04)';
+            database.ref('harmonie_v3/garden/'+i).set(color);
+        };
+        gGrid.appendChild(p);
+    }
+    function setTool(t) {
+        tool = t;
+        document.getElementById('btn-draw').classList.toggle('active', t==='draw');
+        document.getElementById('btn-erase').classList.toggle('active', t==='erase');
+    }
+    function clearAll() { if(confirm("Effacer tout le jardin ?")) database.ref('harmonie_v3/garden').remove(); }
+
+    // 4. Morpion Initialisation
+    const tGrid = document.getElementById('ttt-grid');
+    for(let i=0; i<9; i++) {
+        const c = document.createElement('div'); c.className = 'ttt-cell';
+        c.onclick = () => database.ref('harmonie_v3/ttt/'+i).set(myUser === 'Rayan' ? 'X' : 'O');
+        tGrid.appendChild(c);
+    }
+
+    // 5. Firebase Live Sync
+    database.ref('harmonie_v3').on('value', snap => {
+        const d = snap.val() || {};
+        
+        // Sync Jardin
+        document.querySelectorAll('.pixel').forEach((p, i) => {
+            const color = d.garden?.[i] || 'rgba(255,255,255,0.04)';
+            p.style.background = color;
+            p.style.boxShadow = (color.includes('var')) ? `0 0 12px ${color.replace('var(', '').replace(')', '')}` : 'none';
+        });
+
+        // Sync Moods
+        ['rayan','israh'].forEach(u => {
+            const char = u === 'rayan' ? 'R' : 'I';
+            document.querySelectorAll(`#moods-${char} .mood-btn`).forEach(b => {
+                b.classList.toggle('active', b.innerText === d.moods?.[u]);
+            });
+        });
+
+        // Sync Chifoumi
+        const rps = d.rps || {};
+        const rpsEl = document.getElementById('rps-res');
+        if (rps.rayan && rps.israh) {
+            rpsEl.innerText = `R: ${rps.rayan} | I: ${rps.israh}`;
+            rpsEl.style.color = "var(--green)";
+        } else if (rps.rayan || rps.israh) {
+            rpsEl.innerText = "Un joueur a choisi...";
+            rpsEl.style.color = "var(--orange)";
+        } else {
+            rpsEl.innerText = "Faites votre choix";
+            rpsEl.style.color = "var(--text-dim)";
+        }
+
+        // Sync Morpion
+        document.querySelectorAll('.ttt-cell').forEach((c, i) => {
+            const v = d.ttt?.[i] || "";
+            c.innerText = v;
+            c.style.color = v === 'X' ? 'var(--accent)' : 'var(--pink)';
+            if(v) c.style.background = "rgba(255,255,255,0.08)";
+        });
+
+        // Sync Journaux
+        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé pour une question...";
+        document.getElementById('dotR').classList.toggle('active', d.done?.Rayan);
+        document.getElementById('dotI').classList.toggle('active', d.done?.Israh);
+
+        for(let i=1; i<=5; i++) {
+            if(document.activeElement.id !== 'r'+i) document.getElementById('r'+i).value = d.valR?.[i-1] || "";
+            if(document.activeElement.id !== 'i'+i) document.getElementById('i'+i).value = d.valI?.[i-1] || "";
+        }
+        if(document.activeElement.id !== 'rQ') document.getElementById('rQ').value = d.valR?.[5] || "";
+        if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = d.valI?.[5] || "";
+
+        // XP Progress
+        let filledCount = 0; 
+        document.querySelectorAll('textarea').forEach(t => { if(t.value.trim().length > 2) filledCount++; });
+        document.getElementById('xp-fill').style.width = (filledCount / 12 * 100) + "%";
+    });
+
+    // Actions
+    function pushMood(u, m) { database.ref('harmonie_v3/moods/'+u).set(m); }
+    function playRPS(m) { database.ref(`harmonie_v3/rps/${myUser.toLowerCase()}`).set(m); }
+    function resetGames() { database.ref('harmonie_v3/ttt').remove(); database.ref('harmonie_v3/rps').remove(); }
+    function rollQ() { database.ref('harmonie_v3/qSoul').set(soulQuestions[Math.floor(Math.random()*soulQuestions.length)]); }
+
+    function syncText() {
+        const vr = [1,2,3,4,5].map(n => document.getElementById('r'+n).value); vr.push(document.getElementById('rQ').value);
+        const vi = [1,2,3,4,5].map(n => document.getElementById('i'+n).value); vi.push(document.getElementById('iQ').value);
+        database.ref('harmonie_v3').update({ valR: vr, valI: vi });
+    }
+    document.querySelectorAll('textarea').forEach(t => t.oninput = syncText);
+
+    function seal(u) {
+        database.ref('harmonie_v3/done/'+u).set(true);
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#9b5de5', '#f178ff'] });
+        document.getElementById('modal-title').innerText = "Cœur Scellé ! ✨";
+        document.getElementById('modal-msg').innerText = `Merci ${u}. Tes pensées ont été envoyées dans le cloud. Le signal est passé au vert pour ton partenaire.`;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    // Portal Logic (Clock & Midnight Reset)
+    function updatePortal() {
+        const now = new Date();
+        document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        
+        const midnight = new Date();
+        midnight.setHours(24, 0, 0, 0);
+        const diff = midnight - now;
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        document.getElementById('countdown').innerText = `Reset du portail dans ${h}h ${m}m`;
+
+        if (h === 0 && m === 0 && now.getSeconds() === 0) {
+            database.ref('harmonie_v3').remove();
+            setTimeout(() => { location.reload(); }, 1000);
+        }
+    }
+    setInterval(updatePortal, 1000);
+    updatePortal();
+</script>
+</body>
+</html> 
