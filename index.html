@@ -253,49 +253,63 @@
             overflow: hidden;
         }
 
+        /* Arrière-plan avec effet de glow pulsant */
         #intro-screen::before {
             content: '';
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(155, 93, 229, 0.3) 0%, transparent 70%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(155, 93, 229, 0.4) 0%, rgba(241, 120, 255, 0.2) 30%, transparent 70%);
             border-radius: 50%;
-            animation: pulse-bg 3s ease-in-out infinite;
+            animation: pulse-bg-large 4s ease-in-out infinite;
+            filter: blur(60px);
         }
 
-        @keyframes pulse-bg {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.2); opacity: 0.5; }
+        @keyframes pulse-bg-large {
+            0%, 100% { 
+                transform: scale(0.8); 
+                opacity: 0.4; 
+            }
+            50% { 
+                transform: scale(1.1); 
+                opacity: 0.6; 
+            }
         }
 
         .intro-content {
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #welcome-txt {
             font-weight: 800; 
-            font-size: 3rem; 
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #fff 0%, var(--pink) 100%);
+            font-size: 3.5rem; 
+            margin: 0 0 25px 0;
+            background: linear-gradient(135deg, #ffffff 0%, var(--pink) 50%, #ffffff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: fadeIn 0.8s ease-out;
+            text-shadow: 0 0 40px rgba(241, 120, 255, 0.3);
+            letter-spacing: 1px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #step-txt {
-            opacity: 0.6; 
-            font-size: 0.75rem; 
-            letter-spacing: 4px; 
-            margin-bottom: 60px;
-            font-weight: 700;
+            opacity: 0.5; 
+            font-size: 0.7rem; 
+            letter-spacing: 6px; 
+            margin-bottom: 80px;
+            font-weight: 600;
             text-transform: uppercase;
             position: relative;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         #step-txt::before,
@@ -304,55 +318,87 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 0.5rem;
-            opacity: 0.3;
+            font-size: 0.4rem;
+            opacity: 0.4;
+            animation: diamond-pulse 2s ease-in-out infinite;
         }
 
         #step-txt::before {
-            left: -30px;
+            left: -40px;
         }
 
         #step-txt::after {
-            right: -30px;
+            right: -40px;
+            animation-delay: 1s;
+        }
+
+        @keyframes diamond-pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Container pour le bouton avec anneaux */
+        .heart-container {
+            position: relative;
+            display: inline-block;
         }
 
         .pulse-btn {
-            width: 140px; 
-            height: 140px; 
-            background: linear-gradient(135deg, var(--accent), var(--pink));
+            width: 160px; 
+            height: 160px; 
+            background: linear-gradient(135deg, #b47cff 0%, #f178ff 100%);
             border-radius: 50%; 
             cursor: pointer; 
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            font-size: 4rem;
+            border: none;
+            font-size: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 
-                0 0 60px rgba(155, 93, 229, 0.6),
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 30px rgba(255, 255, 255, 0.1);
-            animation: pulse-heart 2s infinite; 
-            transition: 0.3s;
+                0 0 80px rgba(155, 93, 229, 0.7),
+                0 0 120px rgba(241, 120, 255, 0.4),
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 40px rgba(255, 255, 255, 0.15);
+            animation: pulse-heart 2.5s ease-in-out infinite; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
+            z-index: 10;
         }
 
+        /* Effet de brillance tournante */
         .pulse-btn::before {
             content: '';
             position: absolute;
-            inset: -50%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent 30%);
-            animation: rotate-shine 3s linear infinite;
+            inset: -2px;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255, 255, 255, 0.4) 90deg,
+                transparent 180deg
+            );
+            border-radius: 50%;
+            animation: rotate-shine 4s linear infinite;
+            opacity: 0.6;
         }
 
         @keyframes rotate-shine {
             100% { transform: rotate(360deg); }
         }
 
+        /* Glow interne */
         .pulse-btn::after {
             content: '';
             position: absolute;
-            inset: 5px;
-            background: linear-gradient(135deg, var(--accent), var(--pink));
+            inset: 10px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
             border-radius: 50%;
-            z-index: -1;
+            animation: inner-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes inner-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
 
         @keyframes pulse-heart { 
@@ -360,73 +406,139 @@
                 transform: scale(1); 
                 box-shadow: 
                     0 0 0 0 rgba(155, 93, 229, 0.7),
-                    0 0 60px rgba(155, 93, 229, 0.6),
-                    0 20px 40px rgba(0, 0, 0, 0.4);
+                    0 0 80px rgba(155, 93, 229, 0.7),
+                    0 0 120px rgba(241, 120, 255, 0.4),
+                    0 30px 60px rgba(0, 0, 0, 0.5);
             }
             50% { 
-                transform: scale(1.08); 
-            }
-            70% { 
                 transform: scale(1.05); 
                 box-shadow: 
-                    0 0 0 40px rgba(155, 93, 229, 0),
-                    0 0 80px rgba(155, 93, 229, 0.8),
-                    0 30px 60px rgba(0, 0, 0, 0.5);
+                    0 0 0 30px rgba(155, 93, 229, 0),
+                    0 0 100px rgba(155, 93, 229, 0.9),
+                    0 0 150px rgba(241, 120, 255, 0.6),
+                    0 35px 70px rgba(0, 0, 0, 0.6);
             }
             100% { 
                 transform: scale(1);
                 box-shadow: 
                     0 0 0 0 rgba(155, 93, 229, 0),
-                    0 0 60px rgba(155, 93, 229, 0.6),
-                    0 20px 40px rgba(0, 0, 0, 0.4);
+                    0 0 80px rgba(155, 93, 229, 0.7),
+                    0 0 120px rgba(241, 120, 255, 0.4),
+                    0 30px 60px rgba(0, 0, 0, 0.5);
             }
         }
 
         .pulse-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
             box-shadow: 
-                0 0 80px rgba(155, 93, 229, 0.8),
-                0 30px 60px rgba(0, 0, 0, 0.5);
+                0 0 100px rgba(155, 93, 229, 0.9),
+                0 0 150px rgba(241, 120, 255, 0.6),
+                0 40px 80px rgba(0, 0, 0, 0.6);
         }
 
         .pulse-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
         }
 
+        /* Anneaux de synchronisation améliorés */
         .sync-rings {
             position: absolute;
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .sync-ring {
             position: absolute;
-            inset: 0;
-            border: 2px solid rgba(155, 93, 229, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(155, 93, 229, 0.4);
             border-radius: 50%;
-            animation: expand-ring 3s ease-out infinite;
+            animation: expand-ring 4s ease-out infinite;
+        }
+
+        .sync-ring:nth-child(1) {
+            width: 180px;
+            height: 180px;
+            animation-delay: 0s;
         }
 
         .sync-ring:nth-child(2) {
-            animation-delay: 1s;
+            width: 200px;
+            height: 200px;
+            animation-delay: 1.3s;
+            border-color: rgba(241, 120, 255, 0.3);
         }
 
         .sync-ring:nth-child(3) {
-            animation-delay: 2s;
+            width: 220px;
+            height: 220px;
+            animation-delay: 2.6s;
         }
 
         @keyframes expand-ring {
             0% {
-                transform: scale(0.7);
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0;
+                border-width: 3px;
+            }
+            30% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        /* Particules flottantes autour du cœur */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle 3s ease-in-out infinite;
+        }
+
+        .particle:nth-child(4) {
+            top: -30px;
+            left: 50%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(5) {
+            bottom: -30px;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(6) {
+            left: -30px;
+            top: 50%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(7) {
+            right: -30px;
+            top: 50%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(0) scale(1);
                 opacity: 0;
             }
             50% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
+                transform: translateY(-10px) scale(1.5);
+                opacity: 1;
             }
         }
 
@@ -539,11 +651,15 @@
         <div class="intro-content">
             <h1 id="welcome-txt">...</h1>
             <p id="step-txt">SYNCHRONISATION DU CŒUR (5/5)</p>
-            <div style="position: relative; display: inline-block;">
+            <div class="heart-container">
                 <div class="sync-rings">
                     <div class="sync-ring"></div>
                     <div class="sync-ring"></div>
                     <div class="sync-ring"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
                 </div>
                 <button id="entry-heart" class="pulse-btn" onclick="heartStep()">❤️</button>
             </div>
@@ -765,7 +881,7 @@
         document.getElementById('btn-draw').classList.toggle('active', t==='draw');
         document.getElementById('btn-erase').classList.toggle('active', t==='erase');
     }
-    function clearAll() { if(confirm("Effacer tout ?")) database.ref('harmonie_v3/garden').remove(); }
+    function clearAll() { database.ref('harmonie_v3/garden').remove(); }
 
     // Morpion
     const tGrid = document.getElementById('ttt-grid');
