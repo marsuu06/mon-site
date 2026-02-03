@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
-        // Ta configuration Firebase (conservée)
         const firebaseConfig = {
             apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
             authDomain: "mon-projet062.firebaseapp.com",
@@ -47,7 +46,6 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- SCREENS --- */
         #who-screen, #intro-screen {
             position: fixed; inset: 0; z-index: 2000;
             background: var(--bg); display: flex; flex-direction: column;
@@ -63,7 +61,6 @@
         }
 
         .who-btn:hover { background: var(--accent); transform: translateY(-8px); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.3); }
-
         .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); filter: blur(20px); }
 
         .pulse-btn {
@@ -79,15 +76,12 @@
             100% { transform: scale(1); }
         }
 
-        /* --- HEADER --- */
         header { padding: 50px 20px 30px; text-align: center; }
         .clock { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; letter-spacing: -2px; }
         .countdown { font-size: 0.7rem; letter-spacing: 3px; color: var(--pink); font-weight: 700; text-transform: uppercase; margin-top: 10px; }
-        
         .xp-container { width: 280px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; margin: 25px auto; overflow: hidden; }
         #xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); transition: 1s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
-        /* --- GRID SYSTEM --- */
         .container { max-width: 1100px; margin: auto; padding: 0 25px 100px; }
         .main-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; margin-bottom: 30px; }
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
@@ -97,9 +91,7 @@
             border: 1px solid var(--glass-border); backdrop-filter: blur(30px); 
             transition: 0.3s; position: relative;
         }
-        .card:hover { border-color: rgba(255,255,255,0.15); }
 
-        /* --- JARDIN --- */
         #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin-bottom: 25px; }
         .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.04); border-radius: 6px; cursor: pointer; transition: 0.2s; }
         .pixel:hover { transform: scale(1.1); z-index: 2; }
@@ -112,7 +104,6 @@
         }
         .tool-btn.active { border-color: var(--pink); color: var(--pink); background: rgba(241, 120, 255, 0.1); }
 
-        /* --- JEUX & MOODS --- */
         .game-box { background: rgba(0,0,0,0.25); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--glass-border); }
         .player-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .badge { font-size: 0.65rem; font-weight: 800; padding: 6px 12px; border-radius: 12px; border: 1px solid currentColor; letter-spacing: 1px; }
@@ -126,23 +117,20 @@
             border: 1px solid var(--glass-border); display: flex; align-items: center; 
             justify-content: center; font-size: 1.5rem; font-weight: 800; cursor: pointer; transition: 0.2s;
         }
-        .ttt-cell:hover { background: rgba(255,255,255,0.08); }
 
-        /* --- JOURNAUX --- */
-        .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
         @media (max-width: 750px) { .journals-grid { grid-template-columns: 1fr; } }
         
         .q-box { background: linear-gradient(135deg, rgba(155, 93, 229, 0.1), rgba(241, 120, 255, 0.05)); padding: 25px; border-radius: 30px; margin-bottom: 20px; border: 1px solid rgba(155, 93, 229, 0.2); }
         .status-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); position: relative; }
         .status-dot.active { background: var(--green); box-shadow: 0 0 20px var(--green); }
-        .status-dot.active::after { content: 'SCELLÉ'; position: absolute; right: 25px; top: -2px; font-size: 0.6rem; color: var(--green); font-weight: 800; }
         
         textarea { 
             width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); 
             border-radius: 20px; color: #fff; padding: 18px; font-family: inherit; resize: none; 
             box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; font-size: 0.9rem;
         }
-        textarea:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); outline: none; transform: translateY(-2px); }
+        textarea:focus { border-color: var(--accent); background: rgba(0,0,0,0.5); outline: none; }
         
         .finish-btn { 
             width: 100%; padding: 22px; border-radius: 25px; border: none; 
@@ -150,11 +138,18 @@
             color: white; font-weight: 800; cursor: pointer; transition: 0.4s; 
             font-size: 0.9rem; letter-spacing: 1px;
         }
-        .finish-btn:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.4); }
 
-        /* --- MODAL --- */
+        /* --- STYLES INTERROGATOIRE --- */
+        @keyframes interro-spin { 100% { transform: rotate(360deg); } }
+        .pulse-red { animation: pulse-red-anim 2s infinite; }
+        @keyframes pulse-red-anim {
+            0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+        }
+
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-content { background: #1a0b2e; border: 1px solid var(--glass-border); padding: 50px; border-radius: 50px; text-align: center; max-width: 380px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .modal-content { background: #1a0b2e; border: 1px solid var(--glass-border); padding: 50px; border-radius: 50px; text-align: center; max-width: 380px; }
     </style>
 </head>
 <body>
@@ -285,6 +280,38 @@
                     <button class="finish-btn" style="background:var(--pink)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
                 </div>
             </div>
+
+            <div class="card" style="border: 2px solid #ff444433; background: linear-gradient(180deg, rgba(20, 0, 0, 0.4), var(--bg));">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="status-badge" class="pulse-red" style="background: #ff4444; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px;">UNITÉ D'INTERROGATOIRE ACTIVE</div>
+                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 2px; color: #fff;">SESSIONS DE VÉRITÉ SYNCHRONISÉE 🕵️‍♂️</h3>
+                </div>
+
+                <div id="interro-screen" style="background: #05020a; border: 1px solid #ff444444; border-radius: 25px; padding: 30px; position: relative; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(255, 68, 68, 0.1);">
+                    <div id="radar" style="position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; border: 1px solid #ff444444; border-radius: 50%;">
+                        <div style="width: 100%; height: 100%; border-radius: 50%; border-top: 2px solid #ff4444; animation: interro-spin 2s linear infinite;"></div>
+                    </div>
+                    <p id="interro-display" style="font-family: 'Courier New', monospace; color: #ff4444; font-size: 1.1rem; text-align: center; margin: 0; line-height: 1.4; text-transform: uppercase;">EN ATTENTE D'ACTIVATION DU PROTOCOLE...</p>
+                    <div style="width: 100%; margin-top: 30px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.6rem; color: #ff4444; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px;">
+                            <span>NIVEAU DE TENSION</span>
+                            <span id="stress-val">0%</span>
+                        </div>
+                        <div style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,68,68,0.2);">
+                            <div id="stress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff9e00, #ff4444); transition: 0.4s; box-shadow: 0 0 15px #ff4444;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px;">
+                    <button class="finish-btn" style="background: #1a0b2e; border: 1px solid #ff4444; grid-column: span 2; padding: 15px;" onclick="assignRoles()">🎭 DÉSIGNER LES RÔLES</button>
+                    <button id="btn-next-q" class="finish-btn" style="background: #ff4444;" onclick="pullQuestion()">📂 DOSSIER SUIVANT</button>
+                    <button class="finish-btn" style="background: var(--green);" onclick="addStress(-15)">✅ VÉRITÉ</button>
+                    <button class="finish-btn" style="background: #ff9e00; grid-column: span 2;" onclick="addStress(20)">❌ MENSONGE / HÉSITATION / RIRE</button>
+                    <button class="tool-btn" style="grid-column: span 2; border-color: rgba(255,255,255,0.1);" onclick="resetInterro()">RÉINITIALISER L'INTERROGATOIRE</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -301,16 +328,18 @@
     let myUser = "";
     let clicks = 0;
     let tool = "draw";
-    const soulQuestions = [
-        "Ton moment préféré de la journée ?", 
-        "Une chose que tu aimes chez moi aujourd'hui ?", 
-        "Un défi que tu te lances pour demain ?", 
-        "Quelle émotion domine ton cœur ce soir ?", 
-        "De quoi es-tu le plus fier(e) en ce moment ?", 
-        "Un petit souvenir de nous qui t'a fait sourire ?"
+    const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi ?", "Quelle émotion ?", "Ta fierté ?", "Un souvenir ?"];
+    const ciaQuestions = [
+        "AGENT : Quel est le premier détail physique que tu as remarqué chez moi ?",
+        "AGENT : Si tu devais me cacher un secret pendant 1 an pour 1 million d'euros, tu y arriverais ?",
+        "AGENT : Quelle est l'habitude la plus bizarre que tu as quand tu es seul(e) ?",
+        "AGENT : Avoue un moment où tu as fait semblant de dormir pour m'éviter.",
+        "AGENT : Quelle est la chose la plus folle que tu ferais par amour pour moi là ?",
+        "AGENT : Si on changeait un seul trait de mon caractère, ce serait quoi ?",
+        "AGENT : Quel est le dernier rêve où j'apparaissais ?",
+        "AGENT : Quelle chanson te fait penser à un moment gênant entre nous ?"
     ];
 
-    // 1. Identification
     function identify(u) {
         myUser = u;
         document.getElementById('who-screen').classList.add('hidden');
@@ -318,7 +347,6 @@
         document.getElementById('welcome-txt').innerText = "Bonjour " + u;
     }
 
-    // 2. Synchronisation Entrée
     function heartStep() {
         clicks++;
         const h = document.getElementById('entry-heart');
@@ -333,7 +361,6 @@
         }
     }
 
-    // 3. Jardin Initialisation
     const gGrid = document.getElementById('garden-grid');
     for(let i=0; i<144; i++) {
         const p = document.createElement('div'); 
@@ -349,9 +376,8 @@
         document.getElementById('btn-draw').classList.toggle('active', t==='draw');
         document.getElementById('btn-erase').classList.toggle('active', t==='erase');
     }
-    function clearAll() { if(confirm("Effacer tout le jardin ?")) database.ref('harmonie_v3/garden').remove(); }
+    function clearAll() { if(confirm("Effacer tout ?")) database.ref('harmonie_v3/garden').remove(); }
 
-    // 4. Morpion Initialisation
     const tGrid = document.getElementById('ttt-grid');
     for(let i=0; i<9; i++) {
         const c = document.createElement('div'); c.className = 'ttt-cell';
@@ -359,7 +385,27 @@
         tGrid.appendChild(c);
     }
 
-    // 5. Firebase Live Sync
+    // INTERROGATOIRE LOGIC
+    function assignRoles() {
+        const agent = Math.random() > 0.5 ? 'Rayan' : 'Israh';
+        const suspect = agent === 'Rayan' ? 'Israh' : 'Rayan';
+        database.ref('harmonie_v3/interro').update({
+            display: `MISSION : L'AGENT ${agent.toUpperCase()} INTERROGE ${suspect.toUpperCase()}.`,
+            stress: 0
+        });
+    }
+    function pullQuestion() {
+        const q = ciaQuestions[Math.floor(Math.random() * ciaQuestions.length)];
+        database.ref('harmonie_v3/interro').update({ display: q });
+    }
+    function addStress(amount) {
+        database.ref('harmonie_v3/interro/stress').transaction(curr => {
+            let n = (curr || 0) + amount;
+            return Math.min(Math.max(n, 0), 100);
+        });
+    }
+    function resetInterro() { database.ref('harmonie_v3/interro').set({ display: "SYSTÈME RÉINITIALISÉ. PRÊT.", stress: 0 }); }
+
     database.ref('harmonie_v3').on('value', snap => {
         const d = snap.val() || {};
         
@@ -370,6 +416,22 @@
             p.style.boxShadow = (color.includes('var')) ? `0 0 12px ${color.replace('var(', '').replace(')', '')}` : 'none';
         });
 
+        // Sync Interrogatoire
+        const interro = d.interro || {};
+        const displayEl = document.getElementById('interro-display');
+        const stressBar = document.getElementById('stress-bar');
+        const stressVal = document.getElementById('stress-val');
+        
+        if (interro.display) displayEl.innerText = interro.display;
+        const s = interro.stress || 0;
+        stressBar.style.width = s + "%";
+        stressVal.innerText = s + "%";
+        if (s >= 100) {
+            displayEl.innerText = "CRAQUAGE ! L'AGENT GAGNE UN GAGE.";
+            displayEl.style.color = "#00ff88";
+            confetti({ particleCount: 100, colors: ['#ff4444', '#00ff88'] });
+        } else { displayEl.style.color = "#ff4444"; }
+
         // Sync Moods
         ['rayan','israh'].forEach(u => {
             const char = u === 'rayan' ? 'R' : 'I';
@@ -378,30 +440,18 @@
             });
         });
 
-        // Sync Chifoumi
-        const rps = d.rps || {};
-        const rpsEl = document.getElementById('rps-res');
-        if (rps.rayan && rps.israh) {
-            rpsEl.innerText = `R: ${rps.rayan} | I: ${rps.israh}`;
-            rpsEl.style.color = "var(--green)";
-        } else if (rps.rayan || rps.israh) {
-            rpsEl.innerText = "Un joueur a choisi...";
-            rpsEl.style.color = "var(--orange)";
-        } else {
-            rpsEl.innerText = "Faites votre choix";
-            rpsEl.style.color = "var(--text-dim)";
-        }
-
-        // Sync Morpion
+        // Sync Morpion & RPS
         document.querySelectorAll('.ttt-cell').forEach((c, i) => {
             const v = d.ttt?.[i] || "";
             c.innerText = v;
             c.style.color = v === 'X' ? 'var(--accent)' : 'var(--pink)';
-            if(v) c.style.background = "rgba(255,255,255,0.08)";
         });
 
+        const rps = d.rps || {};
+        document.getElementById('rps-res').innerText = (rps.rayan && rps.israh) ? `R: ${rps.rayan} | I: ${rps.israh}` : "Choix en cours...";
+
         // Sync Journaux
-        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé pour une question...";
+        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé...";
         document.getElementById('dotR').classList.toggle('active', d.done?.Rayan);
         document.getElementById('dotI').classList.toggle('active', d.done?.Israh);
 
@@ -409,16 +459,12 @@
             if(document.activeElement.id !== 'r'+i) document.getElementById('r'+i).value = d.valR?.[i-1] || "";
             if(document.activeElement.id !== 'i'+i) document.getElementById('i'+i).value = d.valI?.[i-1] || "";
         }
-        if(document.activeElement.id !== 'rQ') document.getElementById('rQ').value = d.valR?.[5] || "";
-        if(document.activeElement.id !== 'iQ') document.getElementById('iQ').value = d.valI?.[5] || "";
 
-        // XP Progress
-        let filledCount = 0; 
-        document.querySelectorAll('textarea').forEach(t => { if(t.value.trim().length > 2) filledCount++; });
-        document.getElementById('xp-fill').style.width = (filledCount / 12 * 100) + "%";
+        let filled = 0; 
+        document.querySelectorAll('textarea').forEach(t => { if(t.value.trim().length > 2) filled++; });
+        document.getElementById('xp-fill').style.width = (filled / 12 * 100) + "%";
     });
 
-    // Actions
     function pushMood(u, m) { database.ref('harmonie_v3/moods/'+u).set(m); }
     function playRPS(m) { database.ref(`harmonie_v3/rps/${myUser.toLowerCase()}`).set(m); }
     function resetGames() { database.ref('harmonie_v3/ttt').remove(); database.ref('harmonie_v3/rps').remove(); }
@@ -433,31 +479,19 @@
 
     function seal(u) {
         database.ref('harmonie_v3/done/'+u).set(true);
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#9b5de5', '#f178ff'] });
+        confetti({ particleCount: 150, colors: ['#9b5de5', '#f178ff'] });
         document.getElementById('modal-title').innerText = "Cœur Scellé ! ✨";
-        document.getElementById('modal-msg').innerText = `Merci ${u}. Tes pensées ont été envoyées dans le cloud. Le signal est passé au vert pour ton partenaire.`;
         document.getElementById('modal').style.display = 'flex';
     }
 
-    // Portal Logic (Clock & Midnight Reset)
     function updatePortal() {
         const now = new Date();
         document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        
-        const midnight = new Date();
-        midnight.setHours(24, 0, 0, 0);
+        const midnight = new Date(); midnight.setHours(24, 0, 0, 0);
         const diff = midnight - now;
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        document.getElementById('countdown').innerText = `Reset du portail dans ${h}h ${m}m`;
-
-        if (h === 0 && m === 0 && now.getSeconds() === 0) {
-            database.ref('harmonie_v3').remove();
-            setTimeout(() => { location.reload(); }, 1000);
-        }
+        document.getElementById('countdown').innerText = `Reset dans ${Math.floor(diff / 3600000)}h ${Math.floor((diff % 3600000) / 60000)}m`;
     }
     setInterval(updatePortal, 1000);
-    updatePortal();
 </script>
 </body>
 </html> 
