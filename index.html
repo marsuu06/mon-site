@@ -45,76 +45,399 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- MENU D'ENTRÉE STYLISÉ --- */
+        /* --- ÉCRAN DE CONNEXION AMÉLIORÉ --- */
         #who-screen {
             position: fixed; inset: 0; z-index: 2000;
-            background: var(--bg); display: flex; flex-direction: column;
+            background: linear-gradient(135deg, #0a0315 0%, #1a0b2e 50%, #0a0315 100%);
+            display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
             transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        /* Particules d'arrière-plan animées */
+        #who-screen::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(155, 93, 229, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(241, 120, 255, 0.15) 0%, transparent 50%);
+            animation: float-particles 20s ease-in-out infinite;
+        }
+
+        @keyframes float-particles {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-50px, -50px) rotate(180deg); }
+        }
+
+        .auth-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-header .subtitle {
+            font-size: 0.65rem; 
+            letter-spacing: 12px; 
+            opacity: 0.4; 
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--accent), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        .auth-header h2 {
+            letter-spacing: 10px; 
+            font-weight: 800; 
+            font-size: 3rem; 
+            margin: 0; 
+            font-family: 'Space Grotesk';
+            background: linear-gradient(135deg, #fff 0%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(155, 93, 229, 0.4);
+            position: relative;
+        }
+
+        .auth-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
         }
 
         .auth-container {
-            display: flex; gap: 20px; padding: 20px; perspective: 1000px;
+            display: flex; 
+            gap: 40px; 
+            padding: 20px; 
+            perspective: 1200px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .user-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 40px 30px;
-            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 2px solid var(--glass-border);
+            padding: 50px 40px;
+            border-radius: 35px;
             cursor: pointer;
-            transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            width: 160px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 200px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        /* Effet de lumière qui se déplace */
+        .user-card::before {
+            content: ''; 
+            position: absolute; 
+            inset: -100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            opacity: 0; 
+            transition: 0.8s;
+            transform: rotate(45deg);
+        }
+
+        .user-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 35px;
+            padding: 2px;
+            background: linear-gradient(135deg, currentColor, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: 0.6s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            border-color: currentColor;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 80px currentColor,
+                inset 0 0 40px rgba(255, 255, 255, 0.05);
+        }
+
+        .user-card:hover::before { 
+            opacity: 1;
+            inset: -50%;
+        }
+
+        .user-card:hover::after {
+            opacity: 1;
+        }
+
+        .user-card:active {
+            transform: translateY(-15px) scale(1.02);
+        }
+
+        .user-avatar {
+            font-size: 4rem; 
+            margin-bottom: 20px; 
+            display: block;
+            filter: drop-shadow(0 0 25px currentColor);
+            transition: 0.6s;
+            animation: float-avatar 3s ease-in-out infinite;
+        }
+
+        @keyframes float-avatar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .user-card:hover .user-avatar {
+            transform: scale(1.2) rotate(5deg);
+            filter: drop-shadow(0 0 40px currentColor);
+        }
+
+        .user-name {
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .user-card:hover .user-name {
+            letter-spacing: 5px;
+        }
+
+        .user-subtitle {
+            font-size: 0.65rem;
+            opacity: 0.5;
+            margin-top: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- ÉCRAN DE SYNCHRONISATION AMÉLIORÉ --- */
+        #intro-screen {
+            position: fixed; inset: 0; z-index: 2000;
+            background: linear-gradient(135deg, #0a0315 0%, #1a0b2e 50%, #0a0315 100%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        #intro-screen::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(155, 93, 229, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-bg 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        #welcome-txt {
+            font-weight: 800; 
+            font-size: 3rem; 
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff 0%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #step-txt {
+            opacity: 0.6; 
+            font-size: 0.75rem; 
+            letter-spacing: 4px; 
+            margin-bottom: 60px;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        #step-txt::before,
+        #step-txt::after {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
+            opacity: 0.3;
+        }
+
+        #step-txt::before {
+            left: -30px;
+        }
+
+        #step-txt::after {
+            right: -30px;
+        }
+
+        .pulse-btn {
+            width: 140px; 
+            height: 140px; 
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            border-radius: 50%; 
+            cursor: pointer; 
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            font-size: 4rem;
+            box-shadow: 
+                0 0 60px rgba(155, 93, 229, 0.6),
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: pulse-heart 2s infinite; 
+            transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
 
-        .user-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.05));
-            opacity: 0; transition: 0.5s;
+        .pulse-btn::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent 30%);
+            animation: rotate-shine 3s linear infinite;
         }
 
-        .user-card:hover {
-            transform: translateY(-15px) rotateX(10deg);
-            border-color: currentColor;
-            background: rgba(255,255,255,0.05);
+        @keyframes rotate-shine {
+            100% { transform: rotate(360deg); }
         }
 
-        .user-card:hover::before { opacity: 1; }
-
-        .user-avatar {
-            font-size: 3rem; margin-bottom: 15px; display: block;
-            filter: drop-shadow(0 0 15px currentColor);
+        .pulse-btn::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            border-radius: 50%;
+            z-index: -1;
         }
 
-        .user-name {
-            font-weight: 800; font-size: 1rem; letter-spacing: 2px;
-            text-transform: uppercase;
+        @keyframes pulse-heart { 
+            0% { 
+                transform: scale(1); 
+                box-shadow: 
+                    0 0 0 0 rgba(155, 93, 229, 0.7),
+                    0 0 60px rgba(155, 93, 229, 0.6),
+                    0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+            50% { 
+                transform: scale(1.08); 
+            }
+            70% { 
+                transform: scale(1.05); 
+                box-shadow: 
+                    0 0 0 40px rgba(155, 93, 229, 0),
+                    0 0 80px rgba(155, 93, 229, 0.8),
+                    0 30px 60px rgba(0, 0, 0, 0.5);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 
+                    0 0 0 0 rgba(155, 93, 229, 0),
+                    0 0 60px rgba(155, 93, 229, 0.6),
+                    0 20px 40px rgba(0, 0, 0, 0.4);
+            }
         }
 
-        #intro-screen {
-            position: fixed; inset: 0; z-index: 2000;
-            background: var(--bg); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        .pulse-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 0 80px rgba(155, 93, 229, 0.8),
+                0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); filter: blur(20px); }
-
-        .pulse-btn {
-            width: 120px; height: 120px; background: var(--accent);
-            border-radius: 50%; cursor: pointer; border: none; font-size: 3rem;
-            box-shadow: 0 0 50px rgba(155, 93, 229, 0.4); 
-            animation: pulse 2s infinite; transition: 0.3s;
+        .pulse-btn:active {
+            transform: scale(0.95);
         }
 
-        @keyframes pulse { 
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(155, 93, 229, 0); }
-            100% { transform: scale(1); }
+        .sync-rings {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
         }
 
+        .sync-ring {
+            position: absolute;
+            inset: 0;
+            border: 2px solid rgba(155, 93, 229, 0.3);
+            border-radius: 50%;
+            animation: expand-ring 3s ease-out infinite;
+        }
+
+        .sync-ring:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .sync-ring:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        @keyframes expand-ring {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .hidden { 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: scale(1.1); 
+            filter: blur(20px); 
+        }
+
+        /* Reste du CSS identique */
         header { padding: 50px 20px 30px; text-align: center; }
         .clock { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; letter-spacing: -2px; }
         .countdown { font-size: 0.7rem; letter-spacing: 3px; color: var(--pink); font-weight: 700; text-transform: uppercase; margin-top: 10px; }
@@ -193,27 +516,38 @@
 <body>
 
     <div id="who-screen">
-        <div style="margin-bottom: 40px;">
-            <div style="font-size: 0.7rem; letter-spacing: 10px; opacity: 0.5; margin-bottom: 10px;">PROJET</div>
-            <h2 style="letter-spacing: 8px; font-weight: 800; font-size: 2.2rem; margin: 0; font-family: 'Space Grotesk';">L'HARMONIE</h2>
+        <div class="auth-header">
+            <div class="subtitle">PROJET</div>
+            <h2>L'HARMONIE</h2>
         </div>
         
         <div class="auth-container">
             <div class="user-card" onclick="identify('Rayan')" style="color: var(--accent);">
                 <span class="user-avatar">⚡</span>
                 <span class="user-name">Rayan</span>
+                <div class="user-subtitle">Énergie</div>
             </div>
             <div class="user-card" onclick="identify('Israh')" style="color: var(--pink);">
                 <span class="user-avatar">🌸</span>
                 <span class="user-name">Israh</span>
+                <div class="user-subtitle">Grâce</div>
             </div>
         </div>
     </div>
 
     <div id="intro-screen" class="hidden">
-        <h1 id="welcome-txt" style="font-weight: 800; font-size: 2.5rem; margin-bottom: 10px;">...</h1>
-        <p id="step-txt" style="opacity: 0.5; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 40px;">SYNCHRONISATION DU CŒUR (5/5)</p>
-        <button id="entry-heart" class="pulse-btn" onclick="heartStep()">❤️</button>
+        <div class="intro-content">
+            <h1 id="welcome-txt">...</h1>
+            <p id="step-txt">SYNCHRONISATION DU CŒUR (5/5)</p>
+            <div style="position: relative; display: inline-block;">
+                <div class="sync-rings">
+                    <div class="sync-ring"></div>
+                    <div class="sync-ring"></div>
+                    <div class="sync-ring"></div>
+                </div>
+                <button id="entry-heart" class="pulse-btn" onclick="heartStep()">❤️</button>
+            </div>
+        </div>
     </div>
 
     <div id="main-app" style="display:none">
@@ -298,11 +632,11 @@
                         <p id="q-txt-R" style="margin:0; font-size:0.95rem; font-weight:600; color:var(--pink); line-height:1.4;">...</p>
                         <textarea id="rQ" placeholder="Ta réponse profonde..." style="height:60px; margin-top:15px;"></textarea>
                     </div>
-                    <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                    <textarea id="r2" placeholder="J’ai été fier de…"></textarea>
-                    <textarea id="r3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="r1" placeholder="Aujourd'hui j'ai gardé pour moi…"></textarea>
+                    <textarea id="r2" placeholder="J'ai été fier de…"></textarea>
+                    <textarea id="r3" placeholder="J'aurais aimé te dire…"></textarea>
                     <textarea id="r4" placeholder="Quelque chose m'a blessé…"></textarea>
-                    <textarea id="r5" placeholder="J’ai manqué de…"></textarea>
+                    <textarea id="r5" placeholder="J'ai manqué de…"></textarea>
                     <button class="finish-btn" onclick="seal('Rayan')">SCELLER POUR ISRAH 🖤</button>
                 </div>
                 <div class="card">
@@ -317,11 +651,11 @@
                         <p id="q-txt-I" style="margin:0; font-size:0.95rem; font-weight:600; color:var(--pink); line-height:1.4;">...</p>
                         <textarea id="iQ" placeholder="Ta réponse profonde..." style="height:60px; margin-top:15px;"></textarea>
                     </div>
-                    <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
-                    <textarea id="i2" placeholder="J’ai été fière de…"></textarea>
-                    <textarea id="i3" placeholder="J’aurais aimé te dire…"></textarea>
+                    <textarea id="i1" placeholder="Aujourd'hui j'ai gardé pour moi…"></textarea>
+                    <textarea id="i2" placeholder="J'ai été fière de…"></textarea>
+                    <textarea id="i3" placeholder="J'aurais aimé te dire…"></textarea>
                     <textarea id="i4" placeholder="Quelque chose m'a blessée…"></textarea>
-                    <textarea id="i5" placeholder="J’ai manqué de…"></textarea>
+                    <textarea id="i5" placeholder="J'ai manqué de…"></textarea>
                     <button class="finish-btn" style="background:var(--pink)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
                 </div>
             </div>
