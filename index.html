@@ -46,21 +46,84 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        #who-screen, #intro-screen {
+        /* --- NOUVEAU DESIGN ÉCRAN D'ACCUEIL --- */
+        #who-screen {
+            position: fixed; inset: 0; z-index: 2000;
+            background: radial-gradient(circle at center, #13072e 0%, #05020a 100%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .welcome-header { animation: fadeInDown 1s ease-out; }
+        
+        .main-title {
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 10px;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin: 25px auto 40px;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .who-btn {
+            position: relative;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 20px 50px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .btn-rayan:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(155, 93, 229, 0.4);
+            transform: translateY(-5px);
+            color: var(--accent);
+        }
+
+        .btn-israh:hover {
+            border-color: var(--pink);
+            box-shadow: 0 0 30px rgba(241, 120, 255, 0.4);
+            transform: translateY(-5px);
+            color: var(--pink);
+        }
+
+        /* --- FIN NOUVEAU DESIGN --- */
+
+        #intro-screen {
             position: fixed; inset: 0; z-index: 2000;
             background: var(--bg); display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
             transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .who-btn {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 22px 50px; border-radius: 24px; color: white;
-            font-weight: 800; cursor: pointer; margin: 12px; transition: 0.4s;
-            font-size: 1.1rem; letter-spacing: 2px;
-        }
-
-        .who-btn:hover { background: var(--accent); transform: translateY(-8px); box-shadow: 0 15px 30px rgba(155, 93, 229, 0.3); }
         .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); filter: blur(20px); }
 
         .pulse-btn {
@@ -74,6 +137,11 @@
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(155, 93, 229, 0.7); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 30px rgba(155, 93, 229, 0); }
             100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         header { padding: 50px 20px 30px; text-align: center; }
@@ -139,15 +207,6 @@
             font-size: 0.9rem; letter-spacing: 1px;
         }
 
-        /* --- STYLES INTERROGATOIRE --- */
-        @keyframes interro-spin { 100% { transform: rotate(360deg); } }
-        .pulse-red { animation: pulse-red-anim 2s infinite; }
-        @keyframes pulse-red-anim {
-            0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
-        }
-
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
         .modal-content { background: #1a0b2e; border: 1px solid var(--glass-border); padding: 50px; border-radius: 50px; text-align: center; max-width: 380px; }
     </style>
@@ -155,13 +214,14 @@
 <body>
 
     <div id="who-screen">
-        <div style="margin-bottom: 40px;">
-            <div style="font-size: 0.7rem; letter-spacing: 10px; opacity: 0.5; margin-bottom: 10px;">PROJET</div>
-            <h2 style="letter-spacing: 8px; font-weight: 800; font-size: 2rem; margin: 0;">L'HARMONIE</h2>
+        <div class="welcome-header">
+            <p class="subtitle">PROJET</p>
+            <h1 class="main-title">L'HARMONIE</h1>
+            <div class="divider"></div>
         </div>
-        <div style="display: flex; gap: 20px;">
-            <button class="who-btn" onclick="identify('Rayan')" style="border-color: var(--accent); color: var(--accent);">RAYAN</button>
-            <button class="who-btn" onclick="identify('Israh')" style="border-color: var(--pink); color: var(--pink);">ISRAH</button>
+        <div style="display: flex; gap: 10px;">
+            <button class="who-btn btn-rayan" onclick="identify('Rayan')">RAYAN</button>
+            <button class="who-btn btn-israh" onclick="identify('Israh')">ISRAH</button>
         </div>
     </div>
 
@@ -283,37 +343,6 @@
                     <button class="finish-btn" style="background:var(--pink)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
                 </div>
             </div>
-
-            <div class="card" style="border: 2px solid #ff444433; background: linear-gradient(180deg, rgba(20, 0, 0, 0.4), var(--bg));">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div id="status-badge" class="pulse-red" style="background: #ff4444; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px;">UNITÉ D'INTERROGATOIRE ACTIVE</div>
-                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 2px; color: #fff;">SESSIONS DE VÉRITÉ SYNCHRONISÉE 🕵️‍♂️</h3>
-                </div>
-
-                <div id="interro-screen" style="background: #05020a; border: 1px solid #ff444444; border-radius: 25px; padding: 30px; position: relative; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(255, 68, 68, 0.1);">
-                    <div id="radar" style="position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; border: 1px solid #ff444444; border-radius: 50%;">
-                        <div style="width: 100%; height: 100%; border-radius: 50%; border-top: 2px solid #ff4444; animation: interro-spin 2s linear infinite;"></div>
-                    </div>
-                    <p id="interro-display" style="font-family: 'Courier New', monospace; color: #ff4444; font-size: 1.1rem; text-align: center; margin: 0; line-height: 1.4; text-transform: uppercase;">EN ATTENTE D'ACTIVATION DU PROTOCOLE...</p>
-                    <div style="width: 100%; margin-top: 30px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.6rem; color: #ff4444; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px;">
-                            <span>NIVEAU DE TENSION</span>
-                            <span id="stress-val">0%</span>
-                        </div>
-                        <div style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,68,68,0.2);">
-                            <div id="stress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff9e00, #ff4444); transition: 0.4s; box-shadow: 0 0 15px #ff4444;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px;">
-                    <button class="finish-btn" style="background: #1a0b2e; border: 1px solid #ff4444; grid-column: span 2; padding: 15px;" onclick="assignRoles()">🎭 DÉSIGNER LES RÔLES</button>
-                    <button id="btn-next-q" class="finish-btn" style="background: #ff4444;" onclick="pullQuestion()">📂 DOSSIER SUIVANT</button>
-                    <button class="finish-btn" style="background: var(--green);" onclick="addStress(-15)">✅ VÉRITÉ</button>
-                    <button class="finish-btn" style="background: #ff9e00; grid-column: span 2;" onclick="addStress(20)">❌ MENSONGE / HÉSITATION / RIRE</button>
-                    <button class="tool-btn" style="grid-column: span 2; border-color: rgba(255,255,255,0.1);" onclick="resetInterro()">RÉINITIALISER L'INTERROGATOIRE</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -332,30 +361,6 @@
     let tool = "draw";
     const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi ?", "Quelle émotion ?", "Ta fierté ?", "Un souvenir ?"];
     
-    // LISTE DES QUESTIONS CIA MISE À JOUR (20 QUESTIONS)
-    const ciaQuestions = [
-        "AGENT : Quel est le premier détail physique que tu as remarqué chez moi ?",
-        "AGENT : Si tu devais me cacher un secret pendant 1 an pour 1 million d'euros, tu y arriverais ?",
-        "AGENT : Quelle est l'habitude la plus bizarre que tu as quand tu es seul(e) ?",
-        "AGENT : Avoue un moment où tu as fait semblant de dormir pour m'éviter.",
-        "AGENT : Quelle est la chose la plus folle que tu ferais par amour pour moi là ?",
-        "AGENT : Si on changeait un seul trait de mon caractère, ce serait quoi ?",
-        "AGENT : Quel est le dernier rêve où j'apparaissais ?",
-        "AGENT : Quelle chanson te fait penser à un moment gênant entre nous ?",
-        "AGENT : Si je devais commettre un crime, tu serais mon complice ou celui qui me dénonce ?",
-        "AGENT : Quel est le vêtement dans mon armoire que tu ne peux absolument plus voir en peinture ?",
-        "AGENT : Quelle est la première chose que tu as racontée sur moi à tes potes/ta famille ?",
-        "AGENT : Si on était dans un film d'horreur, lequel de nous deux mourrait en premier ?",
-        "AGENT : Quelle est la question que tu redoutes le plus que je te pose un jour ?",
-        "AGENT : Si tu pouvais lire dans mes pensées pendant seulement 30 secondes, tu choisirais quel moment ?",
-        "AGENT : Quelle est la plus grande différence entre l'idée que tu te faisais de moi et la réalité ?",
-        "AGENT : Si on devait tout recommencer à zéro, qu'est-ce que tu changerais dans notre premier rendez-vous ?",
-        "AGENT : Est-ce que tu as déjà fait semblant d'aimer un cadeau ou un plat que je t'ai préparé ?",
-        "AGENT : Quel est le dernier truc que tu as supprimé dans ton historique ou tes messages ?",
-        "AGENT : Avoue une fois où tu as été jaloux(se) d'une personne totalement insignifiante.",
-        "AGENT : Quelle est la chose la plus 'cliché' que tu trouves mignonne chez moi mais que tu n'avoueras jamais ?"
-    ];
-
     function identify(u) {
         myUser = u;
         document.getElementById('who-screen').classList.add('hidden');
@@ -392,7 +397,11 @@
         document.getElementById('btn-draw').classList.toggle('active', t==='draw');
         document.getElementById('btn-erase').classList.toggle('active', t==='erase');
     }
-    function clearAll() { if(confirm("Effacer tout ?")) database.ref('harmonie_v3/garden').remove(); }
+
+    // FONCTION RESET MODIFIÉE : PLUS DE CONFIRMATION
+    function clearAll() { 
+        database.ref('harmonie_v3/garden').remove(); 
+    }
 
     const tGrid = document.getElementById('ttt-grid');
     for(let i=0; i<9; i++) {
@@ -401,59 +410,16 @@
         tGrid.appendChild(c);
     }
 
-    // INTERROGATOIRE LOGIC
-    function assignRoles() {
-        const agent = Math.random() > 0.5 ? 'Rayan' : 'Israh';
-        const suspect = agent === 'Rayan' ? 'Israh' : 'Rayan';
-        database.ref('harmonie_v3/interro').update({
-            display: `MISSION : L'AGENT ${agent.toUpperCase()} INTERROGE ${suspect.toUpperCase()}.`,
-            stress: 0
-        });
-    }
-    function pullQuestion() {
-        const q = ciaQuestions[Math.floor(Math.random() * ciaQuestions.length)];
-        database.ref('harmonie_v3/interro').update({ display: q });
-    }
-    function addStress(amount) {
-        database.ref('harmonie_v3/interro/stress').transaction(curr => {
-            let n = (curr || 0) + amount;
-            return Math.min(Math.max(n, 0), 100);
-        });
-    }
-    function resetInterro() { database.ref('harmonie_v3/interro').set({ display: "SYSTÈME RÉINITIALISÉ. PRÊT.", stress: 0 }); }
-
-    // RESET CHIFOUMI
-    function resetRPS() {
-        database.ref('harmonie_v3/rps').remove();
-    }
+    function resetRPS() { database.ref('harmonie_v3/rps').remove(); }
 
     database.ref('harmonie_v3').on('value', snap => {
         const d = snap.val() || {};
-        
-        // Sync Jardin
         document.querySelectorAll('.pixel').forEach((p, i) => {
             const color = d.garden?.[i] || 'rgba(255,255,255,0.04)';
             p.style.background = color;
             p.style.boxShadow = (color.includes('var')) ? `0 0 12px ${color.replace('var(', '').replace(')', '')}` : 'none';
         });
 
-        // Sync Interrogatoire
-        const interro = d.interro || {};
-        const displayEl = document.getElementById('interro-display');
-        const stressBar = document.getElementById('stress-bar');
-        const stressVal = document.getElementById('stress-val');
-        
-        if (interro.display) displayEl.innerText = interro.display;
-        const s = interro.stress || 0;
-        stressBar.style.width = s + "%";
-        stressVal.innerText = s + "%";
-        if (s >= 100) {
-            displayEl.innerText = "CRAQUAGE ! L'AGENT GAGNE UN GAGE.";
-            displayEl.style.color = "#00ff88";
-            confetti({ particleCount: 100, colors: ['#ff4444', '#00ff88'] });
-        } else { displayEl.style.color = "#ff4444"; }
-
-        // Sync Moods
         ['rayan','israh'].forEach(u => {
             const char = u === 'rayan' ? 'R' : 'I';
             document.querySelectorAll(`#moods-${char} .mood-btn`).forEach(b => {
@@ -461,7 +427,6 @@
             });
         });
 
-        // Sync Morpion & RPS
         document.querySelectorAll('.ttt-cell').forEach((c, i) => {
             const v = d.ttt?.[i] || "";
             c.innerText = v;
@@ -470,8 +435,6 @@
 
         const rps = d.rps || {};
         document.getElementById('rps-res').innerText = (rps.rayan && rps.israh) ? `R: ${rps.rayan} | I: ${rps.israh}` : "Choix en cours...";
-
-        // Sync Journaux
         document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance le dé...";
         document.getElementById('dotR').classList.toggle('active', d.done?.Rayan);
         document.getElementById('dotI').classList.toggle('active', d.done?.Israh);
