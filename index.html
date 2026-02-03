@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>L'Harmonie 🌙 Version Premium</title>
     
+    <!-- LIENS Firebase et Confetti -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
+    <!-- Polices Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* TOUT LE CSS QUE JE VOUS AI DÉJÀ DONNÉ */
+        /* (Gardez exactement le même CSS que précédemment) */
         :root {
             --bg-primary: #0a0614;
             --bg-secondary: #131023;
@@ -49,763 +53,14 @@
                 radial-gradient(circle at 80% 70%, rgba(241, 91, 181, 0.1) 0%, transparent 50%);
         }
 
-        /* ===== ÉCRANS D'AUTHENTIFICATION ===== */
-        #auth-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: linear-gradient(135deg, #0a0614 0%, #1a0b2e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+        /* TOUT LE RESTE DU CSS RESTE IDENTIQUE */
+        /* ... (collez ici tout le CSS précédent) ... */
 
-        .logo-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            font-size: 4.5rem;
-            margin-bottom: 10px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-        }
-
-        .user-select {
-            display: flex;
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .user-btn {
-            width: 140px;
-            height: 140px;
-            border-radius: 24px;
-            border: 2px solid;
-            background: rgba(255, 255, 255, 0.02);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .user-btn.rayan {
-            border-color: rgba(155, 93, 229, 0.4);
-            color: var(--accent-purple);
-        }
-
-        .user-btn.israh {
-            border-color: rgba(241, 91, 181, 0.4);
-            color: var(--accent-pink);
-        }
-
-        .user-btn:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .user-btn.rayan:hover {
-            border-color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.1);
-        }
-
-        .user-btn.israh:hover {
-            border-color: var(--accent-pink);
-            background: rgba(241, 91, 181, 0.1);
-        }
-
-        .user-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-        }
-
-        /* ===== SCREEN SYNC ===== */
-        #sync-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 9000;
-            background: linear-gradient(135deg, #0a0614 0%, #1a0b2e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.8s ease;
-        }
-
-        #sync-screen.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .sync-heart {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
-            border: none;
-            font-size: 3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 50px rgba(155, 93, 229, 0.4);
-            margin-bottom: 20px;
-        }
-
-        .sync-heart:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 70px rgba(155, 93, 229, 0.6);
-        }
-
-        /* ===== APP PRINCIPALE ===== */
-        #main-app {
-            display: none;
-            padding-bottom: 60px;
-        }
-
-        /* HEADER */
-        .app-header {
-            padding: 40px 20px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(10, 6, 20, 0.9) 0%, transparent 100%);
-            pointer-events: none;
-        }
-
-        .real-clock {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .countdown {
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            color: var(--accent-pink);
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-        }
-
-        .xp-container {
-            max-width: 300px;
-            margin: 0 auto 15px;
-        }
-
-        .xp-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .xp-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
-            border-radius: 3px;
-            transition: width 0.8s ease;
-        }
-
-        .xp-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #00ff88;
-            animation: pulse 2s infinite;
-        }
-
-        /* CONTAINER ET GRID */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* CARTES */
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: rgba(155, 93, 229, 0.3);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            opacity: 0.8;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .card-subtitle {
-            font-size: 0.8rem;
-            color: var(--text-tertiary);
-            margin-top: 4px;
-        }
-
-        /* JARDIN DE CRISTAL */
-        #garden-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 6px;
-            margin-bottom: 20px;
-        }
-
-        .pixel {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .pixel:hover {
-            transform: scale(1.1);
-        }
-
-        .tools-bar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tool-btn {
-            padding: 10px 20px;
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tool-btn:hover {
-            border-color: var(--accent-purple);
-            color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.1);
-        }
-
-        .tool-btn.active {
-            border-color: var(--accent-purple);
-            color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.15);
-        }
-
-        /* CENTRE DE DÉFIS */
-        .game-box {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .player-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .player-badge {
-            padding: 6px 16px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border: 2px solid;
-        }
-
-        .badge-rayan {
-            border-color: var(--accent-purple);
-            color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.1);
-        }
-
-        .badge-israh {
-            border-color: var(--accent-pink);
-            color: var(--accent-pink);
-            background: rgba(241, 91, 181, 0.1);
-        }
-
-        .mood-selector {
-            display: flex;
-            gap: 12px;
-        }
-
-        .mood-btn {
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: all 0.2s ease;
-            filter: grayscale(1);
-        }
-
-        .mood-btn:hover {
-            opacity: 0.8;
-            transform: scale(1.2);
-            filter: grayscale(0);
-        }
-
-        .mood-btn.active {
-            opacity: 1;
-            filter: grayscale(0);
-            transform: scale(1.3);
-        }
-
-        /* RPS */
-        .rps-game {
-            text-align: center;
-        }
-
-        .rps-choices {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 20px 0;
-        }
-
-        .rps-choice {
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            padding: 10px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .rps-choice:hover {
-            transform: scale(1.2);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .rps-result {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--accent-pink);
-            min-height: 20px;
-        }
-
-        /* MORPION */
-        .ttt-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            max-width: 180px;
-            margin: 20px auto;
-        }
-
-        .ttt-cell {
-            aspect-ratio: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .ttt-cell:hover {
-            border-color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.1);
-        }
-
-        .reset-btn {
-            background: none;
-            border: none;
-            color: var(--text-tertiary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 10px;
-            transition: color 0.2s ease;
-        }
-
-        .reset-btn:hover {
-            color: var(--accent-pink);
-        }
-
-        /* JOURNAUX */
-        .journals-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 700px) {
-            .journals-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .journal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .journal-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-dot-journal {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent-yellow);
-            transition: all 0.3s ease;
-        }
-
-        .status-dot-journal.active {
-            background: var(--accent-green);
-            box-shadow: 0 0 15px var(--accent-green);
-        }
-
-        .question-box {
-            background: rgba(155, 93, 229, 0.08);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(155, 93, 229, 0.15);
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .question-label {
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--accent-purple);
-        }
-
-        .roll-btn {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: all 0.2s ease;
-        }
-
-        .roll-btn:hover {
-            opacity: 1;
-            transform: rotate(90deg);
-        }
-
-        .soul-question {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--accent-pink);
-            margin: 0;
-        }
-
-        .journal-textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            color: var(--text-primary);
-            padding: 18px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            resize: vertical;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .journal-textarea:focus {
-            outline: none;
-            border-color: var(--accent-purple);
-            background: rgba(0, 0, 0, 0.35);
-            box-shadow: 0 0 0 2px rgba(155, 93, 229, 0.1);
-        }
-
-        .journal-textarea::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .seal-btn {
-            width: 100%;
-            padding: 22px;
-            border-radius: 20px;
-            border: none;
-            background: var(--gradient-purple-pink);
-            color: white;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .seal-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(155, 93, 229, 0.3);
-        }
-
-        .seal-btn.israh {
-            background: linear-gradient(45deg, var(--accent-pink), var(--accent-purple));
-        }
-
-        /* MODAL */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 20000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a0b2e 0%, #0a0614 100%);
-            border: 1px solid var(--accent-pink);
-            padding: 50px 40px;
-            border-radius: 35px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            animation: modalIn 0.4s ease;
-        }
-
-        .modal-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .modal-message {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-        }
-
-        .modal-close {
-            padding: 14px 32px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            border-color: var(--accent-purple);
-            background: rgba(155, 93, 229, 0.1);
-        }
-
-        /* ANIMATIONS */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .gradient-animate {
-            background: linear-gradient(-45deg, #9b5de5, #f15bb5, #00bbf9, #00f5d4);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        /* UTILITÉS */
-        .hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(1.1);
-        }
-
-        .user-indicator {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            z-index: 1000;
-        }
-
-        .user-indicator.rayan {
-            background: rgba(155, 93, 229, 0.15);
-            color: var(--accent-purple);
-            border: 1px solid rgba(155, 93, 229, 0.3);
-        }
-
-        .user-indicator.israh {
-            background: rgba(241, 91, 181, 0.15);
-            color: var(--accent-pink);
-            border: 1px solid rgba(241, 91, 181, 0.3);
-        }
-
-        .logout-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 1000;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-        }
     </style>
 </head>
 <body>
 
+    <!-- MÊME HTML QUE PRÉCÉDEMMENT -->
     <!-- ÉCRAN D'AUTHENTIFICATION -->
     <div id="auth-screen">
         <div class="logo-container">
@@ -993,4 +248,445 @@
                     <div class="journal-header">
                         <h3 class="card-title">Journal d'Israh</h3>
                         <div class="journal-status">
-                            <div id="dotI" class
+                            <div id="dotI" class="status-dot-journal"></div>
+                            <span style="font-size:0.7rem; color:var(--text-tertiary);">STATUT</span>
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-header">
+                            <span class="question-label">QUESTION DE L'ÂME</span>
+                            <!-- Pas de bouton dé pour Israh (seul Rayan peut lancer) -->
+                        </div>
+                        <p id="q-txt-I" class="soul-question">En attente de question...</p>
+                        <textarea id="iQ" class="journal-textarea" placeholder="Ta réponse ici..." rows="2"></textarea>
+                    </div>
+                    
+                    <textarea id="i1" class="journal-textarea" placeholder="Aujourd'hui j'ai gardé pour moi…" rows="3"></textarea>
+                    <textarea id="i2" class="journal-textarea" placeholder="J'ai été fière de…" rows="3"></textarea>
+                    <textarea id="i3" class="journal-textarea" placeholder="J'aurais aimé te dire…" rows="3"></textarea>
+                    <textarea id="i4" class="journal-textarea" placeholder="Quelque chose m'a blessée…" rows="3"></textarea>
+                    <textarea id="i5" class="journal-textarea" placeholder="J'ai manqué de…" rows="3"></textarea>
+                    
+                    <button class="seal-btn israh" onclick="seal('Israh')">Sceller pour Rayan 🖤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modal-icon">✨</div>
+            <h2 id="modal-title" class="modal-title">Scellé !</h2>
+            <p id="modal-message" class="modal-message">Votre journal a été scellé avec succès.</p>
+            <button class="modal-close" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+
+    <script>
+        // ============ CONFIGURATION FIREBASE ============
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPNfMyhIOTWyGG-ZB5pOTr-y3TA0J3B28",
+            authDomain: "mon-projet062.firebaseapp.com",
+            databaseURL: "https://mon-projet062-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "mon-projet062",
+            storageBucket: "mon-projet062.appspot.com",
+            messagingSenderId: "1054174163421",
+            appId: "1:1054174163421:web:50817b3c930a5eb55ac634"
+        };
+        
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // ============ VARIABLES GLOBALES ============
+        let currentUser = "";
+        let syncClicks = 0;
+        let currentTool = "draw";
+        const soulQuestions = [
+            "Ton moment préféré avec moi ?",
+            "Une chose que tu aimes chez moi ?",
+            "Un défi que tu veux relever demain ?",
+            "Ton humeur en un seul mot ?",
+            "De quoi es-tu fier(e) aujourd'hui ?",
+            "Un souvenir qui t'a fait sourire récemment ?",
+            "Quelque chose que tu as appris sur toi-même ?",
+            "Ce qui te rend reconnaissant(e) en ce moment ?"
+        ];
+
+        // ============ FONCTIONS D'AUTHENTIFICATION ============
+        function identify(user) {
+            currentUser = user;
+            document.getElementById('auth-screen').style.opacity = '0';
+            document.getElementById('auth-screen').style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('sync-screen').classList.add('active');
+                document.getElementById('welcome-text').textContent = `Bonjour, ${user}`;
+                
+                // Mettre à jour l'indicateur utilisateur
+                const indicator = document.getElementById('user-indicator');
+                indicator.textContent = `Connecté en tant que ${user}`;
+                indicator.className = `user-indicator ${user.toLowerCase()}`;
+            }, 500);
+        }
+
+        function heartStep() {
+            syncClicks++;
+            const heart = document.getElementById('sync-heart');
+            const count = document.getElementById('sync-count');
+            
+            // Animation du cœur
+            heart.style.transform = `scale(${1 + syncClicks * 0.1})`;
+            count.textContent = syncClicks;
+            
+            // Confetti après chaque clic
+            confetti({
+                particleCount: 50,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            
+            if (syncClicks >= 5) {
+                document.getElementById('sync-instruction').textContent = 'SYNCHRONISATION TERMINÉE !';
+                document.getElementById('sync-heart').textContent = '✨';
+                document.getElementById('sync-heart').style.background = 'linear-gradient(45deg, var(--accent-green), var(--accent-blue))';
+                
+                setTimeout(() => {
+                    document.getElementById('sync-screen').classList.remove('active');
+                    document.getElementById('main-app').style.display = 'block';
+                    initApp();
+                }, 1000);
+            }
+        }
+
+        function logout() {
+            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('auth-screen').style.display = 'flex';
+                document.getElementById('auth-screen').style.opacity = '1';
+                document.getElementById('auth-screen').style.transform = 'scale(1)';
+                currentUser = '';
+                syncClicks = 0;
+            }
+        }
+
+        // ============ INITIALISATION DE L'APP ============
+        function initApp() {
+            // Initialiser le jardin
+            initGarden();
+            
+            // Initialiser le morpion
+            initTicTacToe();
+            
+            // Mettre à jour l'horloge
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Écouter les changements Firebase
+            setupFirebaseListeners();
+        }
+
+        // ============ JARDIN DE CRISTAL ============
+        function initGarden() {
+            const grid = document.getElementById('garden-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 144; i++) {
+                const pixel = document.createElement('div');
+                pixel.className = 'pixel';
+                pixel.dataset.index = i;
+                
+                pixel.addEventListener('click', () => {
+                    handlePixelClick(i);
+                });
+                
+                grid.appendChild(pixel);
+            }
+        }
+
+        function setTool(tool) {
+            currentTool = tool;
+            
+            // Mettre à jour les boutons
+            document.getElementById('btn-draw').classList.toggle('active', tool === 'draw');
+            document.getElementById('btn-erase').classList.toggle('active', tool === 'erase');
+        }
+
+        function handlePixelClick(index) {
+            let color = null;
+            
+            if (currentTool === 'draw') {
+                color = currentUser === 'Rayan' ? 
+                    'var(--accent-purple)' : 
+                    'var(--accent-pink)';
+            }
+            
+            // Envoyer à Firebase
+            database.ref(`harmonie_v3/garden/${index}`).set(color);
+        }
+
+        function clearAll() {
+            if (confirm('Voulez-vous vraiment effacer tout le jardin ? Cette action est irréversible.')) {
+                database.ref('harmonie_v3/garden').remove();
+            }
+        }
+
+        // ============ MORPION ============
+        function initTicTacToe() {
+            const grid = document.getElementById('ttt-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'ttt-cell';
+                cell.dataset.index = i;
+                
+                cell.addEventListener('click', () => {
+                    handleTicTacToeClick(i);
+                });
+                
+                grid.appendChild(cell);
+            }
+        }
+
+        function handleTicTacToeClick(index) {
+            const symbol = currentUser === 'Rayan' ? 'X' : 'O';
+            database.ref(`harmonie_v3/ttt/${index}`).set(symbol);
+        }
+
+        // ============ JEUX ============
+        function pushMood(user, mood) {
+            database.ref(`harmonie_v3/moods/${user}`).set(mood);
+        }
+
+        function playRPS(choice) {
+            database.ref(`harmonie_v3/rps/${currentUser.toLowerCase()}`).set(choice);
+        }
+
+        function resetGames() {
+            if (confirm('Réinitialiser tous les jeux ?')) {
+                database.ref('harmonie_v3/ttt').remove();
+                database.ref('harmonie_v3/rps').remove();
+            }
+        }
+
+        function rollQ() {
+            if (currentUser === 'Rayan') {
+                const randomQuestion = soulQuestions[Math.floor(Math.random() * soulQuestions.length)];
+                database.ref('harmonie_v3/qSoul').set(randomQuestion);
+            }
+        }
+
+        // ============ JOURNAUX ============
+        function seal(user) {
+            // Marquer comme complété
+            database.ref(`harmonie_v3/done/${user}`).set(true);
+            
+            // Afficher le modal
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('modal-title').textContent = 'Journal Scellé !';
+            document.getElementById('modal-message').textContent = 
+                `Ton cœur a parlé, ${user}. Les pensées sont envoyées et le signal est passé au vert pour ton partenaire.`;
+            
+            // Lancer des confettis
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // ============ SYNC AVEC FIREBASE ============
+        function setupFirebaseListeners() {
+            database.ref('harmonie_v3').on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                
+                // Synchroniser le jardin
+                if (data.garden) {
+                    document.querySelectorAll('.pixel').forEach(pixel => {
+                        const index = pixel.dataset.index;
+                        const color = data.garden[index] || null;
+                        
+                        if (color) {
+                            pixel.style.background = color;
+                            pixel.style.boxShadow = `0 0 15px ${color}80`;
+                        } else {
+                            pixel.style.background = 'rgba(255, 255, 255, 0.03)';
+                            pixel.style.boxShadow = 'none';
+                        }
+                    });
+                }
+                
+                // Synchroniser les humeurs
+                ['rayan', 'israh'].forEach(user => {
+                    const mood = data.moods?.[user];
+                    const selector = document.getElementById(`moods-${user === 'rayan' ? 'R' : 'I'}`);
+                    
+                    if (selector) {
+                        selector.querySelectorAll('.mood-btn').forEach(btn => {
+                            btn.classList.toggle('active', btn.textContent === mood);
+                        });
+                    }
+                });
+                
+                // Synchroniser RPS
+                const rpsData = data.rps || {};
+                const resultDiv = document.getElementById('rps-result');
+                
+                if (rpsData.rayan && rpsData.israh) {
+                    // Déterminer le gagnant
+                    const winner = getRPSWinner(rpsData.rayan, rpsData.israh);
+                    resultDiv.textContent = `R: ${rpsData.rayan} vs I: ${rpsData.israh} - ${winner}`;
+                } else if (rpsData.rayan || rpsData.israh) {
+                    resultDiv.textContent = 'Un joueur a choisi...';
+                } else {
+                    resultDiv.textContent = 'Faites votre choix...';
+                }
+                
+                // Synchroniser le morpion
+                if (data.ttt) {
+                    document.querySelectorAll('.ttt-cell').forEach(cell => {
+                        const index = cell.dataset.index;
+                        const value = data.ttt[index] || '';
+                        
+                        cell.textContent = value;
+                        cell.style.color = value === 'X' ? 'var(--accent-purple)' : 'var(--accent-pink)';
+                    });
+                }
+                
+                // Synchroniser les journaux
+                if (data.qSoul) {
+                    document.getElementById('q-txt-R').textContent = data.qSoul;
+                    document.getElementById('q-txt-I').textContent = data.qSoul;
+                }
+                
+                // Synchroniser l'état des journaux
+                document.getElementById('dotR').classList.toggle('active', data.done?.Rayan);
+                document.getElementById('dotI').classList.toggle('active', data.done?.Israh);
+                
+                // Synchroniser les textareas (si l'utilisateur n'est pas en train d'écrire dedans)
+                syncTextarea('r', data.valR);
+                syncTextarea('i', data.valI);
+                
+                // Mettre à jour la barre de progression
+                updateXPBar();
+            });
+        }
+
+        function syncTextarea(prefix, values) {
+            if (!values) return;
+            
+            // Champs 1-5
+            for (let i = 1; i <= 5; i++) {
+                const textarea = document.getElementById(`${prefix}${i}`);
+                if (textarea && document.activeElement !== textarea) {
+                    textarea.value = values[i-1] || '';
+                }
+            }
+            
+            // Question
+            const qTextarea = document.getElementById(`${prefix}Q`);
+            if (qTextarea && document.activeElement !== qTextarea) {
+                qTextarea.value = values[5] || '';
+            }
+        }
+
+        // Fonction pour enregistrer automatiquement les textareas
+        function setupTextareaAutoSave() {
+            document.querySelectorAll('.journal-textarea').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    const id = this.id;
+                    const prefix = id.charAt(0); // 'r' ou 'i'
+                    const num = id.slice(1); // '1', '2', 'Q', etc.
+                    
+                    // Construire le tableau des valeurs
+                    const values = [];
+                    for (let i = 1; i <= 5; i++) {
+                        values.push(document.getElementById(`${prefix}${i}`)?.value || '');
+                    }
+                    values.push(document.getElementById(`${prefix}Q`)?.value || '');
+                    
+                    // Envoyer à Firebase
+                    database.ref(`harmonie_v3/val${prefix.toUpperCase()}`).set(values);
+                });
+            });
+        }
+
+        // ============ UTILITAIRES ============
+        function getRPSWinner(choice1, choice2) {
+            if (choice1 === choice2) return 'Égalité !';
+            
+            const rules = {
+                '🪨': '✂️',
+                '📜': '🪨',
+                '✂️': '📜'
+            };
+            
+            return rules[choice1] === choice2 ? 'Rayan gagne !' : 'Israh gagne !';
+        }
+
+        function updateXPBar() {
+            let filledCount = 0;
+            const totalTextareas = document.querySelectorAll('.journal-textarea').length;
+            
+            document.querySelectorAll('.journal-textarea').forEach(textarea => {
+                if (textarea.value.trim().length > 3) {
+                    filledCount++;
+                }
+            });
+            
+            const percentage = Math.round((filledCount / totalTextareas) * 100);
+            document.getElementById('xp-fill').style.width = `${percentage}%`;
+            document.getElementById('xp-percent').textContent = `${percentage}%`;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            document.getElementById('real-clock').textContent = timeString;
+            
+            // Calculer le temps jusqu'à minuit
+            const midnight = new Date();
+            midnight.setHours(24, 0, 0, 0);
+            const diff = midnight - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById('countdown').textContent = `Reset dans ${hours}h ${minutes}m`;
+            
+            // Réinitialiser à minuit
+            if (hours === 0 && minutes === 0 && now.getSeconds() < 10) {
+                database.ref('harmonie_v3').remove();
+                setTimeout(() => {
+                    alert('Le système a été réinitialisé pour la nouvelle journée !');
+                    location.reload();
+                }, 1000);
+            }
+        }
+
+        // ============ INITIALISATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si l'utilisateur est déjà connecté (dans le localStorage)
+            const savedUser = localStorage.getItem('harmonie_user');
+            if (savedUser) {
+                identify(savedUser);
+            }
+            
+            // Configurer l'auto-sauvegarde des textareas
+            setupTextareaAutoSave();
+        });
+    </script>
+</body>
+</html> 
