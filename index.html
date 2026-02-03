@@ -634,14 +634,14 @@
         /* Styles pour le jeu Flux d'Harmonie */
         .harmony-cell {
             aspect-ratio: 1;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            background: linear-gradient(145deg, rgba(45, 20, 70, 0.3), rgba(30, 15, 50, 0.2));
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(155, 93, 229, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -650,15 +650,15 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, rgba(100, 200, 255, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(155, 93, 229, 0.15) 0%, transparent 70%);
             opacity: 0;
             transition: 0.4s;
         }
 
         .harmony-cell:hover {
             transform: scale(1.05);
-            border-color: rgba(100, 200, 255, 0.4);
-            box-shadow: 0 5px 20px rgba(100, 200, 255, 0.2);
+            border-color: rgba(241, 120, 255, 0.5);
+            box-shadow: 0 5px 20px rgba(155, 93, 229, 0.3);
         }
 
         .harmony-cell:hover::before {
@@ -666,31 +666,31 @@
         }
 
         .harmony-cell.connected {
-            background: linear-gradient(145deg, rgba(100, 200, 255, 0.2), rgba(100, 200, 255, 0.1));
-            border-color: rgba(100, 200, 255, 0.6);
-            box-shadow: 0 0 25px rgba(100, 200, 255, 0.4);
+            background: linear-gradient(145deg, rgba(155, 93, 229, 0.3), rgba(155, 93, 229, 0.15));
+            border-color: rgba(155, 93, 229, 0.7);
+            box-shadow: 0 0 25px rgba(155, 93, 229, 0.5);
             animation: pulse-connected 2s ease-in-out infinite;
         }
 
         @keyframes pulse-connected {
             0%, 100% { 
-                box-shadow: 0 0 25px rgba(100, 200, 255, 0.4);
+                box-shadow: 0 0 25px rgba(155, 93, 229, 0.5);
             }
             50% { 
-                box-shadow: 0 0 35px rgba(100, 200, 255, 0.6);
+                box-shadow: 0 0 35px rgba(155, 93, 229, 0.7);
             }
         }
 
         .harmony-cell.start {
-            background: linear-gradient(145deg, rgba(100, 200, 255, 0.3), rgba(100, 200, 255, 0.15));
-            border-color: rgba(100, 200, 255, 0.8);
-            box-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+            background: linear-gradient(145deg, rgba(155, 93, 229, 0.4), rgba(155, 93, 229, 0.2));
+            border-color: rgba(155, 93, 229, 0.9);
+            box-shadow: 0 0 30px rgba(155, 93, 229, 0.6);
         }
 
         .harmony-cell.end {
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.15));
-            border-color: rgba(255, 215, 0, 0.8);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(145deg, rgba(241, 120, 255, 0.4), rgba(241, 120, 255, 0.2));
+            border-color: rgba(241, 120, 255, 0.9);
+            box-shadow: 0 0 30px rgba(241, 120, 255, 0.6);
         }
 
         .harmony-cell svg {
@@ -701,23 +701,23 @@
 
         .harmony-path {
             fill: none;
-            stroke: rgba(255, 255, 255, 0.3);
+            stroke: rgba(255, 255, 255, 0.25);
             stroke-width: 3;
             stroke-linecap: round;
             transition: stroke 0.4s;
         }
 
         .harmony-cell.connected .harmony-path {
-            stroke: rgba(100, 200, 255, 0.9);
-            filter: drop-shadow(0 0 5px rgba(100, 200, 255, 0.8));
+            stroke: rgba(155, 93, 229, 1);
+            filter: drop-shadow(0 0 5px rgba(155, 93, 229, 0.8));
         }
 
         .harmony-cell.start .harmony-path {
-            stroke: rgba(100, 200, 255, 1);
+            stroke: rgba(155, 93, 229, 1);
         }
 
         .harmony-cell.end .harmony-path {
-            stroke: rgba(255, 215, 0, 1);
+            stroke: rgba(241, 120, 255, 1);
         }
 
         @keyframes flow-pulse {
@@ -730,10 +730,10 @@
         }
 
         .harmony-cell.completed .harmony-path {
-            stroke: rgba(255, 215, 0, 1);
+            stroke: rgba(241, 120, 255, 1);
             stroke-dasharray: 10 5;
             animation: flow-pulse 1s linear infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+            filter: drop-shadow(0 0 10px rgba(241, 120, 255, 0.9));
         }
 
         #modal { 
@@ -1000,30 +1000,30 @@
                 </div>
             </div>
 
-            <div class="card" style="border: 2px solid rgba(255, 68, 68, 0.3); background: linear-gradient(145deg, rgba(20, 5, 30, 0.95), rgba(10, 2, 10, 0.98)); position: relative; overflow: hidden;">
-                <!-- Effet de fond lumineux -->
-                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255, 68, 68, 0.08) 0%, transparent 50%); pointer-events: none; animation: rotate-bg 20s linear infinite;"></div>
+            <div class="card" style="border: 2px solid rgba(155, 93, 229, 0.3); background: linear-gradient(145deg, rgba(45, 20, 70, 0.4), rgba(30, 15, 50, 0.5)); position: relative; overflow: hidden;">
+                <!-- Effet de fond lumineux violet -->
+                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(155, 93, 229, 0.08) 0%, rgba(241, 120, 255, 0.05) 30%, transparent 60%); pointer-events: none; animation: rotate-bg 20s linear infinite;"></div>
                 
                 <div style="text-align: center; margin-bottom: 30px; position: relative; z-index: 1;">
-                    <div id="status-badge" style="background: linear-gradient(135deg, #ff4444, #ff6666); color: #fff; display: inline-block; padding: 8px 20px; border-radius: 8px; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4); text-transform: uppercase;">UNITÉ D'INTERROGATOIRE ACTIVE</div>
-                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 3px; font-size: 1.3rem; color: #fff; text-transform: uppercase;">SESSIONS DE VÉRITÉ SYNCHRONISÉE 🕵️‍♂️</h3>
+                    <div id="status-badge" style="background: linear-gradient(135deg, rgba(155, 93, 229, 0.3), rgba(241, 120, 255, 0.3)); color: #fff; display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(155, 93, 229, 0.3); text-transform: uppercase; border: 1px solid rgba(155, 93, 229, 0.5);">Unité d'Interrogatoire Active</div>
+                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 3px; font-size: 1.3rem; background: linear-gradient(135deg, var(--pink), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;">Sessions de Vérité Synchronisée 🕵️‍♂️</h3>
                 </div>
                 
-                <div id="interro-screen" style="background: linear-gradient(135deg, rgba(10, 2, 20, 0.8), rgba(20, 5, 30, 0.6)); border: 2px solid rgba(255, 68, 68, 0.25); border-radius: 30px; padding: 40px 30px; position: relative; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(255, 68, 68, 0.1), 0 10px 40px rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px);">
+                <div id="interro-screen" style="background: linear-gradient(135deg, rgba(20, 10, 40, 0.6), rgba(30, 15, 50, 0.4)); border: 2px solid rgba(155, 93, 229, 0.3); border-radius: 30px; padding: 40px 30px; position: relative; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(155, 93, 229, 0.1), 0 10px 40px rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px);">
                     <!-- Radar animé amélioré -->
-                    <div id="radar" style="position: absolute; top: 20px; right: 20px; width: 35px; height: 35px; border: 2px solid rgba(255, 68, 68, 0.3); border-radius: 50%; background: rgba(255, 68, 68, 0.05);">
-                        <div style="width: 100%; height: 100%; border-radius: 50%; border-top: 3px solid #ff4444; animation: interro-spin 2s linear infinite; box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);"></div>
+                    <div id="radar" style="position: absolute; top: 20px; right: 20px; width: 35px; height: 35px; border: 2px solid rgba(155, 93, 229, 0.4); border-radius: 50%; background: rgba(155, 93, 229, 0.08);">
+                        <div style="width: 100%; height: 100%; border-radius: 50%; border-top: 3px solid var(--pink); animation: interro-spin 2s linear infinite; box-shadow: 0 0 15px rgba(241, 120, 255, 0.6);"></div>
                     </div>
                     
-                    <p id="interro-display" style="font-family: 'Space Grotesk', monospace; color: #00ff88; font-size: 1.15rem; text-align: center; margin: 0; line-height: 1.6; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);">EN ATTENTE D'ACTIVATION DU PROTOCOLE...</p>
+                    <p id="interro-display" style="font-family: 'Space Grotesk', monospace; color: var(--pink); font-size: 1.15rem; text-align: center; margin: 0; line-height: 1.6; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; text-shadow: 0 0 20px rgba(241, 120, 255, 0.5);">EN ATTENTE D'ACTIVATION DU PROTOCOLE...</p>
                     
                     <div style="width: 100%; margin-top: 35px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: #ff6b6b; font-weight: 800; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase;">
-                            <span>NIVEAU DE TENSION</span>
-                            <span id="stress-val" style="color: #ff4444;">0%</span>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--pink); font-weight: 800; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase;">
+                            <span>Niveau de Tension</span>
+                            <span id="stress-val" style="color: var(--pink);">0%</span>
                         </div>
-                        <div style="height: 8px; background: rgba(0, 0, 0, 0.4); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255, 68, 68, 0.3); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);">
-                            <div id="stress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ffaa00, #ff4444, #ff0000); transition: 0.4s; box-shadow: 0 0 20px rgba(255, 68, 68, 0.8); position: relative;">
+                        <div style="height: 8px; background: rgba(0, 0, 0, 0.4); border-radius: 10px; overflow: hidden; border: 1px solid rgba(155, 93, 229, 0.3); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);">
+                            <div id="stress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink), #ff6b9d); transition: 0.4s; box-shadow: 0 0 20px rgba(241, 120, 255, 0.8); position: relative;">
                                 <div style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: shimmer 2s infinite;"></div>
                             </div>
                         </div>
@@ -1031,37 +1031,40 @@
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; position: relative; z-index: 1;">
-                    <button class="finish-btn" style="background: linear-gradient(135deg, rgba(30, 15, 50, 0.8), rgba(20, 10, 40, 0.9)); border: 2px solid rgba(155, 93, 229, 0.4); grid-column: span 2; padding: 18px; font-size: 0.85rem; box-shadow: 0 5px 20px rgba(155, 93, 229, 0.2); transition: 0.3s;" onclick="assignRoles()" onmouseover="this.style.borderColor='rgba(155, 93, 229, 0.8)'; this.style.boxShadow='0 8px 30px rgba(155, 93, 229, 0.4)'" onmouseout="this.style.borderColor='rgba(155, 93, 229, 0.4)'; this.style.boxShadow='0 5px 20px rgba(155, 93, 229, 0.2)'">🎭 DÉSIGNER LES RÔLES</button>
+                    <button class="finish-btn" style="background: linear-gradient(135deg, rgba(45, 20, 70, 0.6), rgba(30, 15, 50, 0.7)); border: 2px solid rgba(155, 93, 229, 0.5); grid-column: span 2; padding: 18px; font-size: 0.85rem; box-shadow: 0 5px 20px rgba(155, 93, 229, 0.3); transition: 0.3s;" onclick="assignRoles()" onmouseover="this.style.borderColor='rgba(155, 93, 229, 0.9)'; this.style.boxShadow='0 8px 30px rgba(155, 93, 229, 0.5)'" onmouseout="this.style.borderColor='rgba(155, 93, 229, 0.5)'; this.style.boxShadow='0 5px 20px rgba(155, 93, 229, 0.3)'">🎭 Désigner les Rôles</button>
                     
-                    <button id="btn-next-q" class="finish-btn" style="background: linear-gradient(135deg, #ff4444, #ff6666); box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="pullQuestion()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(255, 68, 68, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(255, 68, 68, 0.4)'">📂 DOSSIER SUIVANT</button>
+                    <button id="btn-next-q" class="finish-btn" style="background: linear-gradient(135deg, var(--accent), var(--pink)); box-shadow: 0 5px 20px rgba(155, 93, 229, 0.4); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="pullQuestion()" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(155, 93, 229, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(155, 93, 229, 0.4)'">📂 Dossier Suivant</button>
                     
-                    <button class="finish-btn" style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="addStress(-15)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0, 255, 136, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0, 255, 136, 0.3)'">✅ VÉRITÉ</button>
+                    <button class="finish-btn" style="background: linear-gradient(135deg, #00ff88, #00cc6a); box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="addStress(-15)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0, 255, 136, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0, 255, 136, 0.3)'">✅ Vérité</button>
                     
-                    <button class="finish-btn" style="background: linear-gradient(135deg, #ffaa00, #ff8800); grid-column: span 2; box-shadow: 0 5px 20px rgba(255, 170, 0, 0.3); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="addStress(20)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(255, 170, 0, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(255, 170, 0, 0.3)'">❌ MENSONGE / HÉSITATION / RIRE</button>
+                    <button class="finish-btn" style="background: linear-gradient(135deg, var(--pink), #ff6b9d); grid-column: span 2; box-shadow: 0 5px 20px rgba(241, 120, 255, 0.3); font-size: 0.85rem; transition: 0.3s; border: none;" onclick="addStress(20)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(241, 120, 255, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(241, 120, 255, 0.3)'">❌ Mensonge / Hésitation / Rire</button>
                     
-                    <button class="tool-btn" style="grid-column: span 2; border-color: rgba(255,255,255,0.15); background: rgba(255, 255, 255, 0.02); padding: 12px; transition: 0.3s;" onclick="resetInterro()" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255, 255, 255, 0.05)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.background='rgba(255, 255, 255, 0.02)'">RÉINITIALISER L'INTERROGATOIRE</button>
+                    <button class="tool-btn" style="grid-column: span 2; border-color: rgba(155, 93, 229, 0.3); background: rgba(155, 93, 229, 0.05); padding: 12px; transition: 0.3s; color: rgba(155, 93, 229, 0.8);" onclick="resetInterro()" onmouseover="this.style.borderColor='rgba(155, 93, 229, 0.6)'; this.style.background='rgba(155, 93, 229, 0.1)'" onmouseout="this.style.borderColor='rgba(155, 93, 229, 0.3)'; this.style.background='rgba(155, 93, 229, 0.05)'">Réinitialiser l'Interrogatoire</button>
                 </div>
             </div>
 
+            <!-- ESPACEMENT -->
+            <div style="height: 40px;"></div>
+
             <!-- JEU FLUX D'HARMONIE -->
-            <div class="card" style="background: linear-gradient(145deg, rgba(245, 245, 240, 0.03), rgba(230, 230, 220, 0.02)); border: 2px solid rgba(155, 93, 229, 0.2); position: relative; overflow: hidden;">
-                <!-- Effet de fond zen -->
-                <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(100, 200, 255, 0.03) 0%, transparent 50%); pointer-events: none; animation: rotate-bg 30s linear infinite;"></div>
+            <div class="card" style="background: linear-gradient(145deg, rgba(45, 20, 70, 0.4), rgba(30, 15, 50, 0.5)); border: 2px solid rgba(155, 93, 229, 0.3); position: relative; overflow: hidden;">
+                <!-- Effet de fond violet/rose -->
+                <div style="position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(155, 93, 229, 0.08) 0%, rgba(241, 120, 255, 0.05) 30%, transparent 60%); pointer-events: none; animation: rotate-bg 30s linear infinite;"></div>
                 
                 <div style="text-align: center; margin-bottom: 30px; position: relative; z-index: 1;">
-                    <div style="display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; margin-bottom: 15px; background: linear-gradient(135deg, rgba(100, 200, 255, 0.15), rgba(255, 215, 0, 0.15)); border: 1px solid rgba(100, 200, 255, 0.3); text-transform: uppercase; color: rgba(100, 200, 255, 0.9);">🧘 Espace de Méditation</div>
-                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 3px; font-size: 1.3rem; color: #fff; text-transform: uppercase;">Le Flux d'Harmonie 🌊</h3>
-                    <p style="font-size: 0.75rem; opacity: 0.6; margin: 10px 0 0; letter-spacing: 1px;">Rétablissez la circulation de l'énergie</p>
+                    <div style="display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; margin-bottom: 15px; background: linear-gradient(135deg, rgba(155, 93, 229, 0.2), rgba(241, 120, 255, 0.2)); border: 1px solid rgba(155, 93, 229, 0.4); text-transform: uppercase; color: rgba(241, 120, 255, 0.9); box-shadow: 0 4px 15px rgba(155, 93, 229, 0.2);">🧘 Espace de Méditation</div>
+                    <h3 style="margin:0; font-family: 'Space Grotesk'; letter-spacing: 3px; font-size: 1.3rem; background: linear-gradient(135deg, var(--pink), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;">Le Flux d'Harmonie 🌊</h3>
+                    <p style="font-size: 0.75rem; opacity: 0.6; margin: 10px 0 0; letter-spacing: 1px; color: rgba(241, 120, 255, 0.7);">Rétablissez la circulation de l'énergie</p>
                 </div>
 
                 <div id="harmony-container" style="position: relative; z-index: 1;">
-                    <div id="harmony-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 400px; margin: 0 auto 25px; padding: 20px; background: rgba(0, 0, 0, 0.2); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.05);"></div>
+                    <div id="harmony-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 400px; margin: 0 auto 25px; padding: 20px; background: rgba(20, 10, 40, 0.4); border-radius: 30px; border: 1px solid rgba(155, 93, 229, 0.2); box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.4);"></div>
                     
-                    <div id="harmony-message" style="text-align: center; font-size: 1.1rem; color: rgba(100, 200, 255, 0.9); font-weight: 600; letter-spacing: 2px; opacity: 0; transition: 0.5s; margin-bottom: 20px; font-style: italic; line-height: 1.6;"></div>
+                    <div id="harmony-message" style="text-align: center; font-size: 1.1rem; color: rgba(241, 120, 255, 0.95); font-weight: 600; letter-spacing: 2px; opacity: 0; transition: 0.5s; margin-bottom: 20px; font-style: italic; line-height: 1.6; text-shadow: 0 0 20px rgba(241, 120, 255, 0.4);"></div>
 
                     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <button class="tool-btn" style="border-color: rgba(100, 200, 255, 0.3); color: rgba(100, 200, 255, 0.8); background: rgba(100, 200, 255, 0.05); transition: 0.3s;" onclick="newHarmonyPuzzle()" onmouseover="this.style.borderColor='rgba(100, 200, 255, 0.6)'; this.style.background='rgba(100, 200, 255, 0.1)'" onmouseout="this.style.borderColor='rgba(100, 200, 255, 0.3)'; this.style.background='rgba(100, 200, 255, 0.05)'">🔄 Nouveau Flux</button>
-                        <button class="tool-btn" style="border-color: rgba(255, 215, 0, 0.3); color: rgba(255, 215, 0, 0.8); background: rgba(255, 215, 0, 0.05); transition: 0.3s;" onclick="toggleHarmonyHint()" onmouseover="this.style.borderColor='rgba(255, 215, 0, 0.6)'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.borderColor='rgba(255, 215, 0, 0.3)'; this.style.background='rgba(255, 215, 0, 0.05)'">💡 Indice</button>
+                        <button class="tool-btn" style="border-color: rgba(155, 93, 229, 0.4); color: rgba(155, 93, 229, 0.9); background: rgba(155, 93, 229, 0.1); transition: 0.3s;" onclick="newHarmonyPuzzle()" onmouseover="this.style.borderColor='rgba(155, 93, 229, 0.8)'; this.style.background='rgba(155, 93, 229, 0.2)'; this.style.boxShadow='0 5px 20px rgba(155, 93, 229, 0.3)'" onmouseout="this.style.borderColor='rgba(155, 93, 229, 0.4)'; this.style.background='rgba(155, 93, 229, 0.1)'; this.style.boxShadow='none'">🔄 Nouveau Flux</button>
+                        <button class="tool-btn" style="border-color: rgba(241, 120, 255, 0.4); color: rgba(241, 120, 255, 0.9); background: rgba(241, 120, 255, 0.1); transition: 0.3s;" onclick="toggleHarmonyHint()" onmouseover="this.style.borderColor='rgba(241, 120, 255, 0.8)'; this.style.background='rgba(241, 120, 255, 0.2)'; this.style.boxShadow='0 5px 20px rgba(241, 120, 255, 0.3)'" onmouseout="this.style.borderColor='rgba(241, 120, 255, 0.4)'; this.style.background='rgba(241, 120, 255, 0.1)'; this.style.boxShadow='none'">💡 Indice</button>
                     </div>
                 </div>
             </div>
@@ -1190,7 +1193,7 @@
         if (s >= 100) {
             displayEl.innerText = "CRAQUAGE ! L'AGENT GAGNE UN GAGE.";
             displayEl.style.color = "#00ff88";
-        } else { displayEl.style.color = "#ff4444"; }
+        } else { displayEl.style.color = "var(--pink)"; }
 
         ['rayan','israh'].forEach(u => {
             const char = u === 'rayan' ? 'R' : 'I';
