@@ -682,6 +682,37 @@
             #harmony-message {
                 font-size: 0.95rem;
             }
+
+            /* Fragmentarium */
+            #puzzle-upload-zone {
+                padding: 40px 15px;
+            }
+
+            #puzzle-upload-zone span {
+                font-size: 2.5rem;
+            }
+
+            #puzzle-board {
+                gap: 6px;
+                padding: 12px;
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .puzzle-piece {
+                border-width: 1.5px;
+            }
+
+            #puzzle-success-msg {
+                padding: 25px 15px;
+            }
+
+            #puzzle-success-msg span {
+                font-size: 2.5rem;
+            }
+
+            #puzzle-success-msg p:first-of-type {
+                font-size: 1rem;
+            }
             
             /* Interrogatoire */
             #interro-display {
@@ -862,6 +893,133 @@
         @keyframes shimmer {
             0%, 100% { transform: translateX(-100%); }
             50% { transform: translateX(100%); }
+        }
+
+        /* --- FRAGMENTARIUM --- */
+        .puzzle-piece {
+            aspect-ratio: 1;
+            background-size: 400% 400%;
+            border-radius: 12px;
+            border: 2px solid rgba(155, 93, 229, 0.2);
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .puzzle-piece::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(155, 93, 229, 0.1), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+            border-color: rgba(155, 93, 229, 0.5);
+            box-shadow: 0 6px 25px rgba(155, 93, 229, 0.3);
+        }
+
+        .puzzle-piece:hover::before {
+            opacity: 1;
+        }
+
+        .puzzle-piece:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .puzzle-piece.correct {
+            border-color: var(--green);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4), inset 0 0 15px rgba(0, 255, 136, 0.1);
+            pointer-events: none;
+            filter: brightness(1.15);
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Styles pour le Fragmentarium V2 */
+        .puzzle2-piece {
+            aspect-ratio: 1;
+            background-size: 400% 400%;
+            border-radius: 12px;
+            border: 2px solid rgba(241, 120, 255, 0.2);
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .puzzle2-piece::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(241, 120, 255, 0.1), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .puzzle2-piece:hover {
+            transform: scale(1.05);
+            border-color: rgba(241, 120, 255, 0.5);
+            box-shadow: 0 6px 25px rgba(241, 120, 255, 0.3);
+        }
+
+        .puzzle2-piece:hover::before {
+            opacity: 1;
+        }
+
+        .puzzle2-piece:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .puzzle2-piece.correct {
+            border-color: var(--pink);
+            box-shadow: 0 0 25px rgba(241, 120, 255, 0.4), inset 0 0 15px rgba(241, 120, 255, 0.1);
+            pointer-events: none;
+            filter: brightness(1.15);
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        #puzzle-upload-zone:hover {
+            border-color: rgba(155, 93, 229, 0.6);
+            background: linear-gradient(135deg, rgba(45, 20, 70, 0.4), rgba(30, 15, 50, 0.5));
+            transform: translateY(-2px);
+        }
+
+        #puzzle-upload-zone:hover #upload-glow {
+            opacity: 1;
+        }
+
+        #puzzle2-upload-zone:hover {
+            border-color: rgba(241, 120, 255, 0.6);
+            background: linear-gradient(135deg, rgba(45, 20, 70, 0.4), rgba(30, 15, 50, 0.5));
+            transform: translateY(-2px);
+        }
+
+        #puzzle2-upload-zone:hover .upload-glow2 {
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* --- MODAL --- */
@@ -1118,6 +1276,97 @@
                 <div style="display:flex;gap:12px;justify-content:center;">
                     <button class="tool-btn" onclick="newHarmonyPuzzle()">🔄 NOUVEAU</button>
                     <button class="tool-btn" onclick="toggleHarmonyHint()">💡 INDICE</button>
+                </div>
+            </div>
+
+            <!-- LE FRAGMENTARIUM -->
+            <div class="card" style="margin-top:30px;">
+                <div style="text-align:center;margin-bottom:30px;">
+                    <div class="status-badge">Souvenir Recomposé</div>
+                    <h3>Le Fragmentarium 🧩</h3>
+                    <p style="font-size:0.7rem;opacity:0.6;margin-top:12px;letter-spacing:2px;color:rgba(241,120,255,0.8);line-height:1.5;">
+                        Choisissez une photo qui vous est chère et reconstituez-la pièce par pièce.<br>
+                        Chaque fragment replacé renforce votre connexion.
+                    </p>
+                </div>
+                
+                <!-- Zone de téléchargement -->
+                <div id="puzzle-upload-zone" style="background:linear-gradient(135deg,rgba(45,20,70,0.3),rgba(30,15,50,0.4));border:2px dashed rgba(155,93,229,0.3);border-radius:30px;padding:50px 20px;text-align:center;transition:all 0.4s;cursor:pointer;position:relative;overflow:hidden;" onclick="document.getElementById('puzzle-input').click()">
+                    <!-- Effet de brillance au survol -->
+                    <div style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(155,93,229,0.1),transparent 70%);opacity:0;transition:0.4s;pointer-events:none;" id="upload-glow"></div>
+                    
+                    <span style="font-size:3.5rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 20px rgba(155,93,229,0.4));">📸</span>
+                    <p style="font-weight:800;color:var(--pink);letter-spacing:2px;font-size:0.95rem;margin-bottom:8px;text-transform:uppercase;">Importe un Souvenir</p>
+                    <p style="font-size:0.65rem;opacity:0.5;margin-top:8px;letter-spacing:1px;">Il sera fragmenté en 16 pièces d'énergie</p>
+                    <input type="file" id="puzzle-input" hidden accept="image/*" onchange="handlePuzzleUpload(event)">
+                </div>
+                
+                <!-- Zone de jeu -->
+                <div id="puzzle-game-area" style="display:none;margin-top:20px;">
+                    <div style="text-align:center;margin-bottom:20px;padding:15px;background:rgba(155,93,229,0.08);border-radius:20px;border:1px solid rgba(155,93,229,0.2);">
+                        <p style="font-size:0.7rem;font-weight:700;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">PROGRESSION</p>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
+                            <span id="puzzle-progress" style="font-size:1.8rem;font-weight:800;color:var(--pink);font-family:'Space Grotesk';">0/16</span>
+                            <div style="flex:1;max-width:200px;height:8px;background:rgba(0,0,0,0.4);border-radius:10px;overflow:hidden;border:1px solid rgba(155,93,229,0.3);">
+                                <div id="puzzle-progress-bar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--accent),var(--pink));transition:0.6s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="puzzle-board" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:linear-gradient(135deg,rgba(20,10,40,0.6),rgba(30,15,50,0.4));padding:15px;border-radius:30px;margin-bottom:25px;border:2px solid rgba(155,93,229,0.2);box-shadow:inset 0 4px 20px rgba(0,0,0,0.4);max-width:500px;margin-left:auto;margin-right:auto;">
+                    </div>
+                    
+                    <div id="puzzle-success-msg" style="display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,204,106,0.1));border-radius:30px;border:2px solid rgba(0,255,136,0.3);animation:fadeIn 0.8s ease-out;box-shadow:0 0 40px rgba(0,255,136,0.2);">
+                        <span style="font-size:3rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 15px var(--green));">✨</span>
+                        <p style="color:var(--green);font-weight:800;letter-spacing:3px;margin-bottom:15px;font-size:1.2rem;text-transform:uppercase;text-shadow:0 0 20px rgba(0,255,136,0.5);">Harmonie Restaurée</p>
+                        <p style="opacity:0.7;font-size:0.8rem;margin-bottom:25px;line-height:1.6;">Votre souvenir a été recomposé avec succès.<br>L'énergie circule à nouveau librement.</p>
+                        <button class="finish-btn" style="background:linear-gradient(135deg,var(--accent),var(--pink));max-width:300px;margin:0 auto;" onclick="resetFragmentarium()">NOUVEAU SOUVENIR</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LE FRAGMENTARIUM V2 (VERSION ALTERNATIVE) -->
+            <div class="card" style="margin-top:30px;">
+                <div style="text-align:center;margin-bottom:30px;">
+                    <div class="status-badge">Mémoire Quantique</div>
+                    <h3>Fragmentarium Étendu 🌌</h3>
+                    <p style="font-size:0.7rem;opacity:0.6;margin-top:12px;letter-spacing:2px;color:rgba(241,120,255,0.8);line-height:1.5;">
+                        Version avancée avec plus de pièces pour une méditation profonde.<br>
+                        Reconstituez vos souvenirs les plus précieux.
+                    </p>
+                </div>
+                
+                <!-- Zone de téléchargement V2 -->
+                <div id="puzzle2-upload-zone" style="background:linear-gradient(135deg,rgba(45,20,70,0.3),rgba(30,15,50,0.4));border:2px dashed rgba(241,120,255,0.3);border-radius:30px;padding:50px 20px;text-align:center;transition:all 0.4s;cursor:pointer;position:relative;overflow:hidden;" onclick="document.getElementById('puzzle2-input').click()">
+                    <div style="position:absolute;inset:0;background:radial-gradient(circle at center,rgba(241,120,255,0.1),transparent 70%);opacity:0;transition:0.4s;pointer-events:none;" class="upload-glow2"></div>
+                    
+                    <span style="font-size:3.5rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 20px rgba(241,120,255,0.4));">🎴</span>
+                    <p style="font-weight:800;color:var(--pink);letter-spacing:2px;font-size:0.95rem;margin-bottom:8px;text-transform:uppercase;">Importe une Mémoire</p>
+                    <p style="font-size:0.65rem;opacity:0.5;margin-top:8px;letter-spacing:1px;">Fragmentation avancée en 16 morceaux</p>
+                    <input type="file" id="puzzle2-input" hidden accept="image/*" onchange="handlePuzzle2Upload(event)">
+                </div>
+                
+                <!-- Zone de jeu V2 -->
+                <div id="puzzle2-game-area" style="display:none;margin-top:20px;">
+                    <div style="text-align:center;margin-bottom:20px;padding:15px;background:rgba(241,120,255,0.08);border-radius:20px;border:1px solid rgba(241,120,255,0.2);">
+                        <p style="font-size:0.7rem;font-weight:700;color:var(--pink);letter-spacing:2px;margin-bottom:8px;">RECONSTITUTION</p>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
+                            <span id="puzzle2-progress" style="font-size:1.8rem;font-weight:800;color:var(--pink);font-family:'Space Grotesk';">0/16</span>
+                            <div style="flex:1;max-width:200px;height:8px;background:rgba(0,0,0,0.4);border-radius:10px;overflow:hidden;border:1px solid rgba(241,120,255,0.3);">
+                                <div id="puzzle2-progress-bar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--pink),#ff6b9d);transition:0.6s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="puzzle2-board" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:linear-gradient(135deg,rgba(30,15,50,0.6),rgba(45,20,70,0.4));padding:15px;border-radius:30px;margin-bottom:25px;border:2px solid rgba(241,120,255,0.2);box-shadow:inset 0 4px 20px rgba(0,0,0,0.4);max-width:500px;margin-left:auto;margin-right:auto;">
+                    </div>
+                    
+                    <div id="puzzle2-success-msg" style="display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,rgba(241,120,255,0.15),rgba(255,107,157,0.1));border-radius:30px;border:2px solid rgba(241,120,255,0.3);animation:fadeIn 0.8s ease-out;box-shadow:0 0 40px rgba(241,120,255,0.2);">
+                        <span style="font-size:3rem;display:block;margin-bottom:15px;filter:drop-shadow(0 0 15px var(--pink));">💫</span>
+                        <p style="color:var(--pink);font-weight:800;letter-spacing:3px;margin-bottom:15px;font-size:1.2rem;text-transform:uppercase;text-shadow:0 0 20px rgba(241,120,255,0.5);">Mémoire Reconstituée</p>
+                        <p style="opacity:0.7;font-size:0.8rem;margin-bottom:25px;line-height:1.6;">Le flux quantique est rétabli.<br>Votre souvenir brille à nouveau.</p>
+                        <button class="finish-btn" style="background:linear-gradient(135deg,var(--pink),#ff6b9d);max-width:300px;margin:0 auto;" onclick="resetFragmentarium2()">NOUVELLE MÉMOIRE</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1521,6 +1770,313 @@
                     msg.style.opacity = 0;
                 }, 3000);
             }
+        }
+
+        // ===== LE FRAGMENTARIUM (PUZZLE) =====
+        let piecesPositions = [];
+        const puzzleGrid = 4; // 16 pièces (4x4)
+
+        function handlePuzzleUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Vérifier que c'est bien une image
+            if (!file.type.startsWith('image/')) {
+                alert('Veuillez sélectionner une image valide.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                setupPuzzle(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setupPuzzle(imageSrc) {
+            const board = document.getElementById('puzzle-board');
+            const uploadZone = document.getElementById('puzzle-upload-zone');
+            const gameArea = document.getElementById('puzzle-game-area');
+            const successMsg = document.getElementById('puzzle-success-msg');
+            
+            // Afficher la zone de jeu
+            uploadZone.style.display = 'none';
+            gameArea.style.display = 'block';
+            successMsg.style.display = 'none';
+            board.innerHTML = '';
+            
+            // Création de l'ordre correct (0 à 15)
+            piecesPositions = Array.from({length: puzzleGrid * puzzleGrid}, (_, i) => i);
+            
+            // Mélange aléatoire
+            const shuffled = [...piecesPositions].sort(() => Math.random() - 0.5);
+            
+            // Créer les pièces
+            shuffled.forEach((originalPos, currentIndex) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.style.backgroundImage = `url(${imageSrc})`;
+                
+                // Calculer la position dans la grille source
+                const row = Math.floor(originalPos / puzzleGrid);
+                const col = originalPos % puzzleGrid;
+                
+                // Positionner le background
+                piece.style.backgroundPosition = `${(col / (puzzleGrid - 1)) * 100}% ${(row / (puzzleGrid - 1)) * 100}%`;
+                
+                // Données pour le drag & drop
+                piece.draggable = true;
+                piece.dataset.correctPos = originalPos;
+                piece.dataset.currentIdx = currentIndex;
+                
+                // Events drag & drop
+                piece.ondragstart = (e) => {
+                    e.dataTransfer.setData('text/plain', currentIndex);
+                    piece.style.opacity = '0.5';
+                };
+                
+                piece.ondragend = (e) => {
+                    piece.style.opacity = '1';
+                };
+                
+                piece.ondragover = (e) => {
+                    e.preventDefault();
+                    piece.style.transform = 'scale(1.05)';
+                };
+                
+                piece.ondragleave = (e) => {
+                    piece.style.transform = 'scale(1)';
+                };
+                
+                piece.ondrop = (e) => {
+                    e.preventDefault();
+                    piece.style.transform = 'scale(1)';
+                    const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+                    swapPuzzlePieces(fromIdx, currentIndex);
+                };
+                
+                board.appendChild(piece);
+            });
+            
+            // Vérifier l'état initial
+            checkPuzzleWin();
+        }
+
+        function swapPuzzlePieces(fromIdx, toIdx) {
+            if (fromIdx === toIdx) return;
+            
+            const board = document.getElementById('puzzle-board');
+            const pieces = Array.from(board.children);
+            const fromPiece = pieces[fromIdx];
+            const toPiece = pieces[toIdx];
+            
+            // Échanger les backgrounds
+            const tempBg = fromPiece.style.backgroundPosition;
+            const tempPos = fromPiece.dataset.correctPos;
+            
+            fromPiece.style.backgroundPosition = toPiece.style.backgroundPosition;
+            fromPiece.dataset.correctPos = toPiece.dataset.correctPos;
+            
+            toPiece.style.backgroundPosition = tempBg;
+            toPiece.dataset.correctPos = tempPos;
+            
+            // Mettre à jour les index
+            fromPiece.dataset.currentIdx = fromIdx;
+            toPiece.dataset.currentIdx = toIdx;
+            
+            // Vérifier si le puzzle est résolu
+            checkPuzzleWin();
+        }
+
+        function checkPuzzleWin() {
+            const pieces = Array.from(document.querySelectorAll('.puzzle-piece'));
+            let correctCount = 0;
+            
+            pieces.forEach((piece, index) => {
+                const correctPos = parseInt(piece.dataset.correctPos);
+                
+                if (correctPos === index) {
+                    if (!piece.classList.contains('correct')) {
+                        piece.classList.add('correct');
+                    }
+                    correctCount++;
+                } else {
+                    piece.classList.remove('correct');
+                }
+            });
+            
+            // Mettre à jour la progression
+            const progressText = document.getElementById('puzzle-progress');
+            const progressBar = document.getElementById('puzzle-progress-bar');
+            
+            if (progressText) {
+                progressText.innerText = `${correctCount}/16`;
+            }
+            
+            if (progressBar) {
+                progressBar.style.width = `${(correctCount / 16) * 100}%`;
+            }
+            
+            // Victoire !
+            if (correctCount === puzzleGrid * puzzleGrid) {
+                setTimeout(() => {
+                    document.getElementById('puzzle-success-msg').style.display = 'block';
+                }, 600);
+            }
+        }
+
+        function resetFragmentarium() {
+            document.getElementById('puzzle-upload-zone').style.display = 'block';
+            document.getElementById('puzzle-game-area').style.display = 'none';
+            document.getElementById('puzzle-success-msg').style.display = 'none';
+            document.getElementById('puzzle-input').value = '';
+            document.getElementById('puzzle-board').innerHTML = '';
+        }
+
+        // ===== FRAGMENTARIUM V2 =====
+        let pieces2Positions = [];
+        const puzzle2Grid = 4;
+
+        function handlePuzzle2Upload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                alert('Veuillez sélectionner une image valide.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                setupPuzzle2(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setupPuzzle2(imageSrc) {
+            const board = document.getElementById('puzzle2-board');
+            const uploadZone = document.getElementById('puzzle2-upload-zone');
+            const gameArea = document.getElementById('puzzle2-game-area');
+            const successMsg = document.getElementById('puzzle2-success-msg');
+            
+            uploadZone.style.display = 'none';
+            gameArea.style.display = 'block';
+            successMsg.style.display = 'none';
+            board.innerHTML = '';
+            
+            pieces2Positions = Array.from({length: puzzle2Grid * puzzle2Grid}, (_, i) => i);
+            const shuffled = [...pieces2Positions].sort(() => Math.random() - 0.5);
+            
+            shuffled.forEach((originalPos, currentIndex) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle2-piece';
+                piece.style.backgroundImage = `url(${imageSrc})`;
+                
+                const row = Math.floor(originalPos / puzzle2Grid);
+                const col = originalPos % puzzle2Grid;
+                
+                piece.style.backgroundPosition = `${(col / (puzzle2Grid - 1)) * 100}% ${(row / (puzzle2Grid - 1)) * 100}%`;
+                piece.style.backgroundSize = '400% 400%';
+                
+                piece.draggable = true;
+                piece.dataset.correctPos = originalPos;
+                piece.dataset.currentIdx = currentIndex;
+                
+                piece.ondragstart = (e) => {
+                    e.dataTransfer.setData('text/plain', currentIndex);
+                    piece.style.opacity = '0.5';
+                };
+                
+                piece.ondragend = (e) => {
+                    piece.style.opacity = '1';
+                };
+                
+                piece.ondragover = (e) => {
+                    e.preventDefault();
+                    piece.style.transform = 'scale(1.05)';
+                };
+                
+                piece.ondragleave = (e) => {
+                    piece.style.transform = 'scale(1)';
+                };
+                
+                piece.ondrop = (e) => {
+                    e.preventDefault();
+                    piece.style.transform = 'scale(1)';
+                    const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+                    swapPuzzle2Pieces(fromIdx, currentIndex);
+                };
+                
+                board.appendChild(piece);
+            });
+            
+            checkPuzzle2Win();
+        }
+
+        function swapPuzzle2Pieces(fromIdx, toIdx) {
+            if (fromIdx === toIdx) return;
+            
+            const board = document.getElementById('puzzle2-board');
+            const pieces = Array.from(board.children);
+            const fromPiece = pieces[fromIdx];
+            const toPiece = pieces[toIdx];
+            
+            const tempBg = fromPiece.style.backgroundPosition;
+            const tempPos = fromPiece.dataset.correctPos;
+            
+            fromPiece.style.backgroundPosition = toPiece.style.backgroundPosition;
+            fromPiece.dataset.correctPos = toPiece.dataset.correctPos;
+            
+            toPiece.style.backgroundPosition = tempBg;
+            toPiece.dataset.correctPos = tempPos;
+            
+            fromPiece.dataset.currentIdx = fromIdx;
+            toPiece.dataset.currentIdx = toIdx;
+            
+            checkPuzzle2Win();
+        }
+
+        function checkPuzzle2Win() {
+            const pieces = Array.from(document.querySelectorAll('.puzzle2-piece'));
+            let correctCount = 0;
+            
+            pieces.forEach((piece, index) => {
+                const correctPos = parseInt(piece.dataset.correctPos);
+                
+                if (correctPos === index) {
+                    if (!piece.classList.contains('correct')) {
+                        piece.classList.add('correct');
+                    }
+                    correctCount++;
+                } else {
+                    piece.classList.remove('correct');
+                }
+            });
+            
+            const progressText = document.getElementById('puzzle2-progress');
+            const progressBar = document.getElementById('puzzle2-progress-bar');
+            
+            if (progressText) {
+                progressText.innerText = `${correctCount}/16`;
+            }
+            
+            if (progressBar) {
+                progressBar.style.width = `${(correctCount / 16) * 100}%`;
+            }
+            
+            if (correctCount === puzzle2Grid * puzzle2Grid) {
+                setTimeout(() => {
+                    document.getElementById('puzzle2-success-msg').style.display = 'block';
+                }, 600);
+            }
+        }
+
+        function resetFragmentarium2() {
+            document.getElementById('puzzle2-upload-zone').style.display = 'block';
+            document.getElementById('puzzle2-game-area').style.display = 'none';
+            document.getElementById('puzzle2-success-msg').style.display = 'none';
+            document.getElementById('puzzle2-input').value = '';
+            document.getElementById('puzzle2-board').innerHTML = '';
         }
     </script>
 </body>
