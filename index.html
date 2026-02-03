@@ -5,214 +5,958 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Harmonie Premium | Espace Connecté</title>
     
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #8B5CF6;
-            --secondary: #EC4899;
-            --accent: #10B981;
-            --dark: #0F172A;
-            --darker: #0A0F1C;
-            --light: #F8FAFC;
-            --gray: #94A3B8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --rayan-color: #8B5CF6;
-            --israh-color: #EC4899;
-            --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --secondary-light: #f472b6;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            
+            --background: #0f0f23;
+            --surface: #1a1a3a;
+            --surface-light: #252545;
+            --surface-lighter: #2d2d4a;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            
+            --border: rgba(255, 255, 255, 0.1);
+            --border-light: rgba(255, 255, 255, 0.2);
+            
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-strong: rgba(255, 255, 255, 0.1);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            --rayan-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --israh-gradient: linear-gradient(135deg, #ec4899 0%, #f472b6 50%, #fb7185 100%);
+            --main-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            
+            --animation-fast: 0.15s ease-out;
+            --animation-normal: 0.3s ease-out;
+            --animation-slow: 0.5s ease-out;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--darker);
-            color: var(--light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
         }
 
-        /* --- AUTH SCREEN --- */
+        /* === ANIMATIONS === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.5); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* === AUTHENTICATION SCREEN === */
         #auth-screen {
-            position: fixed; inset: 0; background: var(--darker);
-            display: flex; align-items: center; justify-content: center; z-index: 3000;
+            position: fixed;
+            inset: 0;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn var(--animation-slow);
         }
 
         .auth-container {
-            max-width: 450px; width: 90%; text-align: center; padding: 40px;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px);
-            border-radius: 32px; border: 1px solid var(--glass-border);
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            padding: 3rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-xl);
+            animation: slideIn var(--animation-slow);
         }
 
-        .logo-glow { font-size: 4rem; filter: drop-shadow(0 0 15px var(--primary)); margin-bottom: 15px; }
+        .logo-container {
+            margin-bottom: 2rem;
+        }
 
-        .user-select { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
-        
+        .logo-glow {
+            font-size: 5rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--primary));
+            margin-bottom: 1rem;
+        }
+
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--main-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .user-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
         .user-card {
-            width: 140px; padding: 20px; border-radius: 20px;
-            background: var(--glass); border: 1px solid var(--glass-border);
-            cursor: pointer; transition: 0.3s;
+            position: relative;
+            padding: 2rem 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: all var(--animation-normal);
+            overflow: hidden;
         }
 
-        .user-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); }
-        .user-card.rayan:hover { border-color: var(--rayan-color); box-shadow: 0 0 20px rgba(139,92,246,0.2); }
-        .user-card.israh:hover { border-color: var(--israh-color); box-shadow: 0 0 20px rgba(236,72,153,0.2); }
+        .user-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--glass);
+            opacity: 0;
+            transition: opacity var(--animation-normal);
+        }
 
-        /* --- APP STRUCTURE --- */
-        #main-app { display: none; padding-top: 20px; }
+        .user-card:hover::before {
+            opacity: 1;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .user-card.rayan:hover {
+            border-color: var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+        }
+
+        .user-card.israh:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.2);
+        }
+
+        .user-avatar {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === MAIN APPLICATION === */
+        #main-app {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn var(--animation-slow);
+        }
 
         .app-header {
-            max-width: 1400px; margin: 0 auto 30px; padding: 20px;
-            background: var(--glass); backdrop-filter: blur(15px);
-            border-radius: 24px; border: 1px solid var(--glass-border);
-            display: flex; justify-content: space-between; align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 35, 0.8);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
         }
 
-        .clock { font-size: 2.5rem; font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .main-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 25px; max-width: 1400px; margin: 0 auto; padding: 0 20px;
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .card {
-            background: var(--glass); border-radius: 28px; padding: 30px;
-            border: 1px solid var(--glass-border); position: relative;
+        .current-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
         }
 
-        /* --- GARDEN --- */
+        .user-status {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .clock-display {
+            text-align: center;
+        }
+
+        .main-clock {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--main-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .clock-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        .logout-btn {
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--animation-normal);
+        }
+
+        .logout-btn:hover {
+            background: var(--glass);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        /* === MAIN CONTENT === */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--animation-normal);
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-light);
+            background: var(--glass-strong);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* === CRYSTAL GARDEN === */
+        .garden-container {
+            margin: 2rem 0;
+        }
+
         .garden-grid {
-            display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px;
-            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 3px;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
         }
 
-        .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 4px; cursor: pointer; }
-
-        /* --- TIC TAC TOE --- */
-        .ttt-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-            max-width: 250px; margin: 20px auto;
-        }
-        .ttt-cell {
-            aspect-ratio: 1; background: rgba(0,0,0,0.2); border-radius: 12px;
-            border: 1px solid var(--glass-border); font-size: 2rem;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        .garden-pixel {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all var(--animation-fast);
+            border: 1px solid transparent;
         }
 
-        /* --- MODAL --- */
+        .garden-pixel:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--border);
+        }
+
+        .garden-pixel.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .garden-tools {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tool-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--animation-normal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-btn:hover {
+            background: var(--surface-light);
+            border-color: var(--border-light);
+        }
+
+        .tool-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .tool-btn.danger {
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+
+        .tool-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* === TIC TAC TOE === */
+        .game-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .game-cell {
+            aspect-ratio: 1;
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--animation-normal);
+            position: relative;
+        }
+
+        .game-cell:hover {
+            background: var(--surface-lighter);
+            border-color: var(--border-light);
+            transform: scale(1.05);
+        }
+
+        .game-cell.rayan {
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .game-cell.israh {
+            color: var(--secondary);
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .game-status {
+            text-align: center;
+            padding: 1rem;
+            background: var(--glass);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        /* === MODAL === */
         .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 5000;
-        }
-        .modal-content {
-            background: var(--dark); padding: 40px; border-radius: 30px;
-            text-align: center; border: 1px solid var(--primary);
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            animation: fadeIn var(--animation-normal);
         }
 
-        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+        .modal-content {
+            background: var(--surface);
+            padding: 3rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .modal-btn {
+            padding: 1rem 2rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--animation-normal);
+        }
+
+        .modal-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* === FOOTER === */
+        .app-footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .main-clock {
+                font-size: 2rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .user-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .garden-grid {
+                grid-template-columns: repeat(8, 1fr);
+            }
+
+            .garden-tools {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-container {
+                padding: 0 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .main-clock {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* === UTILITY CLASSES === */
+        .text-center { text-align: center; }
+        .text-muted { color: var(--text-muted); }
+        .text-secondary { color: var(--text-secondary); }
+        
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        
+        .hidden { display: none; }
+        .visible { display: block; }
     </style>
 </head>
 <body>
-
-    <div id="modal-notif" class="modal">
+    <!-- Modal de Notification -->
+    <div id="modal-notification" class="modal">
         <div class="modal-content">
-            <div id="modal-icon" style="font-size: 3rem;">✨</div>
-            <h2 id="modal-title" style="margin: 15px 0;">Message</h2>
-            <p id="modal-text" style="color: var(--gray); margin-bottom: 25px;">Contenu du message...</p>
-            <button onclick="closeModal()" class="user-card" style="width: 100%;">Compris !</button>
+            <div id="modal-icon" class="modal-icon">✨</div>
+            <h2 id="modal-title" class="modal-title">Message</h2>
+            <p id="modal-text" class="modal-text">Contenu du message...</p>
+            <button id="modal-close" class="modal-btn" onclick="closeModal()">
+                <i class="fas fa-check"></i> Compris !
+            </button>
         </div>
     </div>
 
+    <!-- Écran d'Authentification -->
     <div id="auth-screen">
         <div class="auth-container">
-            <div class="logo-glow">🌙</div>
-            <h1 class="title">L'HARMONIE</h1>
-            <p class="subtitle" style="letter-spacing: 5px; color: var(--primary);">PREMIUM</p>
+            <div class="logo-container">
+                <div class="logo-glow">🌙</div>
+                <h1 class="brand-title">L'HARMONIE</h1>
+                <p class="brand-subtitle">Premium</p>
+            </div>
             
-            <div class="user-select">
+            <div class="user-selection">
                 <div class="user-card rayan" onclick="login('Rayan')">
-                    <div style="font-size: 2rem;">👑</div>
-                    <div style="font-weight: 600; margin-top: 10px;">RAYAN</div>
+                    <div class="user-avatar">👑</div>
+                    <div class="user-name">RAYAN</div>
+                    <div class="user-role">Administrateur</div>
                 </div>
                 <div class="user-card israh" onclick="login('Israh')">
-                    <div style="font-size: 2rem;">💫</div>
-                    <div style="font-weight: 600; margin-top: 10px;">ISRAH</div>
+                    <div class="user-avatar">💫</div>
+                    <div class="user-name">ISRAH</div>
+                    <div class="user-role">Créatrice</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Application Principale -->
     <div id="main-app">
+        <!-- En-tête de l'Application -->
         <header class="app-header">
-            <div class="user-info">
-                <div id="current-user-badge" class="user-card" style="width: auto; padding: 10px 20px; cursor: default;">
+            <div class="header-content">
+                <div class="current-user">
+                    <div class="user-status"></div>
                     <span id="display-name">Chargement...</span>
+                    <i class="fas fa-circle-user"></i>
                 </div>
+                
+                <div class="clock-display">
+                    <div id="clock" class="main-clock">00:00</div>
+                    <div class="clock-label">Liaison Directe Active</div>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()" title="Déconnexion">
+                    <i class="fas fa-power-off"></i>
+                </button>
             </div>
-            
-            <div style="text-align: center;">
-                <div id="clock" class="clock">00:00</div>
-                <div style="font-size: 0.7rem; color: var(--secondary); font-weight: bold; text-transform: uppercase;">Liaison Directe</div>
-            </div>
-            
-            <button onclick="location.reload()" style="background: none; border: none; color: var(--gray); cursor: pointer;">
-                <i class="fas fa-power-off"></i>
-            </button>
         </header>
 
-        <div class="main-grid">
-            <div class="card">
-                <div class="card-header">
-                    <span style="font-size: 1.5rem;">💎</span>
-                    <h2 class="card-title">Jardin de Cristal</h2>
-                </div>
-                <div id="garden-grid" class="garden-grid">
+        <!-- Contenu Principal -->
+        <main class="main-container">
+            <div class="content-grid">
+                <!-- Jardin de Cristal -->
+                <section class="feature-card">
+                    <div class="card-header">
+                        <div class="card-icon">💎</div>
+                        <div>
+                            <h2 class="card-title">Jardin de Cristal</h2>
+                            <p class="text-secondary">Créez ensemble en temps réel</p>
+                        </div>
                     </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="user-card" style="width: auto; flex: 1;" onclick="setTool('draw')">Pinceau</button>
-                    <button class="user-card" style="width: auto; flex: 1;" onclick="setTool('erase')">Gomme</button>
-                    <button class="user-card" style="width: auto; border-color: #ff4d4d;" onclick="clearGarden()">Effacer</button>
-                </div>
-            </div>
+                    
+                    <div class="garden-container">
+                        <div id="garden-grid" class="garden-grid"></div>
+                        
+                        <div class="garden-tools">
+                            <button class="tool-btn active" onclick="setTool('draw')" data-tool="draw">
+                                <i class="fas fa-paintbrush"></i>
+                                Pinceau
+                            </button>
+                            <button class="tool-btn" onclick="setTool('erase')" data-tool="erase">
+                                <i class="fas fa-eraser"></i>
+                                Gomme
+                            </button>
+                            <button class="tool-btn danger" onclick="clearGarden()">
+                                <i class="fas fa-trash"></i>
+                                Effacer tout
+                            </button>
+                        </div>
+                    </div>
+                </section>
 
-            <div class="card">
-                <div class="card-header">
-                    <span style="font-size: 1.5rem;">🎮</span>
-                    <h2 class="card-title">Défis en Direct</h2>
-                </div>
-                
-                <div class="ttt-grid" id="ttt-board">
-                    <div class="ttt-cell" onclick="playTTT(0)"></div>
-                    <div class="ttt-cell" onclick="playTTT(1)"></div>
-                    <div class="ttt-cell" onclick="playTTT(2)"></div>
-                    <div class="ttt-cell" onclick="playTTT(3)"></div>
-                    <div class="ttt-cell" onclick="playTTT(4)"></div>
-                    <div class="ttt-cell" onclick="playTTT(5)"></div>
-                    <div class="ttt-cell" onclick="playTTT(6)"></div>
-                    <div class="ttt-cell" onclick="playTTT(7)"></div>
-                    <div class="ttt-cell" onclick="playTTT(8)"></div>
-                </div>
-                
-                <p id="game-status" style="text-align: center; color: var(--gray);">À vous de jouer !</p>
+                <!-- Jeux et Défis -->
+                <section class="feature-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎮</div>
+                        <div>
+                            <h2 class="card-title">Défis en Direct</h2>
+                            <p class="text-secondary">Affrontez-vous en temps réel</p>
+                        </div>
+                    </div>
+                    
+                    <div class="game-container">
+                        <div id="ttt-board" class="game-board">
+                            <div class="game-cell" onclick="playTTT(0)" data-cell="0"></div>
+                            <div class="game-cell" onclick="playTTT(1)" data-cell="1"></div>
+                            <div class="game-cell" onclick="playTTT(2)" data-cell="2"></div>
+                            <div class="game-cell" onclick="playTTT(3)" data-cell="3"></div>
+                            <div class="game-cell" onclick="playTTT(4)" data-cell="4"></div>
+                            <div class="game-cell" onclick="playTTT(5)" data-cell="5"></div>
+                            <div class="game-cell" onclick="playTTT(6)" data-cell="6"></div>
+                            <div class="game-cell" onclick="playTTT(7)" data-cell="7"></div>
+                            <div class="game-cell" onclick="playTTT(8)" data-cell="8"></div>
+                        </div>
+                        
+                        <div id="game-status" class="game-status">
+                            <i class="fas fa-play"></i>
+                            À vous de jouer !
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
 
-        <footer style="text-align: center; padding: 40px; color: var(--gray); font-size: 0.8rem;">
-            &copy; 2026 L'HARMONIE - SYSTÈME DE SYNCHRONISATION ALPHA
+        <!-- Pied de page -->
+        <footer class="app-footer">
+            <p>
+                <i class="fas fa-heart" style="color: var(--secondary);"></i>
+                &copy; 2024 L'HARMONIE PREMIUM - Système de Synchronisation Alpha
+                <i class="fas fa-star" style="color: var(--accent);"></i>
+            </p>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Script Principal -->
+    <script>
+        // Configuration Firebase (vous devrez ajouter vos propres clés)
+        const firebaseConfig = {
+            // Vos configurations Firebase ici
+        };
+
+        // Variables globales
+        let currentUser = null;
+        let currentTool = 'draw';
+        let tttBoard = Array(9).fill('');
+        let currentPlayer = 'X';
+        let gameActive = true;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+
+        function initializeApp() {
+            // Initialisation des grilles
+            initializeGarden();
+            initializeTTT();
+        }
+
+        // === AUTHENTIFICATION ===
+        function login(username) {
+            currentUser = username;
+            document.getElementById('display-name').textContent = username;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            
+            showModal('🎉', 'Connexion réussie !', `Bienvenue ${username} dans L'Harmonie Premium`);
+            
+            // Animation de confettis
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                location.reload();
+            }
+        }
+
+        // === HORLOGE ===
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        // === JARDIN DE CRISTAL ===
+        function initializeGarden() {
+            const garden = document.getElementById('garden-grid');
+            garden.innerHTML = '';
+            
+            for (let i = 0; i < 144; i++) { // 12x12 grille
+                const pixel = document.createElement('div');
+                pixel.className = 'garden-pixel';
+                pixel.dataset.index = i;
+                pixel.addEventListener('click', () => paintPixel(i));
+                garden.appendChild(pixel);
+            }
+        }
+
+        function paintPixel(index) {
+            const pixel = document.querySelector(`[data-index="${index}"]`);
+            
+            if (currentTool === 'draw') {
+                pixel.classList.add('active');
+                pixel.style.background = currentUser === 'Rayan' ? 'var(--primary)' : 'var(--secondary)';
+            } else if (currentTool === 'erase') {
+                pixel.classList.remove('active');
+                pixel.style.background = '';
+            }
+        }
+
+        function setTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tool="${tool}"]`).classList.add('active');
+        }
+
+        function clearGarden() {
+            if (confirm('Êtes-vous sûr de vouloir effacer tout le jardin ?')) {
+                document.querySelectorAll('.garden-pixel').forEach(pixel => {
+                    pixel.classList.remove('active');
+                    pixel.style.background = '';
+                });
+                showModal('🧹', 'Jardin effacé', 'Le jardin de cristal a été remis à zéro');
+            }
+        }
+
+        // === TIC TAC TOE ===
+        function initializeTTT() {
+            tttBoard = Array(9).fill('');
+            currentPlayer = 'X';
+            gameActive = true;
+            updateGameStatus('À vous de jouer !');
+            
+            document.querySelectorAll('.game-cell').forEach(cell => {
+                cell.textContent = '';
+                cell.className = 'game-cell';
+            });
+        }
+
+        function playTTT(index) {
+            if (tttBoard[index] || !gameActive) return;
+            
+            const cell = document.querySelector(`[data-cell="${index}"]`);
+            const symbol = currentPlayer;
+            const playerClass = currentUser === 'Rayan' ? 'rayan' : 'israh';
+            
+            tttBoard[index] = symbol;
+            cell.textContent = symbol;
+            cell.classList.add(playerClass);
+            
+            if (checkWin()) {
+                gameActive = false;
+                updateGameStatus(`🎉 ${currentUser} a gagné !`);
+                confetti({ particleCount: 50, spread: 45 });
+            } else if (tttBoard.every(cell => cell)) {
+                gameActive = false;
+                updateGameStatus('🤝 Match nul !');
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                updateGameStatus('Au tour de l\'adversaire...');
+            }
+        }
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Lignes
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colonnes
+                [0, 4, 8], [2, 4, 6] // Diagonales
+            ];
+            
+            return winPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                return tttBoard[a] && tttBoard[a] === tttBoard[b] && tttBoard[a] === tttBoard[c];
+            });
+        }
+
+        function updateGameStatus(message) {
+            document.getElementById('game-status').innerHTML = `<i class="fas fa-gamepad"></i> ${message}`;
+        }
+
+        // === MODAL ===
+        function showModal(icon, title, text) {
+            document.getElementById('modal-icon').textContent = icon;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-text').textContent = text;
+            document.getElementById('modal-notification').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-notification').style.display = 'none';
+        }
+
+        // Fermeture du modal en cliquant à l'extérieur
+        document.getElementById('modal-notification').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'r' && e.ctrlKey) {
+                e.preventDefault();
+                if (confirm('Redémarrer le jeu de Tic Tac Toe ?')) {
+                    initializeTTT();
+                }
+            }
+        });
+    </script>
 </body>
-</html> 
+</html>
