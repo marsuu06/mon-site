@@ -34,62 +34,77 @@
             --orange: #ff9e00;
             --green: #00ff88;
             --border: rgba(255, 255, 255, 0.1);
+            --dynamic-bg: radial-gradient(circle at top right, #1a0b2e, #05020a);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0; background: var(--bg); color: #fff;
             min-height: 100vh; overflow-x: hidden;
+            transition: background 2s ease;
         }
 
-        /* --- PORTAL --- */
+        /* --- PORTAIL D'ENTRÉE --- */
         #who-screen {
             position: fixed; inset: 0; z-index: 3000;
             background: 
-                linear-gradient(rgba(5, 2, 10, 0.8), rgba(5, 2, 10, 0.95)),
+                linear-gradient(rgba(5, 2, 10, 0.7), rgba(5, 2, 10, 0.9)),
                 url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-position: center;
+            background-size: cover;
+            background-position: center;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
+            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
         }
 
-        .portal-container { display: flex; gap: 40px; margin-top: 50px; flex-wrap: wrap; justify-content: center; transition: 0.5s; }
+        .portal-container {
+            display: flex; gap: 40px; margin-top: 50px; flex-wrap: wrap; justify-content: center;
+        }
 
         .portal {
-            width: 160px; height: 160px; border-radius: 50%;
+            width: 170px; height: 170px; border-radius: 50%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; position: relative; transition: all 0.5s;
-            border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); backdrop-filter: blur(15px);
+            cursor: pointer; position: relative; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
         }
-        .portal.active-user { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 30px rgba(255,255,255,0.2); }
 
-        .heart-sync-box { 
-            margin-top: 30px; display: none; flex-direction: column; align-items: center; 
-            animation: fadeIn 0.8s ease;
-        }
+        .portal.rayan { box-shadow: 0 0 20px rgba(155, 93, 229, 0.2); }
+        .portal.israh { box-shadow: 0 0 20px rgba(241, 120, 255, 0.2); }
+        .portal:hover { transform: scale(1.1) translateY(-10px); background: rgba(255,255,255,0.1); }
+        .portal.rayan:hover { border-color: var(--accent); box-shadow: 0 0 50px rgba(155, 93, 229, 0.6); }
+        .portal.israh:hover { border-color: var(--pink); box-shadow: 0 0 50px rgba(241, 120, 255, 0.6); }
 
         .heart-icon {
-            font-size: 4rem; color: var(--pink); cursor: pointer;
-            animation: beat 1.5s infinite; transition: 0.2s;
+            font-size: 3rem; color: var(--pink);
+            animation: beat 1.5s infinite; margin: 25px 0;
             filter: drop-shadow(0 0 15px var(--pink));
         }
-        .heart-icon:active { transform: scale(0.8); }
-
-        .sync-dots { display: flex; gap: 10px; margin-top: 15px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: 0.3s; }
-        .dot.on { background: var(--pink); box-shadow: 0 0 10px var(--pink); }
 
         @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px var(--pink)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 30px var(--pink)); }
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MAIN APP STYLE --- */
-        #main-app { background: radial-gradient(circle at top right, #1a0b2e, var(--bg)); min-height: 100vh; }
+        .hidden { opacity: 0; pointer-events: none; transform: scale(1.2); }
+
+        /* --- LAYOUT PRINCIPAL --- */
+        #main-app {
+            background: var(--dynamic-bg);
+            min-height: 100vh;
+            transition: background 2s ease;
+        }
+
         header { padding: 40px 20px; text-align: center; }
-        .clock { font-size: 3.5rem; font-weight: 800; background: linear-gradient(to bottom, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .clock { 
+            font-size: 3.5rem; font-weight: 800; 
+            background: linear-gradient(to bottom, #fff, #999);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 5px; 
+        }
         .countdown { font-size: 0.7rem; letter-spacing: 2px; color: var(--pink); font-weight: 600; text-transform: uppercase; margin-bottom: 15px; }
+        
         .xp-container { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 0 auto 15px; overflow: hidden; }
         #xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--pink)); transition: 0.8s ease; }
 
@@ -97,54 +112,87 @@
         .main-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; margin-bottom: 30px; }
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
         
-        .card { background: var(--glass); border-radius: 35px; padding: 30px; border: 1px solid var(--border); backdrop-filter: blur(25px); }
+        .card { 
+            background: var(--glass); border-radius: 35px; padding: 30px; 
+            border: 1px solid var(--border); backdrop-filter: blur(25px); 
+            transition: 0.3s;
+        }
 
-        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+        /* JARDIN & OUTILS */
+        #garden-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin-bottom: 15px; }
         .pixel { aspect-ratio: 1; background: rgba(255,255,255,0.05); border-radius: 6px; cursor: pointer; transition: 0.3s; }
         
-        .tool-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: rgba(255,255,255,0.5); padding: 10px 20px; border-radius: 14px; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
+        .tool-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tool-btn { 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            color: rgba(255,255,255,0.5); padding: 8px 12px; border-radius: 12px; 
+            cursor: pointer; font-size: 0.65rem; font-weight: 600; transition: 0.3s;
+        }
         .tool-btn.active { border-color: var(--pink); color: #fff; background: rgba(241, 120, 255, 0.2); }
 
+        /* JEUX */
         .game-box { background: rgba(0,0,0,0.3); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); }
         .player-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .mood-btn { font-size: 1.4rem; cursor: pointer; opacity: 0.2; transition: 0.3s; filter: grayscale(1); }
+        .mood-btn { font-size: 1.4rem; cursor: pointer; opacity: 0.3; transition: 0.3s; filter: grayscale(1); }
         .mood-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.3); }
         
-        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 160px; margin: 20px auto; }
-        .ttt-cell { aspect-ratio: 1; background: rgba(0,0,0,0.4); border-radius: 15px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
+        /* IMPULSION NOTIFICATION */
+        @keyframes pulse-notify {
+            0% { box-shadow: 0 0 0 0 rgba(241, 120, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(241, 120, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(241, 120, 255, 0); }
+        }
+        .notif-pulse { animation: pulse-notify 2s infinite; border-color: var(--pink) !important; }
 
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 160px; margin: 20px auto; }
+        .ttt-cell { 
+            aspect-ratio: 1; background: rgba(0,0,0,0.4); border-radius: 15px; 
+            border: 1px solid var(--border); display: flex; align-items: center; 
+            justify-content: center; font-size: 1.5rem; font-weight: 800; cursor: pointer;
+        }
+
+        /* JOURNAUX */
         .journals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 700px) { .journals-grid { grid-template-columns: 1fr; } }
         
-        textarea { width: 100%; height: 70px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 18px; color: #fff; padding: 15px; font-family: inherit; resize: none; box-sizing: border-box; margin-bottom: 10px; }
-        .finish-btn { width: 100%; padding: 20px; border-radius: 20px; border: none; background: linear-gradient(45deg, var(--accent), var(--pink)); color: white; font-weight: 800; cursor: pointer; }
+        .q-box { 
+            background: rgba(155, 93, 229, 0.08); padding: 25px; border-radius: 28px; 
+            margin-bottom: 20px; border: 1px solid rgba(155, 93, 229, 0.2); 
+        }
+        .status-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--orange); transition: 0.5s; }
+        .status-dot.active { background: var(--green); box-shadow: 0 0 20px var(--green); }
+        
+        textarea { 
+            width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); 
+            border-radius: 22px; color: #fff; padding: 18px; font-family: inherit; resize: none; 
+            box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; 
+        }
+
+        .finish-btn { 
+            width: 100%; padding: 22px; border-radius: 24px; border: none; 
+            background: linear-gradient(45deg, var(--accent), var(--pink)); 
+            color: white; font-weight: 800; cursor: pointer; transition: 0.4s;
+        }
 
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .modal-content { background: #0a0510; border: 1px solid var(--pink); padding: 40px; border-radius: 40px; text-align: center; max-width: 300px; }
-        .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
+        .modal-content { background: #0a0510; border: 1px solid var(--pink); padding: 45px; border-radius: 45px; text-align: center; max-width: 350px; }
     </style>
 </head>
 <body>
 
     <div id="who-screen">
-        <h1 style="font-weight: 200; letter-spacing: 15px; margin-bottom: 30px;">L'HARMONIE</h1>
+        <h1 style="font-weight: 200; letter-spacing: 15px; margin-bottom: 0; opacity: 0.9;">L'HARMONIE</h1>
+        <div class="heart-icon">❤</div>
+        <p style="font-size: 0.65rem; opacity: 0.5; letter-spacing: 5px; text-transform: uppercase;">Portail vers la Synapse</p>
         
-        <div id="portal-ui" class="portal-container">
-            <div id="p-Rayan" class="portal" onclick="selectUser('Rayan')">
-                <span style="color:var(--accent)">RAYAN</span>
+        <div class="portal-container">
+            <div class="portal rayan" onclick="identify('Rayan')">
+                <span style="color:var(--accent); text-shadow: 0 0 10px var(--accent);">RAYAN</span>
                 <small>PROTECTEUR</small>
             </div>
-            <div id="p-Israh" class="portal" onclick="selectUser('Israh')">
-                <span style="color:var(--pink)">ISRAH</span>
+            <div class="portal israh" onclick="identify('Israh')">
+                <span style="color:var(--pink); text-shadow: 0 0 10px var(--pink);">ISRAH</span>
                 <small>LUMIÈRE</small>
-            </div>
-        </div>
-
-        <div id="sync-zone" class="heart-sync-box">
-            <p id="sync-msg" style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.7;">SYNCHRONISATION REQUISE (5x)</p>
-            <div class="heart-icon" onclick="heartClick()">❤</div>
-            <div class="sync-dots">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
             </div>
         </div>
     </div>
@@ -152,49 +200,96 @@
     <div id="main-app" style="display:none">
         <header>
             <div id="real-clock" class="clock">00:00</div>
-            <div id="countdown" class="countdown">--:--</div>
+            <div id="countdown" class="countdown">Reset dans --h --m</div>
             <div class="xp-container"><div id="xp-fill"></div></div>
-            <div style="font-size: 0.6rem; letter-spacing: 3px; color: var(--accent);">LIEN QUANTIQUE ÉTABLI</div>
+            <div id="status-bar" style="font-size: 0.65rem; letter-spacing: 3px; color: var(--accent); font-weight: 800;">CONNEXION ÉTABLIE</div>
         </header>
 
         <div class="container">
             <div class="main-grid">
-                <div class="card">
-                    <h3>Jardin de Cristal 💎</h3>
+                <div class="card" id="card-garden">
+                    <h3 style="margin:0 0 8px;">Jardin de Cristal 💎</h3>
+                    <p style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 25px;">Tracez votre chemin sur la voûte étoilée.</p>
                     <div id="garden-grid"></div>
-                    <div style="margin-top:20px; display:flex; gap:10px;">
-                        <button id="btn-draw" class="tool-btn active" onclick="tool='draw'">PINCEAU</button>
-                        <button id="btn-erase" class="tool-btn" onclick="tool='erase'">GOMME</button>
+                    <div class="tool-bar">
+                        <button id="btn-draw" class="tool-btn active" onclick="setTool('draw')">PINCEAU</button>
+                        <button id="btn-fill" class="tool-btn" onclick="setTool('fill')">REMPLIR</button>
+                        <button id="btn-picker" class="tool-btn" onclick="setTool('picker')">PIPETTE</button>
+                        <button id="btn-erase" class="tool-btn" onclick="setTool('erase')">GOMME</button>
+                        <button class="tool-btn" style="margin-left:auto; color: #ff4444;" onclick="clearAll()">RESET</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>Jeux & Moods ⚡</h3>
+                    <h3 style="margin:0 0 20px;">Défis & Humeurs ⚡</h3>
                     <div class="game-box">
-                        <div class="player-row"><span>Rayan</span><div id="moods-R"></div></div>
-                        <div class="player-row"><span>Israh</span><div id="moods-I"></div></div>
+                        <div class="player-row">
+                            <span class="badge" style="color:var(--accent); border:1px solid; padding:2px 8px; border-radius:10px; font-size:0.6rem;">RAYAN</span>
+                            <div id="moods-R">
+                                <span class="mood-btn" onclick="pushMood('rayan','😊')">😊</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🔥')">🔥</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🥺')">🥺</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','😴')">😴</span>
+                                <span class="mood-btn" onclick="pushMood('rayan','🥰')">🥰</span>
+                            </div>
+                        </div>
+                        <div class="player-row">
+                            <span class="badge" style="color:var(--pink); border:1px solid; padding:2px 8px; border-radius:10px; font-size:0.6rem;">ISRAH</span>
+                            <div id="moods-I">
+                                <span class="mood-btn" onclick="pushMood('israh','😊')">😊</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🔥')">🔥</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🥺')">🥺</span>
+                                <span class="mood-btn" onclick="pushMood('israh','😴')">😴</span>
+                                <span class="mood-btn" onclick="pushMood('israh','🥰')">🥰</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="game-box" style="text-align:center;">
+
+                    <div class="game-box" id="card-rps" style="text-align:center;">
+                        <span style="font-size:0.65rem; font-weight:800; opacity:0.5; letter-spacing: 2px;">CHIFOUMI DIRECT</span>
+                        <div style="display:flex; justify-content:center; gap:25px; margin:20px 0;">
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('🪨')">🪨</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('📜')">📜</span>
+                            <span style="cursor:pointer; font-size:2rem;" onclick="playRPS('✂️')">✂️</span>
+                        </div>
+                        <div id="rps-res" style="font-size:0.75rem; color:var(--pink); font-weight:800; letter-spacing: 1px;">En attente...</div>
+                    </div>
+
+                    <div class="game-box" id="card-ttt" style="text-align:center;">
+                        <span style="font-size:0.65rem; font-weight:800; opacity:0.5; letter-spacing: 2px;">MORPION SYNAPTIQUE</span>
                         <div class="ttt-grid" id="ttt-grid"></div>
-                        <button onclick="resetGames()" style="background:none; border:none; color:gray; font-size:0.6rem; cursor:pointer;">RESET JEUX</button>
+                        <button onclick="resetGames()" style="background:none; border:none; color:gray; font-size:0.65rem; cursor:pointer; text-decoration:underline;">RESET</button>
                     </div>
                 </div>
             </div>
 
             <div class="journals-grid">
-                <div class="card">
-                    <h3>Journal de Rayan</h3>
-                    <div id="q-txt-R" style="color:var(--pink); margin-bottom:15px; font-size:0.9rem;">...</div>
-                    <textarea id="rQ" placeholder="Réponse à la question..."></textarea>
-                    <textarea id="r1" placeholder="Aujourd'hui..."></textarea>
-                    <button class="finish-btn" onclick="seal('Rayan')">SCELLER</button>
+                <div class="card" id="journal-Rayan">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                        <h3 style="margin:0;">Journal de Rayan</h3>
+                        <div id="dotR" class="status-dot"></div>
+                    </div>
+                    <div class="q-box">
+                        <p id="q-txt-R" style="margin:0; font-size:0.9rem; font-weight:600; color:var(--pink);">...</p>
+                        <textarea id="rQ" placeholder="Réponse à la question..."></textarea>
+                    </div>
+                    <textarea id="r1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+                    <textarea id="r2" placeholder="J’ai été fier de…"></textarea>
+                    <button class="finish-btn" onclick="seal('Rayan')">SCELLER POUR ISRAH 🖤</button>
                 </div>
-                <div class="card">
-                    <h3>Journal d'Israh</h3>
-                    <div id="q-txt-I" style="color:var(--pink); margin-bottom:15px; font-size:0.9rem;">...</div>
-                    <textarea id="iQ" placeholder="Réponse à la question..."></textarea>
-                    <textarea id="i1" placeholder="Aujourd'hui..."></textarea>
-                    <button class="finish-btn" style="background:linear-gradient(45deg, var(--pink), #ff00c8)" onclick="seal('Israh')">SCELLER</button>
+
+                <div class="card" id="journal-Israh">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                        <h3 style="margin:0;">Journal d'Israh</h3>
+                        <div id="dotI" class="status-dot"></div>
+                    </div>
+                    <div class="q-box">
+                        <p id="q-txt-I" style="margin:0; font-size:0.9rem; font-weight:600; color:var(--pink);">...</p>
+                        <textarea id="iQ" placeholder="Réponse à la question..."></textarea>
+                    </div>
+                    <textarea id="i1" placeholder="Aujourd’hui j’ai gardé pour moi…"></textarea>
+                    <textarea id="i2" placeholder="J’ai été fière de…"></textarea>
+                    <button class="finish-btn" style="background:linear-gradient(45deg, var(--pink), #ff00c8)" onclick="seal('Israh')">SCELLER POUR RAYAN 🖤</button>
                 </div>
             </div>
         </div>
@@ -202,60 +297,64 @@
 
     <div id="modal">
         <div class="modal-content">
-            <h2>Scellé ! ✨</h2>
+            <h2 id="modal-title" style="color:var(--pink)">Scellé ! ✨</h2>
             <p id="modal-msg"></p>
-            <button class="finish-btn" onclick="document.getElementById('modal').style.display='none'">FERMER</button>
+            <button class="finish-btn" style="padding:15px;" onclick="document.getElementById('modal').style.display='none'">OK</button>
         </div>
     </div>
 
 <script>
     let myUser = "";
     let tool = "draw";
-    let syncCount = 0;
-    const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi pour demain ?", "Ton humeur ?", "De quoi es-tu fier(e) ?"];
+    let lastKnownData = {};
+    const soulQuestions = ["Ton moment préféré ?", "Une chose que tu aimes chez moi ?", "Un défi pour demain ?", "Ton humeur en un mot ?", "De quoi es-tu fier(e) ?", "Un souvenir qui t'a fait sourire ?"];
 
-    // --- LOGIQUE DE SYNCHRO ---
-    function selectUser(u) {
+    function identify(u) {
         myUser = u;
-        document.querySelectorAll('.portal').forEach(p => p.classList.remove('active-user'));
-        document.getElementById('p-'+u).classList.add('active-user');
-        document.getElementById('sync-zone').style.display = 'flex';
-        document.getElementById('sync-msg').innerText = `SYNCHRONISATION : ${u.toUpperCase()}`;
-    }
-
-    function heartClick() {
-        if(!myUser) return;
-        const dots = document.querySelectorAll('.dot');
-        if(syncCount < 5) {
-            dots[syncCount].classList.add('on');
-            syncCount++;
-            // Petit effet haptique visuel
-            document.querySelector('.heart-icon').style.transform = "scale(1.3)";
-            setTimeout(() => document.querySelector('.heart-icon').style.transform = "scale(1)", 100);
-        }
-        
-        if(syncCount === 5) {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            setTimeout(enterApp, 800);
-        }
-    }
-
-    function enterApp() {
         document.getElementById('who-screen').classList.add('hidden');
+        confetti({ particleCount: 150 });
         setTimeout(() => {
             document.getElementById('who-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
         }, 1000);
     }
 
-    // --- INITIALISATION JEUX ---
+    // --- JARDIN & OUTILS AVANCÉS ---
     const gGrid = document.getElementById('garden-grid');
     for(let i=0; i<144; i++) {
         const p = document.createElement('div'); p.className = 'pixel';
-        p.onclick = () => database.ref('harmonie_v3/garden/'+i).set(tool === 'draw' ? (myUser === 'Rayan' ? 'var(--accent)' : 'var(--pink)') : 'rgba(255,255,255,0.05)');
+        p.onclick = () => handlePixelClick(i);
         gGrid.appendChild(p);
     }
 
+    function handlePixelClick(index) {
+        const currentColor = lastKnownData.garden?.[index] || 'rgba(255,255,255,0.05)';
+        
+        if (tool === 'picker') {
+            // Pas d'action si c'est vide, sinon on pourrait imaginer changer de mode
+            return;
+        } else if (tool === 'fill') {
+            const newColor = myUser === 'Rayan' ? 'var(--accent)' : 'var(--pink)';
+            const updates = {};
+            for(let i=0; i<144; i++) updates[i] = newColor;
+            database.ref('harmonie_v3/garden').update(updates);
+        } else if (tool === 'draw') {
+            const newColor = myUser === 'Rayan' ? 'var(--accent)' : 'var(--pink)';
+            database.ref('harmonie_v3/garden/'+index).set(newColor);
+        } else if (tool === 'erase') {
+            database.ref('harmonie_v3/garden/'+index).set('rgba(255,255,255,0.05)');
+        }
+    }
+
+    function setTool(t) {
+        tool = t;
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + t).classList.add('active');
+    }
+
+    function clearAll() { database.ref('harmonie_v3/garden').remove(); }
+
+    // --- MORPION ---
     const tGrid = document.getElementById('ttt-grid');
     for(let i=0; i<9; i++) {
         const c = document.createElement('div'); c.className = 'ttt-cell';
@@ -263,55 +362,88 @@
         tGrid.appendChild(c);
     }
 
-    const moodIcons = ['😊','🔥','🥺','😴','🥰'];
-    ['R','I'].forEach(u => {
-        const container = document.getElementById('moods-'+u);
-        moodIcons.forEach(icon => {
-            const span = document.createElement('span'); span.className = 'mood-btn'; span.innerText = icon;
-            span.onclick = () => database.ref('harmonie_v3/moods/'+(u==='R'?'rayan':'israh')).set(icon);
-            container.appendChild(span);
-        });
-    });
+    // --- MÉTÉO ÉMOTIONNELLE ---
+    function updateSky(moods) {
+        const combined = (moods?.rayan || '') + (moods?.israh || '');
+        let colorA = "#1a0b2e", colorB = "#05020a";
 
-    // --- FIREBASE SYNC ---
+        if (combined.includes('🔥')) { colorA = "#4a0e0e"; colorB = "#1a0505"; }
+        else if (combined.includes('🥰')) { colorA = "#3b0d2e"; colorB = "#140510"; }
+        else if (combined.includes('😴')) { colorA = "#0d1a3b"; colorB = "#050a14"; }
+        
+        document.body.style.background = colorB;
+        document.getElementById('main-app').style.background = `radial-gradient(circle at top right, ${colorA}, ${colorB})`;
+    }
+
+    // --- SYNC FIREBASE ---
     database.ref('harmonie_v3').on('value', snap => {
         const d = snap.val() || {};
-        document.querySelectorAll('.pixel').forEach((p, i) => p.style.background = d.garden?.[i] || 'rgba(255,255,255,0.05)');
-        document.querySelectorAll('.ttt-cell').forEach((c, i) => c.innerText = d.ttt?.[i] || "");
         
-        ['rayan','israh'].forEach(u => {
-            const char = u === 'rayan' ? 'R' : 'I';
-            document.querySelectorAll(`#moods-${char} .mood-btn`).forEach(b => b.classList.toggle('active', b.innerText === d.moods?.[u]));
+        // Notification d'activité (Impulsion)
+        if(lastKnownData.garden && JSON.stringify(d.garden) !== JSON.stringify(lastKnownData.garden)) {
+            triggerPulse('card-garden');
+        }
+        if(lastKnownData.ttt && JSON.stringify(d.ttt) !== JSON.stringify(lastKnownData.ttt)) {
+            triggerPulse('card-ttt');
+        }
+
+        lastKnownData = d;
+        updateSky(d.moods);
+
+        // Sync Jardin
+        document.querySelectorAll('.pixel').forEach((p, i) => {
+            const color = d.garden?.[i] || 'rgba(255,255,255,0.05)';
+            p.style.background = color;
+            p.style.boxShadow = color.includes('var') ? `0 0 10px ${color}` : 'none';
         });
 
-        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Lance une question...";
-        if(document.activeElement.tagName !== 'TEXTAREA') {
-            document.getElementById('rQ').value = d.valR?.[0] || "";
-            document.getElementById('r1').value = d.valR?.[1] || "";
-            document.getElementById('iQ').value = d.valI?.[0] || "";
-            document.getElementById('i1').value = d.valI?.[1] || "";
-        }
+        // Sync Moods
+        ['rayan','israh'].forEach(u => {
+            const char = u === 'rayan' ? 'R' : 'I';
+            document.querySelectorAll(`#moods-${char} .mood-btn`).forEach(b => {
+                b.classList.toggle('active', b.innerText === d.moods?.[u]);
+            });
+        });
+
+        // Sync RPS
+        const rps = d.rps || {};
+        document.getElementById('rps-res').innerText = (rps.rayan && rps.israh) ? `R: ${rps.rayan} | I: ${rps.israh}` : "En attente...";
+
+        // Sync Morpion
+        document.querySelectorAll('.ttt-cell').forEach((c, i) => {
+            const v = d.ttt?.[i] || "";
+            c.innerText = v;
+            c.style.color = v === 'X' ? 'var(--accent)' : 'var(--pink)';
+        });
+
+        // Sync Journaux
+        document.getElementById('q-txt-R').innerText = document.getElementById('q-txt-I').innerText = d.qSoul || "Quelle est ta plus belle réussite ?";
+        document.getElementById('dotR').classList.toggle('active', d.done?.Rayan);
+        document.getElementById('dotI').classList.toggle('active', d.done?.Israh);
     });
 
-    function syncText() {
-        const vr = [document.getElementById('rQ').value, document.getElementById('r1').value];
-        const vi = [document.getElementById('iQ').value, document.getElementById('i1').value];
-        database.ref('harmonie_v3').update({ valR: vr, valI: vi });
+    function triggerPulse(id) {
+        const el = document.getElementById(id);
+        el.classList.add('notif-pulse');
+        setTimeout(() => el.classList.remove('notif-pulse'), 4000);
     }
-    document.querySelectorAll('textarea').forEach(t => t.oninput = syncText);
 
+    function pushMood(u, m) { database.ref('harmonie_v3/moods/'+u).set(m); }
+    function playRPS(m) { database.ref(`harmonie_v3/rps/${myUser.toLowerCase()}`).set(m); }
+    function resetGames() { database.ref('harmonie_v3/ttt').remove(); database.ref('harmonie_v3/rps').remove(); }
+    
     function seal(u) {
+        database.ref('harmonie_v3/done/'+u).set(true);
         confetti({ particleCount: 100 });
-        document.getElementById('modal-msg').innerText = `Journal de ${u} scellé avec succès.`;
+        document.getElementById('modal-msg').innerText = "Tes pensées sont scellées dans les étoiles.";
         document.getElementById('modal').style.display = 'flex';
     }
 
-    function resetGames() { database.ref('harmonie_v3/ttt').remove(); }
-
-    setInterval(() => {
+    function updatePortal() {
         const now = new Date();
         document.getElementById('real-clock').innerText = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-    }, 1000);
+    }
+    setInterval(updatePortal, 1000);
 </script>
 </body>
 </html> 
