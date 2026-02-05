@@ -7,6 +7,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -20,6 +21,7 @@
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const storage = firebase.storage();
     </script>
 
     <style>
@@ -1074,7 +1076,204 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-    </style>
+    
+        /* --- ECHOES OF SILENCE MAZE GAME --- */
+        .maze-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #maze-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 2px;
+            background: rgba(20, 10, 40, 0.6);
+            padding: 15px;
+            border-radius: 30px;
+            border: 2px solid rgba(155, 93, 229, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .maze-cell {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .maze-cell.wall {
+            background: linear-gradient(135deg, rgba(155, 93, 229, 0.4), rgba(155, 93, 229, 0.2));
+            box-shadow: inset 0 0 10px rgba(155, 93, 229, 0.3);
+        }
+
+        .maze-cell.path {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .maze-cell.player {
+            background: radial-gradient(circle, var(--pink), rgba(241, 120, 255, 0.3));
+            box-shadow: 0 0 20px var(--pink), 0 0 40px var(--pink);
+            animation: playerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes playerPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .maze-cell.start {
+            background: radial-gradient(circle, var(--green), rgba(0, 255, 136, 0.2));
+            box-shadow: 0 0 15px var(--green);
+        }
+
+        .maze-cell.end {
+            background: radial-gradient(circle, var(--orange), rgba(255, 158, 0, 0.2));
+            box-shadow: 0 0 15px var(--orange);
+            animation: endGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes endGlow {
+            0%, 100% { box-shadow: 0 0 15px var(--orange); }
+            50% { box-shadow: 0 0 30px var(--orange), 0 0 50px var(--orange); }
+        }
+
+        .maze-guide-view #maze-grid {
+            opacity: 1;
+        }
+
+        .maze-explorer-view #maze-grid {
+            background: #000;
+        }
+
+        .maze-explorer-view .maze-cell {
+            background: #000 !important;
+            box-shadow: none !important;
+        }
+
+        .maze-explorer-view .maze-cell.player {
+            background: radial-gradient(circle, var(--pink) 0%, rgba(241, 120, 255, 0.6) 30%, rgba(241, 120, 255, 0.3) 50%, transparent 70%) !important;
+            box-shadow: 0 0 40px var(--pink), 0 0 80px var(--pink) !important;
+        }
+
+        #command-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        #command-panel button {
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid rgba(155, 93, 229, 0.4);
+            background: linear-gradient(135deg, rgba(155, 93, 229, 0.2), rgba(155, 93, 229, 0.1));
+            color: var(--pink);
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        #command-panel button:hover {
+            transform: translateY(-3px);
+            border-color: rgba(155, 93, 229, 0.8);
+            box-shadow: 0 8px 30px rgba(155, 93, 229, 0.4);
+        }
+
+        #command-panel button:active {
+            transform: scale(0.95);
+        }
+
+        #command-display {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--pink);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 25px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #command-display::before {
+            content: '';
+            position: absolute;
+            inset: -100%;
+            background: linear-gradient(45deg, transparent, rgba(241, 120, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        #command-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--pink);
+            text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink);
+            letter-spacing: 4px;
+            animation: commandPulse 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes commandPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .maze-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            flex: 1;
+            background: rgba(20, 10, 40, 0.6);
+            border: 1px solid rgba(155, 93, 229, 0.3);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.6rem;
+            opacity: 0.6;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--pink);
+            font-family: 'Space Grotesk';
+        }
+
+        @media (max-width: 768px) {
+            .maze-cell {
+                font-size: 0.7rem;
+            }
+            
+            #command-panel button {
+                padding: 15px;
+                font-size: 0.8rem;
+            }
+            
+            #command-text {
+                font-size: 2rem;
+            }
+        }
+</style>
 </head>
 <body>
     <!-- ÉCRAN DE CONNEXION -->
@@ -1323,7 +1522,63 @@
                     </div>
                 </div>
             </div>
+        
+            <!-- ECHOES OF SILENCE - LE JEU DU LABYRINTHE -->
+            <div class="card" style="margin-top:40px;">
+                <div style="text-align:center;margin-bottom:30px;">
+                    <div class="status-badge">🌌 Jeu Coopératif</div>
+                    <h3>Echoes of Silence 🔮</h3>
+                    <p style="font-size:0.7rem;opacity:0.6;margin-top:12px;letter-spacing:2px;line-height:1.5;">
+                        <strong style="color:var(--accent);">RAYAN (Guide)</strong> : Voit tout le labyrinthe et envoie des ordres.<br>
+                        <strong style="color:var(--pink);">ISRAH (Éclaireuse)</strong> : Avance dans le noir, guidée par les commandes.
+                    </p>
+                </div>
+
+                <!-- Stats du jeu -->
+                <div class="maze-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Niveau</div>
+                        <div class="stat-value" id="maze-level">1</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Collisions</div>
+                        <div class="stat-value" id="maze-collisions">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Temps</div>
+                        <div class="stat-value" id="maze-time">0s</div>
+                    </div>
+                </div>
+
+                <!-- Affichage des commandes (pour Israh) -->
+                <div id="command-display" style="display:none;">
+                    <div id="command-text">EN ATTENTE...</div>
+                </div>
+
+                <!-- La grille du labyrinthe -->
+                <div class="maze-container">
+                    <div id="maze-grid"></div>
+                </div>
+
+                <!-- Panneau de contrôle (pour Rayan) -->
+                <div id="command-panel" style="display:none;">
+                    <button onclick="sendCommand('⬆️ HAUT')">⬆️ HAUT</button>
+                    <button onclick="sendCommand('⬇️ BAS')">⬇️ BAS</button>
+                    <button onclick="sendCommand('⬅️ GAUCHE')">⬅️ GAUCHE</button>
+                    <button onclick="sendCommand('➡️ DROITE')">➡️ DROITE</button>
+                    <button onclick="sendCommand('⚡ VITE !')">⚡ VITE !</button>
+                    <button onclick="sendCommand('🛑 STOP !')">🛑 STOP !</button>
+                </div>
+
+                <!-- Boutons de contrôle -->
+                <div style="display:flex;gap:12px;margin-top:20px;">
+                    <button class="finish-btn" onclick="startMazeGame()">🎮 NOUVELLE PARTIE</button>
+                    <button class="tool-btn" onclick="resetMazeGame()">🔄 RESET</button>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
     </div>
 
     <!-- MODAL -->
@@ -1388,6 +1643,19 @@
                 updatePortal();
                 if(document.getElementById('harmony-grid')) {
                     setTimeout(() => initHarmonyGame(), 500);
+                }
+                
+                // Initialiser les vues du labyrinthe selon l'utilisateur
+                if(myUser === 'Rayan') {
+                    document.getElementById('command-panel').style.display = 'grid';
+                    document.getElementById('command-display').style.display = 'none';
+                    const mazeContainer = document.querySelector('.maze-container');
+                    if(mazeContainer) mazeContainer.classList.add('maze-guide-view');
+                } else if(myUser === 'Israh') {
+                    document.getElementById('command-panel').style.display = 'none';
+                    document.getElementById('command-display').style.display = 'flex';
+                    const mazeContainer = document.querySelector('.maze-container');
+                    if(mazeContainer) mazeContainer.classList.add('maze-explorer-view');
                 }
             }
         }
@@ -1529,6 +1797,21 @@
             let filled = 0;
             document.querySelectorAll('textarea').forEach(t => { if(t.value.trim().length > 2) filled++; });
             document.getElementById('xp-fill').style.width = Math.min((filled / 12 * 100), 100) + "%";
+
+            // Sync du puzzle
+            if(d.puzzle && d.puzzle.imageUrl && !document.getElementById('puzzle-board').innerHTML) {
+                setupPuzzle(d.puzzle.imageUrl);
+            }
+            
+            // Sync des positions des pièces
+            if(d.puzzle && d.puzzle.positions) {
+                syncPuzzlePieces(d.puzzle.positions);
+            }
+
+            // Sync du labyrinthe
+            if(d.maze) {
+                syncMazeState(d.maze);
+            }
         });
 
         function pushMood(u, m) { database.ref('harmonie_v3/moods/'+u).set(m); }
@@ -1730,21 +2013,37 @@
         let piecesPositions = [];
         const puzzleGrid = 4; // 16 pièces (4x4)
 
-        function handlePuzzleUpload(event) {
+        async function handlePuzzleUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // Vérifier que c'est bien une image
             if (!file.type.startsWith('image/')) {
                 alert('Veuillez sélectionner une image valide.');
                 return;
             }
             
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                setupPuzzle(e.target.result);
-            };
-            reader.readAsDataURL(file);
+            // Upload vers Firebase Storage pour synchronisation
+            const storageRef = storage.ref('puzzle-images/' + Date.now() + '_' + file.name);
+            try {
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                
+                // Sauvegarder l'URL dans la database
+                await database.ref('harmonie_v3/puzzle').set({
+                    imageUrl: downloadURL,
+                    timestamp: Date.now()
+                });
+                
+                setupPuzzle(downloadURL);
+            } catch (error) {
+                console.error('Erreur upload:', error);
+                // Fallback en mode local si Firebase Storage n'est pas configuré
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    setupPuzzle(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function setupPuzzle(imageSrc) {
@@ -1753,17 +2052,16 @@
             const gameArea = document.getElementById('puzzle-game-area');
             const successMsg = document.getElementById('puzzle-success-msg');
             
-            // Afficher la zone de jeu
             uploadZone.style.display = 'none';
             gameArea.style.display = 'block';
             successMsg.style.display = 'none';
             board.innerHTML = '';
             
-            // Création de l'ordre correct (0 à 15)
             piecesPositions = Array.from({length: puzzleGrid * puzzleGrid}, (_, i) => i);
-            
-            // Mélange aléatoire
             const shuffled = [...piecesPositions].sort(() => Math.random() - 0.5);
+            
+            // Sauvegarder les positions initiales dans Firebase
+            database.ref('harmonie_v3/puzzle/positions').set(shuffled);
             
             // Créer les pièces
             shuffled.forEach((originalPos, currentIndex) => {
@@ -1819,27 +2117,35 @@
         function swapPuzzlePieces(fromIdx, toIdx) {
             if (fromIdx === toIdx) return;
             
-            const board = document.getElementById('puzzle-board');
-            const pieces = Array.from(board.children);
-            const fromPiece = pieces[fromIdx];
-            const toPiece = pieces[toIdx];
-            
-            // Échanger les backgrounds
-            const tempBg = fromPiece.style.backgroundPosition;
-            const tempPos = fromPiece.dataset.correctPos;
-            
-            fromPiece.style.backgroundPosition = toPiece.style.backgroundPosition;
-            fromPiece.dataset.correctPos = toPiece.dataset.correctPos;
-            
-            toPiece.style.backgroundPosition = tempBg;
-            toPiece.dataset.correctPos = tempPos;
-            
-            // Mettre à jour les index
-            fromPiece.dataset.currentIdx = fromIdx;
-            toPiece.dataset.currentIdx = toIdx;
-            
-            // Vérifier si le puzzle est résolu
-            checkPuzzleWin();
+            // Récupérer et échanger dans Firebase
+            database.ref('harmonie_v3/puzzle/positions').once('value', snapshot => {
+                const positions = snapshot.val() || [];
+                if(positions.length === 0) {
+                    // Fallback mode local
+                    const board = document.getElementById('puzzle-board');
+                    const pieces = Array.from(board.children);
+                    const fromPiece = pieces[fromIdx];
+                    const toPiece = pieces[toIdx];
+                    
+                    const tempBg = fromPiece.style.backgroundPosition;
+                    const tempPos = fromPiece.dataset.correctPos;
+                    
+                    fromPiece.style.backgroundPosition = toPiece.style.backgroundPosition;
+                    fromPiece.dataset.correctPos = toPiece.dataset.correctPos;
+                    
+                    toPiece.style.backgroundPosition = tempBg;
+                    toPiece.dataset.correctPos = tempPos;
+                    
+                    fromPiece.dataset.currentIdx = fromIdx;
+                    toPiece.dataset.currentIdx = toIdx;
+                    
+                    checkPuzzleWin();
+                    return;
+                }
+                
+                [positions[fromIdx], positions[toIdx]] = [positions[toIdx], positions[fromIdx]];
+                database.ref('harmonie_v3/puzzle/positions').set(positions);
+            });
         }
 
         function checkPuzzleWin() {
@@ -1879,12 +2185,38 @@
             }
         }
 
+        
+        function syncPuzzlePieces(positions) {
+            const board = document.getElementById('puzzle-board');
+            const pieces = Array.from(board.children);
+            
+            if(pieces.length !== positions.length) return;
+            
+            database.ref('harmonie_v3/puzzle/imageUrl').once('value', snapshot => {
+                const imageUrl = snapshot.val();
+                if(!imageUrl) return;
+                
+                pieces.forEach((piece, index) => {
+                    const correctPos = positions[index];
+                    const row = Math.floor(correctPos / puzzleGrid);
+                    const col = correctPos % puzzleGrid;
+                    
+                    piece.style.backgroundPosition = `${(col / (puzzleGrid - 1)) * 100}% ${(row / (puzzleGrid - 1)) * 100}%`;
+                    piece.dataset.correctPos = correctPos;
+                    piece.dataset.currentIdx = index;
+                });
+                
+                checkPuzzleWin();
+            });
+        }
+
         function resetFragmentarium() {
             document.getElementById('puzzle-upload-zone').style.display = 'block';
             document.getElementById('puzzle-game-area').style.display = 'none';
             document.getElementById('puzzle-success-msg').style.display = 'none';
             document.getElementById('puzzle-input').value = '';
             document.getElementById('puzzle-board').innerHTML = '';
+            database.ref('harmonie_v3/puzzle').remove();
         }
 
         // ===== FRAGMENTARIUM V2 =====
@@ -2032,6 +2364,194 @@
             document.getElementById('puzzle2-input').value = '';
             document.getElementById('puzzle2-board').innerHTML = '';
         }
+    
+        // ========================================= //
+        //   ECHOES OF SILENCE - LABYRINTHE         //
+        // ========================================= //
+        
+        const mazeSize = 10;
+        let mazeData = [];
+        let playerPos = { x: 0, y: 0 };
+        let mazeStartTime = 0;
+        let mazeTimer = null;
+        let mazeLevel = 1;
+        let mazeCollisions = 0;
+
+        function generateMaze() {
+            mazeData = [];
+            for(let y = 0; y < mazeSize; y++) {
+                mazeData[y] = [];
+                for(let x = 0; x < mazeSize; x++) {
+                    mazeData[y][x] = Math.random() < 0.3 ? 'wall' : 'path';
+                }
+            }
+            
+            mazeData[0][0] = 'start';
+            mazeData[mazeSize-1][mazeSize-1] = 'end';
+            
+            let x = 0, y = 0;
+            while(x < mazeSize - 1 || y < mazeSize - 1) {
+                if(x < mazeSize - 1 && Math.random() > 0.5) {
+                    x++;
+                } else if(y < mazeSize - 1) {
+                    y++;
+                }
+                if(mazeData[y][x] === 'wall') {
+                    mazeData[y][x] = 'path';
+                }
+            }
+            
+            return mazeData;
+        }
+
+        function renderMaze() {
+            const grid = document.getElementById('maze-grid');
+            grid.innerHTML = '';
+            
+            for(let y = 0; y < mazeSize; y++) {
+                for(let x = 0; x < mazeSize; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'maze-cell ' + mazeData[y][x];
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    
+                    if(x === playerPos.x && y === playerPos.y) {
+                        cell.classList.add('player');
+                    }
+                    
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function startMazeGame() {
+            mazeData = generateMaze();
+            playerPos = { x: 0, y: 0 };
+            mazeCollisions = 0;
+            mazeStartTime = Date.now();
+            
+            database.ref('harmonie_v3/maze').set({
+                data: mazeData,
+                playerPos: playerPos,
+                level: mazeLevel,
+                collisions: mazeCollisions,
+                startTime: mazeStartTime,
+                command: 'EN ATTENTE...'
+            });
+            
+            renderMaze();
+            
+            if(mazeTimer) clearInterval(mazeTimer);
+            mazeTimer = setInterval(updateMazeTimer, 1000);
+        }
+
+        function updateMazeTimer() {
+            if(!mazeStartTime) return;
+            const elapsed = Math.floor((Date.now() - mazeStartTime) / 1000);
+            document.getElementById('maze-time').innerText = elapsed + 's';
+        }
+
+        function sendCommand(cmd) {
+            database.ref('harmonie_v3/maze/command').set(cmd);
+            setTimeout(() => {
+                database.ref('harmonie_v3/maze/command').set('EN ATTENTE...');
+            }, 2000);
+        }
+
+        function movePlayer(direction) {
+            const newPos = { ...playerPos };
+            
+            switch(direction) {
+                case 'HAUT':
+                    if(newPos.y > 0) newPos.y--;
+                    break;
+                case 'BAS':
+                    if(newPos.y < mazeSize - 1) newPos.y++;
+                    break;
+                case 'GAUCHE':
+                    if(newPos.x > 0) newPos.x--;
+                    break;
+                case 'DROITE':
+                    if(newPos.x < mazeSize - 1) newPos.x++;
+                    break;
+            }
+            
+            if(mazeData[newPos.y][newPos.x] === 'wall') {
+                mazeCollisions++;
+                newPos.x = 0;
+                newPos.y = 0;
+                database.ref('harmonie_v3/maze/collisions').set(mazeCollisions);
+            }
+            
+            if(mazeData[newPos.y][newPos.x] === 'end') {
+                if(mazeTimer) clearInterval(mazeTimer);
+                const finalTime = Math.floor((Date.now() - mazeStartTime) / 1000);
+                
+                setTimeout(() => {
+                    alert(`🎉 VICTOIRE ! Niveau ${mazeLevel} complété en ${finalTime}s avec ${mazeCollisions} collision(s) !`);
+                    mazeLevel++;
+                    document.getElementById('maze-level').innerText = mazeLevel;
+                    startMazeGame();
+                }, 300);
+            }
+            
+            playerPos = newPos;
+            database.ref('harmonie_v3/maze/playerPos').set(playerPos);
+        }
+
+        function syncMazeState(mazeState) {
+            if(!mazeState) return;
+            
+            if(mazeState.data && mazeState.data.length > 0) {
+                mazeData = mazeState.data;
+            }
+            
+            if(mazeState.playerPos) {
+                playerPos = mazeState.playerPos;
+                renderMaze();
+            }
+            
+            if(mazeState.level) {
+                document.getElementById('maze-level').innerText = mazeState.level;
+            }
+            if(mazeState.collisions !== undefined) {
+                mazeCollisions = mazeState.collisions;
+                document.getElementById('maze-collisions').innerText = mazeCollisions;
+            }
+            if(mazeState.startTime) {
+                mazeStartTime = mazeState.startTime;
+            }
+            
+            if(mazeState.command && myUser === 'Israh') {
+                const commandText = document.getElementById('command-text');
+                if(commandText) {
+                    commandText.innerText = mazeState.command;
+                    
+                    if(mazeState.command.includes('HAUT')) {
+                        movePlayer('HAUT');
+                    } else if(mazeState.command.includes('BAS')) {
+                        movePlayer('BAS');
+                    } else if(mazeState.command.includes('GAUCHE')) {
+                        movePlayer('GAUCHE');
+                    } else if(mazeState.command.includes('DROITE')) {
+                        movePlayer('DROITE');
+                    }
+                }
+            }
+        }
+
+        function resetMazeGame() {
+            if(mazeTimer) clearInterval(mazeTimer);
+            mazeStartTime = 0;
+            mazeCollisions = 0;
+            mazeLevel = 1;
+            document.getElementById('maze-level').innerText = mazeLevel;
+            document.getElementById('maze-collisions').innerText = 0;
+            document.getElementById('maze-time').innerText = '0s';
+            database.ref('harmonie_v3/maze').remove();
+            document.getElementById('maze-grid').innerHTML = '';
+        }
+
     </script>
 </body>
 </html> 
